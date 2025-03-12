@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt = $db->prepare("UPDATE users SET goals = :goal WHERE user_id = :user_id");
         $stmt->execute([
             ":goal" => $goal,
-            ":user_id" => $user_ic
+            ":user_id" => $user_id
         ]);
         
         error_log("Rows affected: " . $stmt->rowCount()); // Debugging
