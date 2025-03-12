@@ -18,7 +18,7 @@ try {
 }
 
 //Fetch workouts from the database to display on the page
-$query = "SELECT * FROM workouts WHERE userID = :userID ORDER BY created_at DESC"; // Use named placeholder :user_id
+$query = "SELECT * FROM workouts WHERE userID = :userID ORDER BY workoutID DESC"; // Use named placeholder :user_id
 $stmt = $db->prepare($query);
 $stmt->bindParam(':userID', $_SESSION['userID'], PDO::PARAM_INT); // Bind the user_id parameter
 $stmt->execute();
