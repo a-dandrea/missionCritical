@@ -43,7 +43,7 @@ try {
 
         <form id="update-goal-form">
             <label for="goal">Select Goal:</label>
-            <select id="goal" name="goal" required>
+            <select id="goals" name="goals" required>
                 <option value="">Select a Goal</option>
                 <option value="0">Maintain Weight</option>
                 <option value="1">Lose Weight</option>

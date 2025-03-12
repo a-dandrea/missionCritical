@@ -26,11 +26,11 @@ try {
 
 // Ensure data is coming from a POST request
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $goal = isset($_POST['goal']) ? intval($_POST['goal']) : null;
+    $goals = isset($_POST['goals']) ? intval($_POST['goals']) : null;
 
-    error_log("Received - Goal: " . ($goal ?? 'Not provided'));
+    error_log("Received - Goal: " . ($goals ?? 'Not provided'));
 
-    if ($goal === null) {
+    if ($goals === null) {
         echo json_encode(["message" => "Invalid input data."]);
         exit();
     }
@@ -45,11 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit();
         }
 
-        $goal = $goal ?? $currentData['goals'];
+        $goals = $goals ?? $currentData['goals'];
 
         $stmt = $db->prepare("UPDATE users SET goals = :goal WHERE user_id = :user_id");
         $stmt->execute([
-            ":goal" => $goal,
+            ":goals" => $goals,
             ":user_id" => $user_id
         ]);
         
