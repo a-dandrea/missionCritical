@@ -1,15 +1,9 @@
 <?php
 session_start();
-$host = "joecool.highpoint.edu";
-$username = "ejerrier";
-$password = "1788128";
-$database = "csc4710_S25_missioncritical";
 
-$conn = new mysqli($host, $username, $password, $database);
-
-if ($conn->connect_error) {
-   die("Connection failed: " . $conn->connect_error);
-}
+$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  // Use the correct database name
+$username = 'ejerrier';  // Use the correct MySQL username
+$password = '1788128';  // Use the correct MySQL password
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
