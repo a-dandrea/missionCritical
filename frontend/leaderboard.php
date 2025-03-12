@@ -15,6 +15,7 @@ try {
     $error_message = $e->getMessage();
     exit("Database connection failed: " . $error_message);
 }
+?>
 
 <!DOCTYPE html>
 <html lang="en">
