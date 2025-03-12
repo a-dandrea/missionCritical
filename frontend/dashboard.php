@@ -1,14 +1,16 @@
 <?php
 session_start();
-$host = "joecool.highpoint.edu";
-$username = "knguyen";
-$password = "knguyen1871644";
-$database = "csc4710_S25_missioncritical";
 
-$conn = new mysqli($host, $username, $password, $database);
+$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  // Use the correct database name
+$username = 'ejerrier';  // Use the correct MySQL username
+$password = '1788128';  // Use the correct MySQL password
 
-if ($conn->connect_error) {
-   die("Connection failed: " . $conn->connect_error);
+try {
+   $db = new PDO($dsn, $username, $password);
+   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+   $error_message = $e->getMessage();
+   exit("Database connection failed: " . $error_message);
 }
 
 // Check if user is logged in
@@ -63,19 +65,19 @@ $conn->close();
     <!-- Basic Info Box -->
     <div class="box">
         <h2>Basic Information</h2>
-        <p><strong>Email:</strong> <?php echo htmlspecialchars($user_id['email']); ?></p>
-        <p><strong>Age:</strong> <?php echo htmlspecialchars($user_id['age']); ?></p>
-        <p><strong>Gender:</strong> <?php echo htmlspecialchars($user_id['gender']); ?></p>
-        <p><strong>Weight:</strong> <?php echo htmlspecialchars($user_id['weight']); ?> lbs</p>
-        <p><strong>Height:</strong> <?php echo htmlspecialchars($user_id['height']); ?> in</p>
+        <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+        <p><strong>Age:</strong> <?php echo htmlspecialchars($user['age']); ?></p>
+        <p><strong>Gender:</strong> <?php echo htmlspecialchars($user['gender']); ?></p>
+        <p><strong>Weight:</strong> <?php echo htmlspecialchars($user['weight']); ?> lbs</p>
+        <p><strong>Height:</strong> <?php echo htmlspecialchars($user['height']); ?> in</p>
     </div>
 
     <!-- Goal & Activity Box -->
     <div class="box">
         <h2>Current Goal</h2>
-        <p><strong>Goal:</strong> <?php echo htmlspecialchars($user_id['goal']); ?></p>
-        <p><strong>Activity Level:</strong> <?php echo htmlspecialchars($user_id['activity_level']); ?></p>
-        <p><strong>Privilege:</strong> <?php echo htmlspecialchars($user_id['privilege']); ?></p>
+        <p><strong>Goal:</strong> <?php echo htmlspecialchars($user['goal']); ?></p>
+        <p><strong>Activity Level:</strong> <?php echo htmlspecialchars($user['activity_level']); ?></p>
+        <p><strong>Privilege:</strong> <?php echo htmlspecialchars($user['privilege']); ?></p>
     </div>
 
     <!-- Action Buttons -->
