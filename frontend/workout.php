@@ -52,7 +52,7 @@ $workouts = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h2>Log Your Workout</h2>
 
         <form id="workout-form">
-        <input type="hidden" name="userID" value="<?php echo $_SESSION['user_id']; ?>">
+        <input type="hidden" name="userID" value="<?php echo $_SESSION['userID']; ?>">
             <!-- Workout Type Selection -->
             <label for="workout-type">Workout Type:</label>
             <select id="workout-type" name="workout-type" required>
