@@ -15,31 +15,35 @@ try {
     exit();
 }
 
-$age = $_POST['age'];
-$height = $_POST['height'];
-$weight = $_POST['weight'];
-$user_id = intval($_POST['user_id']);
+// Ensure data is coming from a POST request
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Retrieve input data and validate it
+    $age = isset($_POST['age']) ? intval($_POST['age']) : null;
+    $height = isset($_POST['height']) ? floatval($_POST['height']) : null;
+    $weight = isset($_POST['weight']) ? floatval($_POST['weight']) : null;
+    $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : null;
 
-// Update user's goal in the database
-try {
-    $stmt = $db->prepare("UPDATE users SET age = :age WHERE user_id = :user_id");
-    $stmt->execute([
-        ":age" => $age,
-        ":user_id" => $user_id
-    ]);
-    $stmt = $db->prepare("UPDATE users SET weight = :weight WHERE user_id = :user_id");
-    $stmt->execute([
-        ":weight" => $weight,
-        ":user_id" => $user_id
-    ]);
-    $stmt = $db->prepare("UPDATE users SET height = :height WHERE user_id = :user_id");
-    $stmt->execute([
-        ":height" => $height,
-        ":user_id" => $user_id
-    ]);
+    // Check if all required fields are present
+    if ($user_id === null || $age === null || $height === null || $weight === null) {
+        echo json_encode(["message" => "Invalid input data."]);
+        exit();
+    }
 
-    echo json_encode(["message" => "Goal updated successfully!"]);
-} catch (PDOException $e) {
-    echo json_encode(["message" => "Error: " . $e->getMessage()]);
+    // Update user data in a single query
+    try {
+        $stmt = $db->prepare("UPDATE users SET age = :age, weight = :weight, height = :height WHERE user_id = :user_id");
+        $stmt->execute([
+            ":age" => $age,
+            ":weight" => $weight,
+            ":height" => $height,
+            ":user_id" => $user_id
+        ]);
+
+        echo json_encode(["message" => "User data updated successfully!"]);
+    } catch (PDOException $e) {
+        echo json_encode(["message" => "Error: " . $e->getMessage()]);
+    }
+} else {
+    echo json_encode(["message" => "Invalid request method. Use POST."]);
 }
 ?>
