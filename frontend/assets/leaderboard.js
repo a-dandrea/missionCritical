@@ -1,4 +1,4 @@
-const leaderboardData = {
+/*const leaderboardData = {
     calories: [
         { username: 'User1', goal: 1500, value: 1200 },
         { username: 'User2', goal: 1200, value: 1000 },
@@ -15,6 +15,29 @@ const leaderboardData = {
         { username: 'User3', goal: 40, value: 30 }
     ]
 };
+*/
+let leaderboardDAta = {};
+
+
+//Function to fetch data from PHP and update the page
+function sendRequest(){
+    //Create new XMLHttpRequest (AJAX)
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "leaderboard.php", true); //Specify the php file that will return leaderboard
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200)
+            try {
+                leaderboardData = JSON.parse(xhr.responseText);
+                updateLeaderboard();
+        } catch (error) {
+            console.error("Error parsing JSON response:", error);
+            document.getElementById("response").innerHTML = xhr.responseText;
+            }
+        }
+     };
+    xhr.send(); //Send the request to the server
+}
+
 
 // Function to update the leaderboard based on the selected category
 function updateLeaderboard() {
@@ -49,4 +72,4 @@ function updateLeaderboard() {
 }
 
 // Initialize leaderboard when page loads
-window.onload = updateLeaderboard;
+window.onload = sendRequest;
