@@ -1,36 +1,39 @@
 <?php
 header("Content-Type: application/json");  // Send JSON response
+session_start();
 
-$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  // Use the correct database name
-$username = 'ejerrier';  // Use the correct MySQL username
-$password = '1788128';  // Use the correct MySQL password
+// Database connection
+$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
+$username = 'ejerrier';
+$password = '1788128';
 
-// Retrieve form data
-$goal = $_POST['goal'];
-$user_id = intval($_GET['user_id']);
-
-// Prepare the SQL query based on workout type
-if ($goal == 0) {
-    $sql = "UPDATE users SET goals = '$goal' WHERE user_id = $user_id";  // Update user goal
-} elseif ($goal == 1) {
-    $sql = "UPDATE users SET goals = '$goal' WHERE user_id = $user_id";  // Update user goal
-} elseif ($goal == 2) {
-    $sql = "UPDATE users SET goals = '$goal' WHERE user_id = $user_id";  // Update user goal
-} elseif ($goal == 3) {
-    $sql = "UPDATE users SET goals = '$goal' WHERE user_id = $user_id";  // Update user goal
-} elseif ($goal == 4) {
-    $sql = "UPDATE users SET goals = '$goal' WHERE user_id = $user_id";  // Update user goal
-} else {
-    echo json_encode(["message" => "Invalid goal"]);
+try {
+    $db = new PDO($dsn, $username, $password);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    echo json_encode(["message" => "Database connection failed: " . $e->getMessage()]);
     exit();
 }
 
-// Insert data into MySQL
-if ($conn->query($sql) === TRUE) {
-    echo json_encode(["message" => "Goal update logged successfully!"]);
-} else {
-    echo json_encode(["message" => "Error: " . $conn->error]);
+// Validate input
+if (!isset($_POST['goal'], $_POST['user_id'])) {
+    echo json_encode(["message" => "Missing goal or user ID"]);
+    exit();
 }
 
-$conn->close();
+$goal = $_POST['goal'];
+$user_id = intval($_POST['user_id']);
+
+// Update user's goal in the database
+try {
+    $stmt = $db->prepare("UPDATE users SET goal = :goal WHERE user_id = :user_id");
+    $stmt->execute([
+        ":goal" => $goal,
+        ":user_id" => $user_id
+    ]);
+
+    echo json_encode(["message" => "Goal updated successfully!"]);
+} catch (PDOException $e) {
+    echo json_encode(["message" => "Error: " . $e->getMessage()]);
+}
 ?>

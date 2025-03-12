@@ -1,44 +1,75 @@
 <?php
 header("Content-Type: application/json");  // Send JSON response
+session_start();
 
-// Include the database connection file
-include('config.php');
+// Adjust database connection parameters
+$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
+$username = 'ejerrier';
+$password = '1788128';
 
-// Retrieve the form data from the POST request
-$workoutType = $_POST['workout-type'] ?? null;
-$duration = $_POST['duration'] ?? null;
-$distance = $_POST['distance'] ?? null;
-$calories = $_POST['calories'] ?? null;
-$avgbpm = $_POST['avgbpm'] ?? null;
-$avgpace = $_POST['avgpace'] ?? null;
-$type = $_POST['type'] ?? null;
-$notes = $_POST['notes'] ?? null;
-
-// Prepare SQL query based on the workout type
-
-if ($workoutType == 'cardio') {
-    // Cardio-specific columns (duration, distance, calories, avg BPM, avg pace)
-    $sql = "INSERT INTO workouts (exercise, duration, distance, calories, avgbpm, avgpace, workout_type) 
-            VALUES ('Cardio', '$duration', '$distance', '$calories', '$avgbpm', '$avgpace', '$workoutType')";
-} elseif ($workoutType == 'strength') {
-    // Strength-specific columns (type of workout, duration, calories, notes)
-    $sql = "INSERT INTO workouts (exercise, duration, calories, notes, workout_type) 
-            VALUES ('Strength', '$duration', '$calories', '$notes', '$workoutType')";
-} elseif ($workoutType == 'cycling') {
-    // Cycling-specific columns (duration, distance, calories, avg BPM)
-    $sql = "INSERT INTO workouts (exercise, duration, distance, calories, avgbpm, avgpace, workout_type) 
-            VALUES ('Cycling', '$duration', '$distance', '$calories', '$avgbpm', '$avgpace' '$workoutType')";
-} else {
-    echo json_encode(["message" => "Invalid workout type"]);
+try {
+    $db = new PDO($dsn, $username, $password);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    echo json_encode(["message" => "Database connection failed: " . $e->getMessage()]);
     exit();
 }
 
-// Insert data into MySQL
-if ($conn->query($sql) === TRUE) {
-    echo json_encode(["message" => "Workout logged successfully!"]);
-} else {
-    echo json_encode(["message" => "Error: " . $conn->error]);
+// Retrieve form data
+$userID = $_POST['userID'] ?? null;
+$workoutType = $_POST['workout-type'] ?? null;
+$duration = $_POST['duration'] ?? null;
+$calories = $_POST['calories'] ?? null;
+$startTime = date('Y-m-d H:i:s');  // Assume workout starts now
+$endTime = date('Y-m-d H:i:s', strtotime("+$duration minutes"));
+
+if (!$userID || !$workoutType || !$duration || !$calories) {
+    echo json_encode(["message" => "Missing required fields"]);
+    exit();
 }
 
-$conn->close();
+// Insert workout data
+try {
+    $sql = "INSERT INTO workouts (userID, workoutType, duration, caloriesBurned, startTime, endTime) 
+            VALUES (:userID, :workoutType, :duration, :caloriesBurned, :startTime, :endTime)";
+    
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':userID', $userID);
+    $stmt->bindParam(':workoutType', $workoutType);
+    $stmt->bindParam(':duration', $duration);
+    $stmt->bindParam(':caloriesBurned', $calories);
+    $stmt->bindParam(':startTime', $startTime);
+    $stmt->bindParam(':endTime', $endTime);
+
+    if ($stmt->execute()) {
+        $workoutID = $db->lastInsertId();  // Get the last inserted workout ID
+
+        // Insert exercise data if available
+        if ($workoutType == 'strength' && isset($_POST['exerciseName'])) {
+            $exerciseName = $_POST['exerciseName'];
+            $sets = $_POST['sets'];
+            $repsPerSet = $_POST['repsPerSet'];
+            $weight = $_POST['weight'];
+
+            $exerciseSQL = "INSERT INTO exercises (workoutID, exerciseName, sets, repsPerSet, weight) 
+                            VALUES (:workoutID, :exerciseName, :sets, :repsPerSet, :weight)";
+            $exerciseStmt = $db->prepare($exerciseSQL);
+            $exerciseStmt->bindParam(':workoutID', $workoutID);
+            $exerciseStmt->bindParam(':exerciseName', $exerciseName);
+            $exerciseStmt->bindParam(':sets', $sets);
+            $exerciseStmt->bindParam(':repsPerSet', $repsPerSet);
+            $exerciseStmt->bindParam(':weight', $weight);
+            $exerciseStmt->execute();
+        }
+
+        echo json_encode(["message" => "Workout logged successfully!"]);
+    } else {
+        echo json_encode(["message" => "Error: Unable to log workout"]);
+    }
+} catch (PDOException $e) {
+    echo json_encode(["message" => "Database error: " . $e->getMessage()]);
+}
+
+$db = null;
 ?>
+
