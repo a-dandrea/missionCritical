@@ -2,16 +2,16 @@ CREATE TABLE users (
    user_id INT PRIMARY KEY AUTO_INCREMENT,
    firstName VARCHAR(255) NOT NULL,
    lastName VARCHAR(255) NOT NULL,
-   age INT NOT NULL, 
+   age INT NULL, 
    email VARCHAR(255) NOT NULL,
    passwordHash VARCHAR(255) NOT NULL,
    dateOfBirth DATE NULL,
    gender ENUM('M', 'F', 'Other') NULL,
-   weight FLOAT NOT NULL,
-   height FLOAT NOT NULL, 
-   goals INT NOT NULL, 
-   activity_level INT NOT NULL, 
-   privilege INT NOT NULL,
+   weight FLOAT NULL,
+   height FLOAT NULL, 
+   goals INT NULL, 
+   activity_level INT NULL, 
+   privilege INT NULL,
    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
