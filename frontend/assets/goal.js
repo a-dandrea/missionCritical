@@ -33,7 +33,7 @@ document.getElementById("goal-update-form").addEventListener("submit", function(
 
    let formData = new FormData(this);
 
-   fetch('../backend/update_goal.php', {  // Submit form data to backend PHP
+   fetch('../../backend/update_goal.php', {  // Submit form data to backend PHP
        method: 'POST',
        body: formData
    })
