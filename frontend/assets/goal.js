@@ -10,19 +10,19 @@ document.getElementById('goal').addEventListener('change', function() {
        `;
    } else if (goal === "Maintain Weight") {
        dynamicFields.innerHTML = `
-           <label for="weight">Current Weight (lbs):</label>
+           
        `;
    } else if (goal === "Lose Weight") {
          dynamicFields.innerHTML = `
-            <label for="weight">Goal Weight (lbs):</label>
+            
          `;
    } else if (goal == "Increase Muscle Mass") {
          dynamicFields.innerHTML = `
-            <label for="muscleMass">Goal Muscle Mass:</label>
+            
          `;
    } else if (goal == "Increase Stamina") {
          dynamicFields.innerHTML = `
-            <label for="stamina">Goal Stamina:</label>
+            
          `;
    }
 });

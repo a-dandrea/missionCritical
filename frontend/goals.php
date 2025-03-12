@@ -32,11 +32,11 @@ include('../backend/config.php');  // Include database connection
             <label for="goal">Goal to Update:</label>
             <select id="goal" name="goal" required>
                 <option value=""> Select New Goal</option>
-                <option value="No specific goal">No specific goal</option>
-                <option value="Maintain weight">Maintain weight</option>
-                <option value="Lose weight">Lose weight</option>
-                <option value="Increase Muscle Mass">Increas Muscle Mass</option>
-                <option value="Increase Stamina">Increase Stamina</option>
+                <option value="0">No specific goal</option>
+                <option value="1">Maintain weight</option>
+                <option value="2">Lose weight</option>
+                <option value="3">Increas Muscle Mass</option>
+                <option value="4">Increase Stamina</option>
             </select>
             <div id="dynamic-fields"></div>
 
