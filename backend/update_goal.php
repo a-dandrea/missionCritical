@@ -28,6 +28,8 @@ try {
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $goal = isset($_POST['goal']) ? intval($_POST['goal']) : null;
 
+    error_log("Received - Goal: " . ($goal ?? 'Not provided'));
+
     if ($goal === null) {
         echo json_encode(["message" => "Invalid input data."]);
         exit();
@@ -42,6 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             echo json_encode(["message" => "User not found."]);
             exit();
         }
+
+        $goal = $goal ?? $currentData['goals'];
 
         $stmt = $db->prepare("UPDATE users SET goals = :goal WHERE user_id = :user_id");
         $stmt->execute([
