@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_group'])) {
         $stmt->bindParam(':group_name', $group_name);
         $stmt->execute();
         
-        $group_id = $db->lastInsertId();  // Get the newly created group ID
+        $group_id = $db->lastInsertId(); // Get the newly created group ID
 
         // Add selected users to the new group
         foreach ($selected_users as $user_id) {
@@ -118,6 +118,28 @@ $groupsResult = $db->query($groupSql);
         .error {
             color: red;
         }
+
+        .selected-users {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #eaf5e8;
+            border: 1px solid #6cab67;
+            border-radius: 5px;
+        }
+
+        .selected-users p {
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .selected-users-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .selected-users-list li {
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -139,14 +161,26 @@ $groupsResult = $db->query($groupSql);
             <input type="text" id="group_name" name="group_name" required>
 
             <label>Select Users:</label>
-            <?php while ($user = $usersResult->fetch(PDO::FETCH_ASSOC)): ?>
-                <div>
-                    <input type="checkbox" id="user_<?= $user['id'] ?>" 
-                           name="selected_users[]" 
-                           value="<?= $user['id'] ?>">
-                    <label for="user_<?= $user['id'] ?>"><?= htmlspecialchars($user['username']) ?></label>
-                </div>
-            <?php endwhile; ?>
+            <div id="user-list">
+                <?php while ($user = $usersResult->fetch(PDO::FETCH_ASSOC)): ?>
+                    <div>
+                        <input 
+                            type="checkbox" 
+                            id="user_<?= $user['id'] ?>" 
+                            name="selected_users[]" 
+                            value="<?= $user['id'] ?>"
+                            onclick="updateSelectedUsers(this, '<?= htmlspecialchars($user['username']) ?>')"
+                        >
+                        <label for="user_<?= $user['id'] ?>"><?= htmlspecialchars($user['username']) ?></label>
+                    </div>
+                <?php endwhile; ?>
+            </div>
+
+            <!-- Display selected users -->
+            <div class="selected-users" id="selected-users-container" style="display: none;">
+                <p>Selected Users:</p>
+                <ul class="selected-users-list" id="selected-users-list"></ul>
+            </div>
 
             <button type="submit" name="create_group">Create Group</button>
         </form>
@@ -170,6 +204,26 @@ $groupsResult = $db->query($groupSql);
         </form>
     </div>
 </div>
+
+<script>
+    const selectedUsersList = document.getElementById('selected-users-list');
+    const selectedUsersContainer = document.getElementById('selected-users-container');
+
+    function updateSelectedUsers(checkbox, username) {
+        if (checkbox.checked) {
+            const listItem = document.createElement('li');
+            listItem.textContent = username;
+            listItem.id = `selected-user-${checkbox.value}`;
+            selectedUsersList.appendChild(listItem);
+        } else {
+            const listItem = document.getElementById(`selected-user-${checkbox.value}`);
+            if (listItem) listItem.remove();
+        }
+
+        // Show or hide selected users container
+        selectedUsersContainer.style.display = selectedUsersList.children.length > 0 ? 'block' : 'none';
+    }
+</script>
 
 </body>
 </html>
