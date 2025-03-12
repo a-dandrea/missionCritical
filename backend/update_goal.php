@@ -9,15 +9,15 @@ $user_id = intval($_GET['user_id']);
 
 // Prepare the SQL query based on workout type
 if ($goal == "No specific goal") {
-    $sql = "UPDATE users SET goal = '$goal' WHERE user_id = $user_id";  // Update user goal
+    $sql = "UPDATE users SET goals = '$goal' WHERE user_id = $user_id";  // Update user goal
 } elseif ($goal == "Maintain Weight") {
-    $sql = "UPDATE users SET goal = '$goal' WHERE user_id = $user_id";  // Update user goal
+    $sql = "UPDATE users SET goals = '$goal' WHERE user_id = $user_id";  // Update user goal
 } elseif ($goal == "Lose Weight") {
-    $sql = "UPDATE users SET goal = '$goal' WHERE user_id = $user_id";  // Update user goal
+    $sql = "UPDATE users SET goals = '$goal' WHERE user_id = $user_id";  // Update user goal
 } elseif ($goal == "Increase Muscle Mass") {
-    $sql = "UPDATE users SET goal = '$goal' WHERE user_id = $user_id";  // Update user goal
+    $sql = "UPDATE users SET goals = '$goal' WHERE user_id = $user_id";  // Update user goal
 } elseif ($goal == "Increase Stamina") {
-    $sql = "UPDATE users SET goal = '$goal' WHERE user_id = $user_id";  // Update user goal
+    $sql = "UPDATE users SET goals = '$goal' WHERE user_id = $user_id";  // Update user goal
 } else {
     echo json_encode(["message" => "Invalid goal"]);
     exit();
