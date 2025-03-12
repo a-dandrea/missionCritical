@@ -1,16 +1,9 @@
 <?php
 header("Content-Type: application/json");  // Send JSON response
 
-$host = "joecool.highpoint.edu";
-$username = "knguyen";
-$password = "knguyen1871644";
-$database = "csc4710_S25_missioncritical";
-
-$conn = new mysqli($host, $username, $password, $database);
-
-if ($conn->connect_error) {
-   die("Connection failed: " . $conn->connect_error);
-}
+$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  // Use the correct database name
+$username = 'ejerrier';  // Use the correct MySQL username
+$password = '1788128';  // Use the correct MySQL password
 
 // Retrieve form data
 $goal = $_POST['goal'];
