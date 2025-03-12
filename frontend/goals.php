@@ -50,10 +50,10 @@ if (!$user_id) {
             <label for="goal">Select Goal:</label>
             <select id="goal" name="goal" required>
                 <option value="">Select a Goal</option>
-                <option value="Maintain Weight">Maintain Weight</option>
-                <option value="Lose Weight">Lose Weight</option>
-                <option value="Increase Muscle Mass">Increase Muscle Mass</option>
-                <option value="Increase Stamina">Increase Stamina</option>
+                <option value=0>Maintain Weight</option>
+                <option value=1>Lose Weight</option>
+                <option value=2>Increase Muscle Mass</option>
+                <option value=3>Increase Stamina</option>
             </select>
 
             <button type="submit">Update Goal</button>
@@ -63,25 +63,31 @@ if (!$user_id) {
     </div>
 
     <script>
-        document.getElementById("goal-update-form").addEventListener("submit", function(event) {
-            event.preventDefault();  // Prevent page reload
+    document.getElementById("goal-update-form").addEventListener("submit", function(event) {
+        event.preventDefault();  // Prevent page reload
 
-            const goal = document.getElementById("goal").value;
-            const userId = <?php echo json_encode($user_id); ?>;
+        const goal = document.getElementById("goal").value;
 
-            fetch("update_goal.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: `goal=${goal}&user_id=${userId}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("message").textContent = data.message;
-            })
-            .catch(error => console.error("Error:", error));
-        });
-    </script>
+        // Ensure a goal is selected
+        if (goal === "") {
+            document.getElementById("message").textContent = "Please select a goal.";
+            return;
+        }
+
+        fetch("update_goal.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams({ goal: goal })  // Send only goal (no user_id)
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("message").textContent = data.message;
+        })
+        .catch(error => console.error("Error:", error));
+    });
+</script>
+
 </body>
 </html>
