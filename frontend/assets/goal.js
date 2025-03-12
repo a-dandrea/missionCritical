@@ -5,24 +5,24 @@ document.getElementById('goal').addEventListener('change', function() {
    // Clear out any existing dynamic fields before updating
    dynamicFields.innerHTML = '';
 
-   if (goal === "No specific goal") {
+   if (goal === 0) {
        dynamicFields.innerHTML = `
        `;
-   } else if (goal === "Maintain Weight") {
+   } else if (goal === 1) {
        dynamicFields.innerHTML = `
-           <label for="weight">Current Weight (lbs):</label>
+           
        `;
-   } else if (goal === "Lose Weight") {
+   } else if (goal === 2) {
          dynamicFields.innerHTML = `
-            <label for="weight">Goal Weight (lbs):</label>
+            
          `;
-   } else if (goal == "Increase Muscle Mass") {
+   } else if (goal == 3) {
          dynamicFields.innerHTML = `
-            <label for="muscleMass">Goal Muscle Mass:</label>
+            
          `;
-   } else if (goal == "Increase Stamina") {
+   } else if (goal == 4) {
          dynamicFields.innerHTML = `
-            <label for="stamina">Goal Stamina:</label>
+            
          `;
    }
 });
