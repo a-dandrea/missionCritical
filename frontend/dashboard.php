@@ -1,6 +1,15 @@
 <?php
 session_start();
-require 'your_database_connection.php'; // Include your database connection
+$host = "joecool.highpoint.edu"; // e.g., 192.168.1.100 or db.example.com
+$username = "knguyen";
+$password = "knguyen1871644";
+$database = "csc4710_S25_missioncritical";
+
+$conn = new mysqli($host, $username, $password, $database);
+
+if ($conn->connect_error) {
+   die("Connection failed: " . $conn->connect_error);
+}
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
