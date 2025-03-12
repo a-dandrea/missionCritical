@@ -53,6 +53,9 @@ document.getElementById('workout-type').addEventListener('change', function() {
 
             <label for="avgbpm">Average BPM:</label>
             <input type="number" id="avgbpm" name="avgbpm" required>
+
+            <label for="avgpace">Average Pace:</label>
+            <input type="number" id="avgpace" name="avgpace" required>
         `;
     }
 });
@@ -74,3 +77,4 @@ document.getElementById("workout-form").addEventListener("submit", function(even
     })
     .catch(error => console.error('Error:', error));  // Log errors
 });
+

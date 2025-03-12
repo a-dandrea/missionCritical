@@ -63,7 +63,20 @@
 @import url(https://fonts.googleapis.com/css?family=Anonymous+Pro);
 
 body, html {
-    height:100%;
+  font-family: 'Arial', sans-serif; /* Set a default font for the body */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #f4f4f9; /* Light background color for a clean look */
+}
+
+.container {
+  width: 60%; /* Reduced the width of the container */
+  margin: 50px auto; /* Centers the container and adds top margin */
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px; /* Rounded corners for a modern look */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .hero-image {
@@ -94,160 +107,6 @@ body, html {
     overflow: hidden;
     transform: translateY(-50%);    
 }
-
-/* Animation */
-.anim-typewriter{
-  animation: typewriter 5s steps(44) 1s 1 normal both,
-             blinkTextCursor 500ms steps(44) infinite normal;
-}
-@keyframes typewriter{
-  from{width: 0;}
-  to{width: 48em;}
-}
-@keyframes blinkTextCursor{
-  from{border-right-color: rgba(255,255,255,.75);}
-  to{border-right-color: transparent;}
-}
-
-/*genre page css*/
-a {
-    text-decoration: none;
-  }
-  
-  .container {
-    width:100%;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top:-20%;
-  }
-  
-  
-  .genre {
-    width: 225px;
-    height: 350px;
-    position:relative;
-    text-align: center;
-    margin:2.5%;
-  }
-  
-  .genre-cover {
-    position: absolute;
-    z-index:1;
-    width: 100%;
-    height: 100%;
-    transform-origin: 0 50%;
-    -webkit-transform-origin: 0 50%;
-    background: #111;
-    background-size:cover;
-    border-radius: 4px;
-    box-shadow: 
-      inset 4px 1px 3px #ffffff60,
-      inset 0 -1px 2px #00000080;
-    transition: all .5s ease-in-out;
-    -webkit-transition: all .5s ease-in-out;
-  }
-  
-  .cover1 {
-    background: url('images/fantasyBlog.jpg');
-  }
-  
-  .cover2 {
-    background: url('images/romanceBlog.jpg');
-  }
-  
-  .cover3 {
-    background: url('images/classicsPost.jpg');
-  }
-
-  .cover4 {
-    background: url('images/nonfictionPost.jpg');
-  }
-
-  .cover5 {
-    background: url('images/mysteryPost.jpg');
-  }
-
-  .cover6 {
-    background: url('images/thrillerPost.jpg');
-  }
-
-  .genre .genre-cover {
-    background-size: 100% 100%;
-  }
-  
-  
-  .effect {
-    width: 20px;
-    height: 100%;
-    margin-left: 10px;
-    border-left: 2px solid #00000010;
-    background-image: linear-gradient(90deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%);
-    transition: all .5s ease;
-  }
-  
-  .light {
-    width: 90%;
-    height: 100%;
-    position: absolute;
-    border-radius: 3px; 
-    background-image: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 100%);
-    top: 0;
-    right:0;
-    opacity: .1;
-    transition: all .5s ease;
-    -webkit-transition: all .5s ease;
-  }
-  
-  .genre:hover { cursor:pointer; }
-  
-  .genre:hover .genre-cover {
-    transform: perspective(2000px) rotateY(-30deg);
-    -webkit-transform: perspective(2000px) rotateY(-30deg);
-    transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d;
-    box-shadow: 
-      inset 4px 1px 3px #ffffff60,
-      inset 0 -1px 2px #00000080,
-      10px 0px 10px -5px #00000030
-  }
-  
-  .genre:hover .effect {
-    width: 40px;
-   /** margin-left:13px;
-    opacity: 0.5; **/
-  }
-  
-  .genre:hover .light {
-    opacity: 1;
-    width: 70%;
-  }
-  
-  .genre-inside{
-    width: calc(100% - 2px);
-    height:96%;
-    position:relative;
-    top: 2%;
-    border: 1px solid grey;
-    border-radius:3px;
-    background: white;
-    box-shadow: 
-    10px 40px 40px -10px #00000030,
-    inset -2px 0 0 grey,
-    inset -3px 0 0 #dbdbdb,
-    inset -4px 0 0 white,
-    inset -5px 0 0 #dbdbdb,
-    inset -6px 0 0 white,
-    inset -7px 0 0 #dbdbdb,
-    inset -8px 0 0 white,
-    inset -9px 0 0 #dbdbdb;
-  }
-
-  .genre:hover .btn, .genre:hover .title {
-    opacity: 1;
-  }
-
 /* profile code and general? */
 h1{
   text-align: center;
@@ -301,47 +160,123 @@ main{
   margin: 10px;
   text-align: center;
 }
-  /*blog post css*/
-  .blog {
-    height: 50vh;
-    align-items: center;
-    padding:10px 0px 10px 0px;
-    margin-bottom:10%;
-    margin-left:10%;
-    margin-right:10%;
-    border: 2px solid #6cab67;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    box-sizing: border-box;
-  }
-
-  .postContainer {
-    height: 50vh;
-    margin-left:10%;
-    margin-right:10%;
-    justify-content: center;
-    align-items: center;
-    margin-bottom:10%;
-    padding:10%;
-    border: 2px solid #6cab67;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  }
-
-  .input-field {
-    font-size: 15px;
-    background: #a0cab0;
-    color: #fff;
-    height: 50px;
-    width: 100%;
-    padding-right: 10px;
-    padding-left: 45px;
-    border: none;
-    outline: none;
-    transition: .2s ease;
+/* workout input */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the form content */
+  width: 100%;
+  max-width: 600px; /* Limit the width of the form */
+  margin: 0 auto; /* Center the form horizontally */
 }
 
-.input-field:hover, .input-field:focus{
-    background: #6cab67;
+h2 {
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 20px;
 }
-::-webkit-input-placeholder{
-color: #fff;
+
+label {
+  font-size: 1.1em;
+  margin-bottom: 5px;
+  color: #333;
+  display: inline-block; /* Ensure labels appear beside inputs */
+  width: 200px; /* Fixed width for labels */
+  text-align: left; /* Align text to the left */
+}
+
+input, select {
+  padding: 8px 10px; /* Reduced padding for smaller boxes */
+  width: 100%; /* Input fields take the full width available */
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1em;
+  transition: border-color 0.3s ease;
+}
+
+/* Flexbox for aligning labels and inputs side by side */
+.form-group {
+  display: flex;
+  justify-content: flex-start; /* Aligns the label and input horizontally */
+  width: 100%;
+  margin-bottom: 20px; /* Space between fields */
+}
+
+.form-group input, .form-group select {
+  flex-grow: 1; /* Make the input fields take the remaining space */
+}
+
+select:focus, input:focus {
+  border-color: #0f0a66;
+  outline: none;
+}
+
+button {
+  background-color: #0f0a66;
+  border-radius: 16px;
+  padding: 12px 25px;
+  font-size: 1.1em;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border: none;
+  margin-top: 20px;
+}
+
+button:hover {
+  background-color: #0c094e;
+}
+
+/* Styling for Dynamic Workout Fields */
+#dynamic-fields {
+  width: 100%;
+  margin-top: 20px;
+}
+
+#dynamic-fields input, #dynamic-fields select {
+  width: 48%; /* Reduced width of dynamic fields */
+  margin-right: 4%;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+#dynamic-fields input[type="number"], #dynamic-fields input[type="text"] {
+  margin-bottom: 15px;
+}
+
+/* Leaderboard Styling */
+table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #0f0a66;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+form {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+select {
+  padding: 5px;
+  font-size: 16px;
 }
