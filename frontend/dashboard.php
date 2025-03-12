@@ -5,14 +5,6 @@ $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  /
 $username = 'ejerrier';  // Use the correct MySQL username
 $password = '1788128';  // Use the correct MySQL password
 
-try {
-   $db = new PDO($dsn, $username, $password);
-   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-   $error_message = $e->getMessage();
-   exit("Database connection failed: " . $error_message);
-}
-
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -21,22 +13,28 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-// Fetch user data
-$sql = "SELECT name, email, age, gender, weight, heigh, goals, activity_level, privilege FROM users WHERE user_id = $user_id";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
+try {
+    // Establish the database connection
+    $db = new PDO($dsn, $username, $password);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-if ($result->num_rows > 0) {
-    $user = $result->fetch_assoc();
-} else {
-    echo "User not found.";
+    // Fetch user data
+    $sql = "SELECT firstName, lastName, email, age, gender, weight, height, goals, activity_level, privilege FROM users WHERE user_id = :user_id";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$user) {
+        echo "User not found.";
+        exit();
+    }
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
     exit();
 }
 
-$stmt->close();
-$conn->close();
+$stmt->closeCursor();
 ?>
 
 <!DOCTYPE html>
@@ -75,14 +73,15 @@ $conn->close();
     <!-- Goal & Activity Box -->
     <div class="box">
         <h2>Current Goal</h2>
-        <p><strong>Goal:</strong> <?php echo htmlspecialchars($user['goal']); ?></p>
+        <p><strong>Goal:</strong> <?php echo htmlspecialchars($user['goals']); ?></p>
         <p><strong>Activity Level:</strong> <?php echo htmlspecialchars($user['activity_level']); ?></p>
         <p><strong>Privilege:</strong> <?php echo htmlspecialchars($user['privilege']); ?></p>
     </div>
 
     <!-- Action Buttons -->
-    <a href="update_goal.php" class="btn btn-update">Update Goal</a>
-    <a href="submit_workout.php" class="btn">Add Workout</a>
+    <a href="goals.php" class="btn btn-update">Update Goal</a>
+    <a href="workout.php" class="button">Add Workout</a>
+    <a href="personalinfo.php" class="btn">Update Basic Information</a>
 </div>
 
 </body>
