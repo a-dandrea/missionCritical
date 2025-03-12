@@ -3,7 +3,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
-
 $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  // Use the correct database name
 $username = 'ejerrier';  // Use the correct MySQL username
 $password = '1788128';  // Use the correct MySQL password
@@ -39,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (password_verify($password, $user['passwordHash'])) {
                 // Password is correct, start the session
                 session_regenerate_id(true);  // Prevent session fixation
+
                 $_SESSION['user_id'] = $user['user_id'];  // Assuming you want to store user_id
                 $_SESSION['email'] = $user['email'];  // Assuming you want to store email as well
 
