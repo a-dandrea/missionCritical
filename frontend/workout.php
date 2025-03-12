@@ -1,5 +1,21 @@
 <?php
-include('../backend/config.php');  // Include database connection
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+session_start();
+
+// Adjust the database connection parameters to match your setup.
+$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  // Use the correct database name
+$username = 'ejerrier';  // Use the correct MySQL username
+$password = '1788128';  // Use the correct MySQL password
+
+try {
+    $db = new PDO($dsn, $username, $password);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    echo "Database connection failed: " . $e->getMessage();
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,6 +43,7 @@ include('../backend/config.php');  // Include database connection
         <h2>Log Your Workout</h2>
 
         <form id="workout-form">
+        <input type="hidden" name="userID" value="<?php echo $_SESSION['user_id']; ?>">
             <!-- Workout Type Selection -->
             <label for="workout-type">Workout Type:</label>
             <select id="workout-type" name="workout-type" required>
