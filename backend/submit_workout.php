@@ -22,8 +22,8 @@ if ($workoutType == 'cardio') {
             VALUES ('Cardio', '$duration', '$distance', '$calories', '$avgbpm', '$avgpace', '$workoutType')";
 } elseif ($workoutType == 'strength') {
     // Strength-specific columns (type of workout, duration, calories, notes)
-    $sql = "INSERT INTO workouts (exercise, type, duration, calories, notes, workout_type) 
-            VALUES ('Strength', '$type', '$duration', '$calories', '$notes', '$workoutType')";
+    $sql = "INSERT INTO workouts (exercise, duration, calories, notes, workout_type) 
+            VALUES ('Strength', '$duration', '$calories', '$notes', '$workoutType')";
 } elseif ($workoutType == 'cycling') {
     // Cycling-specific columns (duration, distance, calories, avg BPM)
     $sql = "INSERT INTO workouts (exercise, duration, distance, calories, avgbpm, avgpace, workout_type) 
