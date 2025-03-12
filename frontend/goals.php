@@ -45,10 +45,10 @@ try {
             <label for="goal">Select Goal:</label>
             <select id="goal" name="goal" required>
                 <option value="">Select a Goal</option>
-                <option value=0>Maintain Weight</option>
-                <option value=1>Lose Weight</option>
-                <option value=2>Increase Muscle Mass</option>
-                <option value=3>Increase Stamina</option>
+                <option value="0">Maintain Weight</option>
+                <option value="1">Lose Weight</option>
+                <option value="2">Increase Muscle Mass</option>
+                <option value="3">Increase Stamina</option>
             </select>
 
             <button type="update">Update Goal</button>

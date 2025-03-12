@@ -5,22 +5,18 @@ document.getElementById('goal').addEventListener('change', function() {
    // Clear out any existing dynamic fields before updating
    dynamicFields.innerHTML = '';
 
-   if (goal === 0) {
+   if (goal === "0") {
        dynamicFields.innerHTML = `
        `;
-   } else if (goal === 1) {
+   } else if (goal === "1") {
        dynamicFields.innerHTML = `
            
        `;
-   } else if (goal === 2) {
+   } else if (goal === "2") {
          dynamicFields.innerHTML = `
             
          `;
-   } else if (goal == 3) {
-         dynamicFields.innerHTML = `
-            
-         `;
-   } else if (goal == 4) {
+   } else if (goal === "3") {
          dynamicFields.innerHTML = `
             
          `;
