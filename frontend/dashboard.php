@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 // Fetch user data
-$sql = "SELECT name, email, age, goal, activity_level, privilege FROM users WHERE id = $user_id";
+$sql = "SELECT name, email, age, gender, weight, heigh, goals, activity_level, privilege FROM users WHERE user_id = $user_id";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -56,6 +56,9 @@ $conn->close();
         <h2>Basic Information</h2>
         <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
         <p><strong>Age:</strong> <?php echo htmlspecialchars($user['age']); ?></p>
+        <p><strong>Gender:</strong> <?php echo htmlspecialchars($user['gender']); ?></p>
+        <p><strong>Weight:</strong> <?php echo htmlspecialchars($user['weight']); ?> lbs</p>
+        <p><strong>Height:</strong> <?php echo htmlspecialchars($user['heigh']); ?> in</p>
     </div>
 
     <!-- Goal & Activity Box -->
@@ -68,7 +71,7 @@ $conn->close();
 
     <!-- Action Buttons -->
     <a href="update_goal.php" class="btn btn-update">Update Goal</a>
-    <a href="add_workout.php" class="btn">Add Workout</a>
+    <a href="submit_workout.php" class="btn">Add Workout</a>
 </div>
 
 </body>
