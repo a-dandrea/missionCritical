@@ -67,6 +67,36 @@ $workouts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             <button type="submit">Submit Workout</button>
         </form>
+
+
+        <h3>Your Previous Workouts</h3>
+        <!-- Display workouts from the database -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Workout ID</th>
+                    <th>Workout Type</th>
+		    <th>Duration</th>
+                    <th>Calories Burned</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if ($workouts): ?>
+                    <?php foreach ($workouts as $workout): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($workout['workoutID']); ?></td>
+                            <td><?php echo htmlspecialchars($workout['workoutType']); ?></td>
+                            <td><?php echo htmlspecialchars($workout['duration']); ?></td>
+			    <td><?php echo htmlspecialchars($workout['caloriesBurned']); ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="3">No workouts logged yet.</td>
+                    </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
 
     <script src="assets/script.js"></script>  <!-- Link to script.js -->

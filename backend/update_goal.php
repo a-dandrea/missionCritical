@@ -1,6 +1,15 @@
 <?php
-header("Content-Type: application/json");  // Send JSON response
+header("Content-Type: application/json");  
 session_start();
+
+// Check if the user is logged in and has a user_id in the session
+if (!isset($_SESSION['user_id'])) {
+    echo json_encode(["message" => "Unauthorized: User not logged in."]);
+    exit();
+}
+
+$user_id = $_SESSION['user_id']; // Get user_id from session
+error_log("Updating goal for user ID: " . $user_id); // Debugging
 
 // Database connection
 $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
@@ -15,25 +24,39 @@ try {
     exit();
 }
 
-// Validate input
-if (!isset($_POST['goal'], $_POST['user_id'])) {
-    echo json_encode(["message" => "Missing goal or user ID"]);
-    exit();
-}
+// Ensure data is coming from a POST request
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Retrieve and validate input data
+    $goal = isset($_POST['goal']) ? intval($_POST['goal']) : null;
 
-$goal = $_POST['goal'];
-$user_id = intval($_POST['user_id']);
+    // Debugging: Print received values
+    error_log("Received - Goal: $goal");
 
-// Update user's goal in the database
-try {
-    $stmt = $db->prepare("UPDATE users SET goal = :goal WHERE user_id = :user_id");
-    $stmt->execute([
-        ":goal" => $goal,
-        ":user_id" => $user_id
-    ]);
+    // Check if goal is valid
+    if ($goal === null) {
+        echo json_encode(["message" => "Invalid input data."]);
+        exit();
+    }
 
-    echo json_encode(["message" => "Goal updated successfully!"]);
-} catch (PDOException $e) {
-    echo json_encode(["message" => "Error: " . $e->getMessage()]);
+    // Update user goal in the database
+    try {
+        $stmt = $db->prepare("UPDATE users SET goals = :goal WHERE user_id = :user_id");
+        $stmt->execute([
+            ":goal" => $goal,
+            ":user_id" => $user_id
+        ]);
+
+        error_log("Rows affected: " . $stmt->rowCount()); // Debugging
+
+        if ($stmt->rowCount() > 0) {
+            echo json_encode(["message" => "Goal updated successfully!"]);
+        } else {
+            echo json_encode(["message" => "No rows updated. Check user ID or goal value."]);
+        }
+    } catch (PDOException $e) {
+        echo json_encode(["message" => "Error: " . $e->getMessage()]);
+    }
+} else {
+    echo json_encode(["message" => "Invalid request method. Use POST."]);
 }
 ?>
