@@ -1,8 +1,15 @@
 <?php
-header("Content-Type: application/json");  // Send JSON response
+header("Content-Type: application/json");  
 session_start();
 
-// Database connection
+if (!isset($_SESSION['user_id'])) {
+    echo json_encode(["message" => "Unauthorized: User not logged in."]);
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+error_log("Updating user with ID: " . $user_id);
+
 $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
 $username = 'ejerrier';
 $password = '1788128';
@@ -15,21 +22,18 @@ try {
     exit();
 }
 
-// Ensure data is coming from a POST request
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Retrieve input data and validate it
     $age = isset($_POST['age']) ? intval($_POST['age']) : null;
     $height = isset($_POST['height']) ? floatval($_POST['height']) : null;
     $weight = isset($_POST['weight']) ? floatval($_POST['weight']) : null;
-    $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : null;
 
-    // Check if all required fields are present
-    if ($user_id === null || $age === null || $height === null || $weight === null) {
+    error_log("Received - Age: $age, Height: $height, Weight: $weight");
+
+    if ($age === null || $height === null || $weight === null) {
         echo json_encode(["message" => "Invalid input data."]);
         exit();
     }
 
-    // Update user data in a single query
     try {
         $stmt = $db->prepare("UPDATE users SET age = :age, weight = :weight, height = :height WHERE user_id = :user_id");
         $stmt->execute([
@@ -39,7 +43,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             ":user_id" => $user_id
         ]);
 
-        echo json_encode(["message" => "User data updated successfully!"]);
+        error_log("Rows affected: " . $stmt->rowCount());
+
+        if ($stmt->rowCount() > 0) {
+            echo json_encode(["message" => "User data updated successfully!"]);
+        } else {
+            echo json_encode(["message" => "No rows updated. Check user ID or values."]);
+        }
     } catch (PDOException $e) {
         echo json_encode(["message" => "Error: " . $e->getMessage()]);
     }
