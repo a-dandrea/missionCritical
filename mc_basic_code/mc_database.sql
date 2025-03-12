@@ -15,6 +15,20 @@ CREATE TABLE users (
    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE groups (
+    group_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    description TEXT
+);
+
+CREATE TABEL user_groups (
+    user_id INT,
+    group_id INT,
+    PRIMARY KWY (uaer_id, group_id),
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (group_id) REFERENCES groups(id)
+);
+
 CREATE TABLE workouts (
    workoutID INT PRIMARY KEY AUTO_INCREMENT,
    userID INT,
