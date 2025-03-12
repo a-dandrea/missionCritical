@@ -1,8 +1,15 @@
 <?php
-header("Content-Type: application/json");  // Send JSON response
+header("Content-Type: application/json");  
 session_start();
 
-// Database connection
+if (!isset($_SESSION['user_id'])) {
+    echo json_encode(["message" => "Unauthorized: User not logged in."]);
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+error_log("Updating user with ID: " . $user_id);
+
 $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
 $username = 'ejerrier';
 $password = '1788128';
@@ -15,25 +22,34 @@ try {
     exit();
 }
 
-// Validate input
-if (!isset($_POST['goal'], $_POST['user_id'])) {
-    echo json_encode(["message" => "Missing goal or user ID"]);
-    exit();
-}
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $goal = isset($_POST['goal']) ? intval($_POST['goal']) : null;
 
-$goal = $_POST['goal'];
-$user_id = intval($_POST['user_id']);
+    error_log("Received - Goal: $goal");
 
-// Update user's goal in the database
-try {
-    $stmt = $db->prepare("UPDATE users SET goal = :goal WHERE user_id = :user_id");
-    $stmt->execute([
-        ":goal" => $goal,
-        ":user_id" => $user_id
-    ]);
+    if ($goal === null) {
+        echo json_encode(["message" => "Invalid input data."]);
+        exit();
+    }
 
-    echo json_encode(["message" => "Goal updated successfully!"]);
-} catch (PDOException $e) {
-    echo json_encode(["message" => "Error: " . $e->getMessage()]);
+    try {
+        $stmt = $db->prepare("UPDATE users SET goal = :goal WHERE user_id = :user_id");
+        $stmt->execute([
+            ":goal" => $goal,
+            ":user_id" => $user_id
+        ]);
+
+        error_log("Rows affected: " . $stmt->rowCount());
+
+        if ($stmt->rowCount() > 0) {
+            echo json_encode(["message" => "Goal updated successfully!"]);
+        } else {
+            echo json_encode(["message" => "No rows updated. Check user ID or values."]);
+        }
+    } catch (PDOException $e) {
+        echo json_encode(["message" => "Error: " . $e->getMessage()]);
+    }
+} else {
+    echo json_encode(["message" => "Invalid request method. Use POST."]);
 }
 ?>
