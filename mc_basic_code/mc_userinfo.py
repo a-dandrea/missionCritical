@@ -67,24 +67,7 @@ class User:
             return round(60 / self.running_speed, 2)
         return "N/A"
 
-   def  calculate_running_calories(self):
-        met_values = {
-            4: 6.0,  # 4 mph (brisk walk)
-            5: 8.3,  # 5 mph (moderate run)
-            6: 9.8,  # 6 mph (steady run)
-            7: 11.0,  # 7 mph
-            8: 11.8,  # 8 mph
-            9: 12.8,  # 9 mph
-            10: 14.5  # 10+ mph (fast run)
-        }
 
-        # Find closest MET value for the given speed
-        closest_speed = min(met_values.keys(), key=lambda x: abs(x - self.running_speed))
-        met = met_values[closest_speed]
-
-        # Calories burned formula: (MET * weight_kg * time in hours)
-        return round(met * self.weight_kg * (self.running_time / 60), 2) 
-   
    def display_info(self):
       workout_info = (f" Running Pace: {self.workouts.runPace} min/mile\n"
                       f" Running Speed: {self.workouts.runSpeed} mph\n"
