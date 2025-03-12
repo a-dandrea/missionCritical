@@ -42,7 +42,7 @@ try {
         <h2>Update Your Fitness Goal</h2>
 
         <form id="update-goal-form">
-            <label for="goal">Select Goal:</label>
+            <label for="goals">Select Goal:</label>
             <select id="goals" name="goals" required>
                 <option value="">Select a Goal</option>
                 <option value="0">Maintain Weight</option>
