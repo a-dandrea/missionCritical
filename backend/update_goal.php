@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     try {
-        $stmt = $db->prepare("SELECT goal FROM users WHERE user_id = :user_id");
+        $stmt = $db->prepare("SELECT goals FROM users WHERE user_id = :user_id");
         $stmt->execute([":user_id" => $user_id]);
         $currentData = $stmt->fetch(PDP::FETCH_ASSOC);
 
