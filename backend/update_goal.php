@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         $goals = $goals ?? $currentData['goals'];
 
-        $stmt = $db->prepare("UPDATE users SET goals = :goal WHERE user_id = :user_id");
+        $stmt = $db->prepare("UPDATE users SET goals = :goals WHERE user_id = :user_id");
         $stmt->execute([
             ":goals" => $goals,
             ":user_id" => $user_id
