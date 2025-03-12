@@ -19,7 +19,7 @@ try {
 
 //Fetch workouts from the database to display on the page
 $query = "SELECT * FROM workouts WHERE user_id = ? ORDER BY created_at DESC";
-$stmt = $conn->prepare($query);
+// $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $_SESSION['user_id']);
 $stmt->execute();
 $result = $stmt->get_result();
