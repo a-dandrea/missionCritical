@@ -17,9 +17,8 @@ class Workouts:
         self.caloriesBurned = caloriesBurned  # in kcal
         self.runTime = runTime  # in minutes
 
-    def
 class User:
-   def __init__(self, fname, lname, age, email, password, dob, gender, weight, height, goals, activity_level, privilege) 
+   def __init__(self, fname, lname, age, email, password, dob, gender, weight, height, goals, activity_level, privilege): 
       self.fname = fname
       self.lname = lname
       self.age = age
@@ -32,17 +31,21 @@ class User:
       self.goals = goals
       self.activity_level = activity_level # for total daily energy expenditure (tdee)
       self.privilege = privilege  # Parent or Child  
-      
+      self.workouts = None
+
       self.weight_kg = round(self.weight * 0.45359, 2)  #kg 
       self.height_cm = round(self.height * 2.54, 2)  #cm 
 
    def calculate_bmi(self):
-   try:
+      try:
          if self.weight <= 0:
             return "Error: Weight must be greater than zero."
          return round(703 * self.weight / (self.height ** 2), 2)
       except ZeroDivisionError:
          return "Error: Height cannot be zero."
+   
+   def add_workouts(self, runPace, runSpeed, runDistance, heartRate, caloriesBurned, runTime):
+        self.workouts = Workouts(runPace, runSpeed, runDistance, heartRate, caloriesBurned, runTime)
 
    def calculate_bmr(self):
       if self.gender == "m":
@@ -83,6 +86,13 @@ class User:
         return round(met * self.weight_kg * (self.running_time / 60), 2) 
    
    def display_info(self):
+      workout_info = (f" Running Pace: {self.workouts.runPace} min/mile\n"
+                      f" Running Speed: {self.workouts.runSpeed} mph\n"
+                      f" Distance Run: {self.workouts.runDistance} miles\n"
+                      f" Heart Rate: {self.workouts.heartRate} bpm\n"
+                      f" Calories Burned: {self.workouts.caloriesBurned} kcal\n"
+                      f" Running Time: {self.workouts.runTime} min\n"
+                      f" Calories per Minute: {self.workouts.calculate_calories_per_minute()} kcal/min\n") if self.workouts else "No workout data available."
       return (f" First Name:   {self.fname}\n"
               f" Last Name:    {self.lname}\n"
               f" Age:    {self.age}\n"
@@ -100,7 +110,8 @@ class User:
               f" Run Time: {self.runTime} minutes\n"
               f" Distance Run: {self.calculate_distance()} miles\n"
               f" Pace: {self.calculate_pace()} min/mile\n"
-              f" Calories Burned: {self.calculate_running_calories()} kcal\n"))
+              f" Calories Burned: {self.calculate_running_calories()} kcal\n"
+              f" {workout_info}")
    
    def calculate_tdee(self):
       bmr = self.calculate_bmr()
@@ -147,7 +158,6 @@ def main():
                         """))
       if goals < 0 or goals > 4:
          raise ValueError("You must select 0, 1, 2, 3, or 4.")
-      break #exit loop if input is invalid
    except ValueError:
       print ("invalid input. Please enter a number between 0 and 4.")
 
