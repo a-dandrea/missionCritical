@@ -31,7 +31,7 @@ CREATE TABLE exercises (
    workoutID INT,
    exerciseName VARCHAR(100) NOT NULL,
    sets INT NOT NULL,
-   reps INT NOT NULL,
+   repsPerSet INT NOT NULL,
    weight DECIMAL(5, 2) NULL, -- in LBS
    FOREIGN KEY (workoutID) REFERENCES workouts(workoutID)
 );
