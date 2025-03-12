@@ -63,25 +63,31 @@ if (!$user_id) {
     </div>
 
     <script>
-        document.getElementById("goal-update-form").addEventListener("submit", function(event) {
-            event.preventDefault();  // Prevent page reload
+    document.getElementById("goal-update-form").addEventListener("submit", function(event) {
+        event.preventDefault();  // Prevent page reload
 
-            const goal = document.getElementById("goal").value;
-            const userId = <?php echo json_encode($user_id); ?>;
+        const goal = document.getElementById("goal").value;
 
-            fetch("update_goal.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-                body: `goal=${goal}&user_id=${userId}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("message").textContent = data.message;
-            })
-            .catch(error => console.error("Error:", error));
-        });
-    </script>
+        // Ensure a goal is selected
+        if (goal === "") {
+            document.getElementById("message").textContent = "Please select a goal.";
+            return;
+        }
+
+        fetch("update_goal.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams({ goal: goal })  // Send only goal (no user_id)
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("message").textContent = data.message;
+        })
+        .catch(error => console.error("Error:", error));
+    });
+</script>
+
 </body>
 </html>
