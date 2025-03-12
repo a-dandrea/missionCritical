@@ -1,8 +1,8 @@
 <?php
 session_start();
 $host = "joecool.highpoint.edu";
-$username = "knguyen";
-$password = "knguyen1871644";
+$username = "ejerrier";
+$password = "1788128";
 $database = "csc4710_S25_missioncritical";
 
 $conn = new mysqli($host, $username, $password, $database);

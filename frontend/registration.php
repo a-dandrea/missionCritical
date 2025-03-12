@@ -4,61 +4,50 @@ ini_set('display_errors', 1);
 
 session_start();
 
-$dsn = 'mysql:host=joecool.highpoint.edu;dbname=CSC3212_S24_ahall_db';
-$username = 'ahall';
-$password = '1835869';
+// Adjust the database connection parameters to match your setup.
+$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  // Use the correct database name
+$username = 'ejerrier';  // Use the correct MySQL username
+$password = '1788128';  // Use the correct MySQL password
 
 try {
     $db = new PDO($dsn, $username, $password);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    $error_message = $e->getMessage();
-    include('database_error.php');
+    echo "Database connection failed: " . $e->getMessage();
     exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    // Retrieve the POST data
     $email = $_POST['email'];
+    $password = $_POST['password'];
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
-    $favorite_book = $_POST['favorite_book'];
-    $favorite_genre = $_POST['favorite_genre'];
+    $gender = $_POST['gender'];  // Keep only the necessary fields
+    $dateOfBirth = $_POST['dateOfBirth'];
 
-    // You should add more validation and sanitization here
+    // Hash the password before storing it
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-    // Check if username is already taken
-    $query = "SELECT * FROM users WHERE username = :username";
+    // Insert new user into the database
+    $query = "INSERT INTO users (email, passwordHash, firstName, lastName, gender, dateOfBirth) 
+              VALUES (:email, :passwordHash, :firstname, :lastname, :gender, :dateOfBirth)";
     $statement = $db->prepare($query);
-    $statement->bindValue(':username', $username);
+    $statement->bindValue(':email', $email);
+    $statement->bindValue(':passwordHash', $passwordHash);
+    $statement->bindValue(':firstname', $firstname);
+    $statement->bindValue(':lastname', $lastname);
+    $statement->bindValue(':gender', $gender);
+    $statement->bindValue(':dateOfBirth', $dateOfBirth);
+    
     $statement->execute();
-    $existing_user = $statement->fetch();
     $statement->closeCursor();
 
-    if ($existing_user) {
-        $registration_error = "Username already exists.";
-    } else {
-        // Insert new user into the database
-        $query = "INSERT INTO users (username, password, email, firstname, lastname, favorite_book, favorite_genre) VALUES (:username, :password, :email, :firstname, :lastname, :favorite_book, :favorite_genre)";
-        $statement = $db->prepare($query);
-        $statement->bindValue(':username', $username);
-        $statement->bindValue(':password', $password); 
-        $statement->bindValue(':email', $email);
-        $statement->bindValue(':firstname', $firstname);
-        $statement->bindValue(':lastname', $lastname);
-        $statement->bindValue(':favorite_book', $favorite_book);
-        $statement->bindValue(':favorite_genre', $favorite_genre);
-        $statement->execute();
-        $statement->closeCursor();
-
-        // Redirect to login page
-        header("Location: login.php");
-        exit();
-    }
+    // Redirect to login page
+    header("Location: login.php");
+    exit();
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -129,13 +118,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             background: #6cab67;
         }
         ::-webkit-input-placeholder{
-    color: #fff;
-}
+            color: #fff;
+        }
         .input-box i {
             position: relative;
             top: -35px;
-    left: 17px;
-    color: white;
+            left: 17px;
+            color: white;
         }
 
         .submit {
@@ -155,28 +144,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .submit:hover {
             background: rgba(255, 255, 255, 0.5);
             box-shadow: 1px 5px 7px 1px rgba(0, 0, 0, 0.2);
-        }
-
-        .two-col {
-            display: flex;
-            justify-content: space-between;
-            color: #fff;
-            font-size: small;
-            margin-top: 10px;
-        }
-
-        .two-col .one {
-            display: flex;
-            gap: 5px;
-        }
-
-        .two label a {
-            text-decoration: none;
-            color: #fff;
-        }
-
-        .two label a:hover {
-            text-decoration: underline;
         }
 
         footer {
@@ -204,14 +171,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <div class="input-box">
-                        <input type="text" class="input-field" name="username" placeholder="Username" required>
-                        <i class="bx bx-user"></i>
-                    </div>
-                    <div class="input-box">
-                        <input type="password" class="input-field" name="password" placeholder="Password" required>
-                        <i class="bx bx-lock-alt"></i>
-                    </div>
-                    <div class="input-box">
                         <input type="email" class="input-field" name="email" placeholder="Email" required>
                         <i class="bx bx-envelope"></i>
                     </div>
@@ -224,12 +183,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <i class="bx bx-user"></i>
                     </div>
                     <div class="input-box">
-                        <input type="text" class="input-field" name="favorite_book" placeholder="Favorite Book" required>
-                        <i class="bx bx-book"></i>
+                        <select class="input-field" name="gender" required>
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <i class="bx bx-user"></i>
                     </div>
                     <div class="input-box">
-                        <input type="text" class="input-field" name="favorite_genre" placeholder="Favorite Genre" required>
-                        <i class="bx bx-category"></i>
+                        <input type="date" class="input-field" name="dateOfBirth" placeholder="Birthday" required>
+                        <i class="bx bx-user"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" class="input-field" name="password" placeholder="Password" required>
+                        <i class="bx bx-lock-alt"></i>
                     </div>
                     <div class="input-box">
                         <button type="submit" class="submit" style="background:#a0cab0; border-radius:25px; color:white;">Register</button>
