@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 session_start();
 
 // Database connection
@@ -13,13 +16,6 @@ try {
     echo "Database connection failed: " . $e->getMessage();
     exit();
 }
-
-// Get the logged-in user's ID
-$user_id = $_SESSION['user_id'] ?? null;
-if (!$user_id) {
-    echo "User not logged in.";
-    exit();
-}
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +26,6 @@ if (!$user_id) {
     <title>Update Your Goals</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
     <header>
         <nav class="navbar">   
             <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
@@ -42,7 +37,7 @@ if (!$user_id) {
             </div>
         </nav>
     </header>
-
+<body>
     <div class="container">
         <h2>Update Your Fitness Goal</h2>
 
@@ -58,8 +53,6 @@ if (!$user_id) {
 
             <button type="update">Update Goal</button>
         </form>
-
-        <p id="message"></p>  
     </div>
 
     <script src="assets/goal.js"></script>  <!-- Link to script.js -->
