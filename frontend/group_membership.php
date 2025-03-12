@@ -19,24 +19,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_group'])) {
     $selected_users = $_POST['selected_users'] ?? [];
 
     if (!empty($group_name) && !empty($selected_users)) {
-        // Insert new group
-        $insertGroupSql = "INSERT INTO groups (group_name) VALUES (:group_name)";
-        $stmt = $db->prepare($insertGroupSql);
-        $stmt->bindParam(':group_name', $group_name);
-        $stmt->execute();
-        
-        $group_id = $db->lastInsertId(); // Get the newly created group ID
+        try {
+            $db->beginTransaction();
 
-        // Add selected users to the new group
-        foreach ($selected_users as $user_id) {
+            // Insert new group
+            $insertGroupSql = "INSERT INTO groups (group_name) VALUES (:group_name)";
+            $stmt = $db->prepare($insertGroupSql);
+            $stmt->bindParam(':group_name', $group_name);
+            $stmt->execute();
+
+            $group_id = $db->lastInsertId();
+
+            // Add selected users to the new group
             $insertUserGroupSql = "INSERT INTO user_groups (user_id, group_id) VALUES (:user_id, :group_id)";
             $stmt = $db->prepare($insertUserGroupSql);
-            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-            $stmt->bindParam(':group_id', $group_id, PDO::PARAM_INT);
-            $stmt->execute();
-        }
 
-        $message = "Group '$group_name' created successfully!";
+            foreach ($selected_users as $user_id) {
+                $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                $stmt->bindParam(':group_id', $group_id, PDO::PARAM_INT);
+                $stmt->execute();
+            }
+
+            $db->commit();
+            $message = "Group '$group_name' created successfully with selected users!";
+        } catch (Exception $e) {
+            $db->rollBack();
+            $message = "Error creating group: " . $e->getMessage();
+        }
     } else {
         $message = "Please enter a group name and select at least one user.";
     }
@@ -45,11 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_group'])) {
 // Display users
 $userSql = "SELECT * FROM users";
 $usersResult = $db->query($userSql);
-
-// Display groups for joining
-$groupSql = "SELECT * FROM groups";
-$groupsResult = $db->query($groupSql);
-
 ?>
 
 <!DOCTYPE html>
@@ -60,171 +64,97 @@ $groupsResult = $db->query($groupSql);
     <title>Group Management</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <style>
-        body {
-            font-family: 'Anonymous Pro', monospace;
-            display: flex;
-            height: 100vh;
+        @import url('https://fonts.googleapis.com/css?family=Anonymous+Pro');
+
+        body, html {
+            height: 100%;
             background-color: #f3f8f2;
-            justify-content: center;
+            display: flex;
             align-items: center;
-        }
-        
-        .container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 500px;
+            justify-content: center;
         }
 
-        h1, h2 {
+        .container {
+            background-color: #ffffff;
+            border: 2px solid #a0cab0;
+            border-radius: 10px;
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            padding: 20px;
             text-align: center;
         }
 
-        .form-section {
-            margin-bottom: 30px;
+        h1 {
+            color: #4CAF50;
+            font-size: 28px;
         }
 
-        label {
-            display: block;
-            margin-top: 10px;
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        select, input, button {
-            width: 100%;
+        input[type="text"] {
             padding: 8px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
+            border: 2px solid #a0cab0;
             border-radius: 5px;
+            width: 100%;
+        }
+
+        .checkbox-container {
+            text-align: left;
+            padding: 10px 0;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #a0cab0;
+            border-radius: 5px;
+        }
+
+        .checkbox-item {
+            margin-bottom: 5px;
         }
 
         button {
-            background-color: #6cab67;
+            background-color: #4CAF50;
             color: #fff;
             border: none;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-
-        button:hover {
-            background-color: #5a9f57;
-        }
-
-        .success {
-            color: green;
-        }
-
-        .error {
-            color: red;
-        }
-
-        .selected-users {
-            margin-top: 15px;
             padding: 10px;
-            background-color: #eaf5e8;
-            border: 1px solid #6cab67;
             border-radius: 5px;
+            cursor: pointer;
         }
 
-        .selected-users p {
-            margin: 0;
+        .message {
+            color: #4CAF50;
             font-weight: bold;
-        }
-
-        .selected-users-list {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .selected-users-list li {
-            margin-top: 5px;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Create a New Group</h1>
 
-<div class="container">
-    <h1>Group Management</h1>
+        <?php if (isset($message)): ?>
+            <p class="message"><?= htmlspecialchars($message) ?></p>
+        <?php endif; ?>
 
-    <?php if (isset($message)): ?>
-        <p class="<?= strpos($message, 'successfully') !== false ? 'success' : 'error'; ?>">
-            <?= htmlspecialchars($message) ?>
-        </p>
-    <?php endif; ?>
-
-    <!-- Create Group Form -->
-    <div class="form-section">
-        <h2>Create a New Group</h2>
-        <form method="POST">
+        <form method="POST" action="">
             <label for="group_name">Group Name:</label>
             <input type="text" id="group_name" name="group_name" required>
 
             <label>Select Users:</label>
-            <div id="user-list">
+            <div class="checkbox-container">
                 <?php while ($user = $usersResult->fetch(PDO::FETCH_ASSOC)): ?>
-                    <div>
-                        <input 
-                            type="checkbox" 
-                            id="user_<?= $user['id'] ?>" 
-                            name="selected_users[]" 
-                            value="<?= $user['id'] ?>"
-                            onclick="updateSelectedUsers(this, '<?= htmlspecialchars($user['username']) ?>')"
-                        >
-                        <label for="user_<?= $user['id'] ?>"><?= htmlspecialchars($user['username']) ?></label>
+                    <div class="checkbox-item">
+                        <input type="checkbox" name="selected_users[]" value="<?= $user['id'] ?>">
+                        <?= htmlspecialchars($user['username']) ?>
                     </div>
                 <?php endwhile; ?>
-            </div>
-
-            <!-- Display selected users -->
-            <div class="selected-users" id="selected-users-container" style="display: none;">
-                <p>Selected Users:</p>
-                <ul class="selected-users-list" id="selected-users-list"></ul>
             </div>
 
             <button type="submit" name="create_group">Create Group</button>
         </form>
     </div>
-
-    <!-- Join Group Form -->
-    <div class="form-section">
-        <h2>Join an Existing Group</h2>
-        <form method="POST">
-            <label for="user_id">Your User ID:</label>
-            <input type="text" id="user_id" name="user_id" required>
-
-            <label for="group_id">Select Group:</label>
-            <select id="group_id" name="group_id" required>
-                <?php while ($group = $groupsResult->fetch(PDO::FETCH_ASSOC)): ?>
-                    <option value="<?= $group['id'] ?>"><?= htmlspecialchars($group['group_name']) ?></option>
-                <?php endwhile; ?>
-            </select>
-
-            <button type="submit" name="join_group">Join Group</button>
-        </form>
-    </div>
-</div>
-
-<script>
-    const selectedUsersList = document.getElementById('selected-users-list');
-    const selectedUsersContainer = document.getElementById('selected-users-container');
-
-    function updateSelectedUsers(checkbox, username) {
-        if (checkbox.checked) {
-            const listItem = document.createElement('li');
-            listItem.textContent = username;
-            listItem.id = `selected-user-${checkbox.value}`;
-            selectedUsersList.appendChild(listItem);
-        } else {
-            const listItem = document.getElementById(`selected-user-${checkbox.value}`);
-            if (listItem) listItem.remove();
-        }
-
-        // Show or hide selected users container
-        selectedUsersContainer.style.display = selectedUsersList.children.length > 0 ? 'block' : 'none';
-    }
-</script>
-
 </body>
 </html>
 
