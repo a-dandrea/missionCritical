@@ -46,7 +46,7 @@ if (!$user_id) {
     <div class="container">
         <h2>Update Your Fitness Goal</h2>
 
-        <form id="goal-update-form">
+        <form id="update-goal-form">
             <label for="goal">Select Goal:</label>
             <select id="goal" name="goal" required>
                 <option value="">Select a Goal</option>
@@ -56,38 +56,13 @@ if (!$user_id) {
                 <option value=3>Increase Stamina</option>
             </select>
 
-            <button type="submit">Update Goal</button>
+            <button type="update">Update Goal</button>
         </form>
 
         <p id="message"></p>  
     </div>
 
-    <script>
-    document.getElementById("goal-update-form").addEventListener("submit", function(event) {
-        event.preventDefault();  // Prevent page reload
-
-        const goal = document.getElementById("goal").value;
-
-        // Ensure a goal is selected
-        if (goal === "") {
-            document.getElementById("message").textContent = "Please select a goal.";
-            return;
-        }
-
-        fetch("update_goal.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: new URLSearchParams({ goal: goal })  // Send only goal (no user_id)
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById("message").textContent = data.message;
-        })
-        .catch(error => console.error("Error:", error));
-    });
-</script>
+    <script src="assets/goal.js"></script>  <!-- Link to script.js -->
 
 </body>
 </html>
