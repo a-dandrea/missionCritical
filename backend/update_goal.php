@@ -5,26 +5,19 @@ include('config.php');  // Database connection
 
 // Retrieve form data
 $goal = $_POST['goal'];
-$weight = $_POST['weight'] ?? null;
-$muscleMass = $_POST['muscleMass'] ?? null;
-$stamina = $_POST['stamina'] ?? null;
+$user_id = intval($_GET['user_id']);
 
 // Prepare the SQL query based on workout type
 if ($goal == "No specific goal") {
-    $sql = "INSERT INTO workouts (exercise, duration, distance, calories, workout_type) 
-            VALUES ('Cardio', '$duration', '$distance', '$calories', '$workoutType')";
+    $sql = "UPDATE users SET goal = '$goal' WHERE user_id = $user_id";  // Update user goal
 } elseif ($goal == "Maintain Weight") {
-    $sql = "INSERT INTO workouts (exercise, reps, sets, weight, workout_type) 
-            VALUES ('Strength', '$reps', '$sets', '$weight', '$workoutType')";
+    $sql = "UPDATE users SET goal = '$goal' WHERE user_id = $user_id";  // Update user goal
 } elseif ($goal == "Lose Weight") {
-    $sql = "INSERT INTO workouts (exercise, duration, calories, workout_type) 
-            VALUES ('Yoga', '$duration', '$calories', '$workoutType')";
+    $sql = "UPDATE users SET goal = '$goal' WHERE user_id = $user_id";  // Update user goal
 } elseif ($goal == "Increase Muscle Mass") {
-    $sql = "INSERT INTO workouts (exercise, reps, sets, weight, workout_type) 
-            VALUES ('Strength', '$reps', '$sets', '$muscleMass', '$workout')";
+    $sql = "UPDATE users SET goal = '$goal' WHERE user_id = $user_id";  // Update user goal
 } elseif ($goal == "Increase Stamina") {
-    $sql = "INSERT INTO workouts (exercise, duration, distance, workout_type) 
-            VALUES ('Cardio', '$duration', '$distance', '$workoutType')";
+    $sql = "UPDATE users SET goal = '$goal' WHERE user_id = $user_id";  // Update user goal
 } else {
     echo json_encode(["message" => "Invalid goal"]);
     exit();
