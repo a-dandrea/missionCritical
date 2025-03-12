@@ -91,8 +91,7 @@ class User:
                       f" Distance Run: {self.workouts.runDistance} miles\n"
                       f" Heart Rate: {self.workouts.heartRate} bpm\n"
                       f" Calories Burned: {self.workouts.caloriesBurned} kcal\n"
-                      f" Running Time: {self.workouts.runTime} min\n"
-                      f" Calories per Minute: {self.workouts.calculate_calories_per_minute()} kcal/min\n") if self.workouts else "No workout data available."
+                      f" Running Time: {self.workouts.runTime} min\n")
       return (f" First Name:   {self.fname}\n"
               f" Last Name:    {self.lname}\n"
               f" Age:    {self.age}\n"
@@ -106,11 +105,6 @@ class User:
               f" BMI:    {self.calculate_bmi()}\n" 
               f" BMR:    {self.calculate_bmr()} calories per day\n" 
               f" TDEE:   {self.calculate_tdee()} calories per day (based on activity level)\n"
-              f" Run Speed: {self.runSpeed} mph\n"
-              f" Run Time: {self.runTime} minutes\n"
-              f" Distance Run: {self.calculate_distance()} miles\n"
-              f" Pace: {self.calculate_pace()} min/mile\n"
-              f" Calories Burned: {self.calculate_running_calories()} kcal\n"
               f" {workout_info}")
    
    def calculate_tdee(self):
@@ -149,18 +143,16 @@ def main():
       if height <= 30:
          raise ValueError("Height must be greater than 30 inches.")
       
-      goals = int(input("""Enter your fitness goal: (0)(1)(2)(3)(4) 
-                        (0) No specific goal
-                        (1) Maintain weight
-                        (2) Lose weight
-                        (3) Increase Muscle Mass
-                        (4) Improve Stamina
-                        """))
+      print("Choose from the following goal options: \n")
+      print("(0) No specific goal\n")
+      print("(1) Maintain weight\n")
+      print("(2) Lose weight \n")
+      print("(3) Increase Muscle Mass \n ")
+      print("(4) Improve Stamina\n")
+     
+      goals = int(input("Enter your fitness goal(0 - 4): \n"))
       if goals < 0 or goals > 4:
          raise ValueError("You must select 0, 1, 2, 3, or 4.")
-   except ValueError:
-      print ("invalid input. Please enter a number between 0 and 4.")
-
       
       print("\nSelect Your Activity Level:")
       print("1. Sedentary (little or no exercise)")
@@ -189,14 +181,20 @@ def main():
 
       privilege = privilege_levels[privilege_choice]
 
-      print("\nEnter Running Data:")
-      running_speed = float(input("Enter your running speed (mph): "))
-      running_time = float(input("Enter your running time (minutes): "))
+      user = User(fname, lname, age, email, password, dob, gender, weight, height, goals, activity_level, privilege)
+      add_workout = input("Would you like to add workout data? (y/n): ").strip().lower()
+      print(f"DEBUG: add_workout value = {add_workout}")
+      if add_workout == 'y':
+         print("\nEnter Workout Data:")
+         run_pace = float(input("Enter your running pace (min/mile): "))
+         run_speed = float(input("Enter your running speed (mph): "))
+         run_distance = float(input("Enter your running distance (miles): "))
+         heart_rate = int(input("Enter your heart rate (bpm): "))
+         calories_burned = float(input("Enter calories burned: "))
+         run_time = float(input("Enter your running time (minutes): "))
 
-      if running_speed <= 0 or running_time <= 0:
-        raise ValueError("Running speed and time must be greater than zero.")
-
-      user = User(fname, lname, age, email, password, dob, gender, weight, height, goals, activity_level, privilege, runSpeed, runTime)
+         user.add_workouts(run_pace, run_speed, run_distance, heart_rate, calories_burned, run_time)
+      
       print("\nUser Data:")
       print(user.display_info())
    
