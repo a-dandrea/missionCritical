@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : null;
 
     // Check if all required fields are present
-    if ($user_id === null || $age === null || $height === null || $weight === null) {
+    if ($age === null || $height === null || $weight === null) {
         echo json_encode(["message" => "Invalid input data."]);
         exit();
     }
