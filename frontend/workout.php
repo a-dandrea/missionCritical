@@ -18,11 +18,13 @@ try {
 }
 
 //Fetch workouts from the database to display on the page
-$query = "SELECT * FROM workouts WHERE user_id = ? ORDER BY created_at DESC";
-// $stmt = $conn->prepare($query);
-$stmt->bind_param("i", $_SESSION['user_id']);
+$query = "SELECT * FROM workouts WHERE user_id = :user_id ORDER BY created_at DESC"; // Use named placeholder :user_id
+$stmt = $db->prepare($query);
+$stmt->bindParam(':user_id', $_SESSION['user_id'], PDO::PARAM_INT); // Bind the user_id parameter
 $stmt->execute();
-$result = $stmt->get_result();
+
+// Fetch all results
+$workouts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
