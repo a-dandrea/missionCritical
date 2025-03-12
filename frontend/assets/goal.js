@@ -1,46 +1,30 @@
-document.getElementById('goal').addEventListener('change', function() {
-   let workoutType = this.value;
-   let dynamicFields = document.getElementById('dynamic-fields');
-   
-   // Clear out any existing dynamic fields before updating
-   dynamicFields.innerHTML = '';
+console.log("goal.js loaded");
 
-   if (goal === 0) {
-       dynamicFields.innerHTML = `
-       `;
-   } else if (goal === 1) {
-       dynamicFields.innerHTML = `
-           
-       `;
-   } else if (goal === 2) {
-         dynamicFields.innerHTML = `
-            
-         `;
-   } else if (goal == 3) {
-         dynamicFields.innerHTML = `
-            
-         `;
-   } else if (goal == 4) {
-         dynamicFields.innerHTML = `
-            
-         `;
-   }
-});
-
-// Form submission handling with AJAX (same as before)
 document.getElementById("goal-update-form").addEventListener("submit", function(event) {
-   event.preventDefault();  // Prevent form from submitting normally
+    event.preventDefault();  // Prevent page reload
 
-   let formData = new FormData(this);
+    const goal = document.getElementById("goal").value;
 
-   fetch('../backend/update_goal.php', {  // Submit form data to backend PHP
-       method: 'POST',
-       body: formData
-   })
-   .then(response => response.json())
-   .then(data => {
-       alert(data.message);  // Show success/error message
-       document.getElementById("goal-update-form").reset();  // Reset the form
-   })
-   .catch(error => console.error('Error:', error));  // Log errors
+    // Debugging: Log values to check if they're correct
+    console.log("Selected Goal:", goal);
+
+    if (goal === "") {
+        document.getElementById("message").textContent = "Please select a goal.";
+        console.log("No goal selected.");
+        return;
+    }
+
+    fetch("update_goal.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({ goal: goal })  // Ensure proper encoding
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Server Response:", data);  // Debugging: Log response
+        document.getElementById("message").textContent = data.message;
+    })
+    .catch(error => console.error("Fetch error:", error));
 });
