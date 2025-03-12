@@ -33,12 +33,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     try {
+        $stmt = $db->prepare("SELECT goal FROM users WHERE user_id = :user_id");
+        $stmt->execute([":user_id" => $user_id]);
+        $currentData = $stmt->fetch(PDP::FETCH_ASSOC);
+
+        if (!$currentData) {
+            echo json_encode(["message" => "User not found."]);
+            exit();
+        }
+
         $stmt = $db->prepare("UPDATE users SET goals = :goal WHERE user_id = :user_id");
         $stmt->execute([
             ":goal" => $goal,
-            ":user_id" => $user_id
+            ":user_id" => $user_ic
         ]);
-
+        
+        error_log("Rows affected: " . $stmt->rowCount()); // Debugging
+        
         if ($stmt->rowCount() > 0) {
             echo json_encode(["message" => "Goal updated successfully!"]);
         } else {
