@@ -1,4 +1,16 @@
-<?php
+<!DOCTYPE html>
+<html>
+ <head>
+     <title>Group Membership</title>
+     <style>
+         body { font-family: Arial, sans-serif; margin: 20px; }
+         .message { padding: 10px; border: 1px solid; margin-bottom: 15px; }
+         .success { background-color: #d4edda; color: #155724; }
+         .error { background-color: #f8d7da; color: #721c24; }
+     </style>
+ </head>
+ <body>
+     <h1>Group Membership Management</h1><?php
 // Database connection
 session_start();
 
@@ -63,4 +75,18 @@ if ($selectedGroupId) {
     $members = $stmt->fetchAll(PDO::FETCH_COLUMN);
 }
 ?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Group Membership</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .message { padding: 10px; border: 1px solid; margin-bottom: 15px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Group Membership Management</h1>
 
