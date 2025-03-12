@@ -1,6 +1,6 @@
 <?php
 session_start();
-$host = "joecool.highpoint.edu"; // e.g., 192.168.1.100 or db.example.com
+$host = "joecool.highpoint.edu";
 $username = "knguyen";
 $password = "knguyen1871644";
 $database = "csc4710_S25_missioncritical";

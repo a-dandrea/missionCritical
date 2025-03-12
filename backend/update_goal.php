@@ -1,7 +1,16 @@
 <?php
 header("Content-Type: application/json");  // Send JSON response
 
-include('config.php');  // Database connection
+$host = "joecool.highpoint.edu";
+$username = "knguyen";
+$password = "knguyen1871644";
+$database = "csc4710_S25_missioncritical";
+
+$conn = new mysqli($host, $username, $password, $database);
+
+if ($conn->connect_error) {
+   die("Connection failed: " . $conn->connect_error);
+}
 
 // Retrieve form data
 $goal = $_POST['goal'];
