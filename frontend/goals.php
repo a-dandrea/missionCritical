@@ -50,10 +50,10 @@ if (!$user_id) {
             <label for="goal">Select Goal:</label>
             <select id="goal" name="goal" required>
                 <option value="">Select a Goal</option>
-                <option value="Maintain Weight">Maintain Weight</option>
-                <option value="Lose Weight">Lose Weight</option>
-                <option value="Increase Muscle Mass">Increase Muscle Mass</option>
-                <option value="Increase Stamina">Increase Stamina</option>
+                <option value=0>Maintain Weight</option>
+                <option value=1>Lose Weight</option>
+                <option value=2>Increase Muscle Mass</option>
+                <option value=3>Increase Stamina</option>
             </select>
 
             <button type="submit">Update Goal</button>
