@@ -19,12 +19,14 @@ $username = 'ejerrier';
 $password = '1788128';
 
 try {
-    $db = new PDO($dsn, $username, $password);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+   $db = new PDO($dsn, $username, $password);
+   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    echo json_encode(["message" => "Database connection failed: " . $e->getMessage()]);
-    exit();
+   error_log("Database connection failed: " . $e->getMessage());
+   echo json_encode(["message" => "Database connection failed."]);
+   exit();
 }
+
 
 // Ensure data is coming from a POST request
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
