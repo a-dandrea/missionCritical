@@ -54,7 +54,7 @@ try {
             <label for="height">Height (inches):</label>
             <input type="number" id="height" name="height">
 
-            <button type="update">Update</button>
+            <button type="submit">Update</button>
         </form>
     </div>
 

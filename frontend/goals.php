@@ -51,7 +51,7 @@ try {
                 <option value="3">Increase Stamina</option>
             </select>
 
-            <button type="update">Update Goal</button>
+            <button type="submit">Update Goal</button>
         </form>
     </div>
 
