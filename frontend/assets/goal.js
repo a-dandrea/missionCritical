@@ -13,5 +13,5 @@ document.getElementById("update-goal-form").addEventListener("submit", function(
        alert(data.message);  // Show success/error message
        document.getElementById("update-goal-form").reset();  // Reset the form
    })
-   .catch(error => console.error('Error:', error));  // Log errors
+   .catch(error => console.error('Error:', error));
 });
