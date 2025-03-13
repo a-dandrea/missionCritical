@@ -76,7 +76,7 @@ $workouts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <tr>
                     <th>Workout ID</th>
                     <th>Workout Type</th>
-		    <th>Duration</th>
+		              <th>Duration</th>
                     <th>Calories Burned</th>
                 </tr>
             </thead>
@@ -87,7 +87,7 @@ $workouts = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <td><?php echo htmlspecialchars($workout['workoutID']); ?></td>
                             <td><?php echo htmlspecialchars($workout['workoutType']); ?></td>
                             <td><?php echo htmlspecialchars($workout['duration']); ?></td>
-			    <td><?php echo htmlspecialchars($workout['caloriesBurned']); ?></td>
+			                   <td><?php echo htmlspecialchars($workout['caloriesBurned']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
