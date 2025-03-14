@@ -56,104 +56,108 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Registration</title>
     <style>
-        @import url(https://fonts.googleapis.com/css?family=Anonymous+Pro);
+@import url(https://fonts.googleapis.com/css?family=Anonymous+Pro);
 
-        body, html {
-            height:100%;
-        }
-        h1{
-          text-align:center;
-          font-size:  30px;
-          margin-bottom:10px;
-        }
+body, html {
+    height: 100%;
+}
+h1 {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
 
-        a:link{color: #a0cab0;}
-        a:visited{color: #6cab67;}
-        a:hover{color:#6cab67;}
-        .wrapper{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 110vh;
-            background-color: #f3f8f2;
-        }
+a:link { color: #b39ddb; } /* Light Purple */
+a:visited { color: #9575cd; } /* Medium Purple */
+a:hover { color: #7e57c2; } /* Darker Purple */
 
-        .register-container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            transition: .5s ease-in-out;
-        }
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 110vh;
+    background-color: #ede7f6; /* Soft Lavender */
+}
 
-        .form-box {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 512px;
-            height: auto; 
-            overflow: hidden;
-            z-index: 2;
-        }
+.register-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: .5s ease-in-out;
+}
 
-        .input-box {
-            position: relative;
-            margin-bottom: 5px;
-        }
+.form-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 512px;
+    height: auto; 
+    overflow: hidden;
+    z-index: 2;
+}
 
-        .input-field {
-            font-size: 15px;
-            background: #a0cab0;
-            color: #fff;
-            height: 50px;
-            width: 100%;
-            padding-right: 10px;
-            padding-left: 45px;
-            border: none;
-            outline: none;
-            transition: .2s ease;
-        }
+.input-box {
+    position: relative;
+    margin-bottom: 5px;
+}
 
-        .input-field:hover, .input-field:focus{
-            background: #6cab67;
-        }
-        ::-webkit-input-placeholder{
-            color: #fff;
-        }
-        .input-box i {
-            position: relative;
-            top: -35px;
-            left: 17px;
-            color: white;
-        }
+.input-field {
+    font-size: 15px;
+    background: #b39ddb; /* Light Purple */
+    color: #fff;
+    height: 50px;
+    width: 100%;
+    padding-right: 10px;
+    padding-left: 45px;
+    border: none;
+    outline: none;
+    transition: .2s ease;
+}
 
-        .submit {
-            font-size: 15px;
-            font-weight: 500;
-            color: black;
-            height: 45px;
-            width: 100%;
-            border: none;
-            border-radius: 30px;
-            outline: none;
-            background: rgba(255, 255, 255, 0.7);
-            cursor: pointer;
-            transition: .3s ease-in-out;
-        }
+.input-field:hover, .input-field:focus {
+    background: #9575cd; /* Slightly Darker Purple */
+}
 
-        .submit:hover {
-            background: rgba(255, 255, 255, 0.5);
-            box-shadow: 1px 5px 7px 1px rgba(0, 0, 0, 0.2);
-        }
+::-webkit-input-placeholder {
+    color: #fff;
+}
 
-        footer {
-           text-align: center;
-            padding: 3px;
-            background-color: #a0cab0;
-            color: white;
-            bottom: 0;
-            width: 100%;
-        }
+.input-box i {
+    position: relative;
+    top: -35px;
+    left: 17px;
+    color: white;
+}
+
+.submit {
+    font-size: 15px;
+    font-weight: 500;
+    color: white;
+    height: 45px;
+    width: 100%;
+    border: none;
+    border-radius: 30px;
+    outline: none;
+    background: #7e57c2; /* Richer Purple */
+    cursor: pointer;
+    transition: .3s ease-in-out;
+}
+
+.submit:hover {
+    background: #5e35b1; /* Deep Purple */
+    box-shadow: 1px 5px 7px 1px rgba(0, 0, 0, 0.2);
+}
+
+footer {
+    text-align: center;
+    padding: 3px;
+    background-color: #b39ddb; /* Light Purple */
+    color: white;
+    bottom: 0;
+    width: 100%;
+}
+
 
     </style>
 </head>
@@ -161,7 +165,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="wrapper">
         <div class="form-box">
             <div class="login-container" id="login">
-
             </div>
             <div class="register-container" id="register">
                 <div class="top" style="padding-top: 100px;">
@@ -199,7 +202,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <i class="bx bx-lock-alt"></i>
                     </div>
                     <div class="input-box">
-                        <button type="submit" class="submit" style="background:#a0cab0; border-radius:25px; color:white;">Register</button>
+                        <button type="submit" class="submit">Register</button>
                     </div>
                 </form>
             </div>
