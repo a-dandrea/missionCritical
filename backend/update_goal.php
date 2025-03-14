@@ -1,7 +1,8 @@
 <?php
+header("Content-Type: application/json");
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-header("Content-Type: application/json");  
+
 session_start();
 
 // Check if the user is logged in and has a user_id in the session
@@ -42,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     try {
         $stmt = $db->prepare("SELECT goals FROM users WHERE user_id = :user_id");
         $stmt->execute([":user_id" => $user_id]);
-        $currentData = $stmt->fetch(PDP::FETCH_ASSOC);
+        $currentData = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$currentData) {
             echo json_encode(["message" => "User not found."]);

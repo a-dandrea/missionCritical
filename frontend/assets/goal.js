@@ -11,7 +11,13 @@ document.getElementById("update-goal-form").addEventListener("submit", function(
    .then(response => response.json())
    .then(data => {
        alert(data.message);  // Show success/error message
+       if(data.message === "Goal updated successfully!"){
+         //add any needed logic after a successful database update.
+       }
        document.getElementById("update-goal-form").reset();  // Reset the form
    })
-   .catch(error => console.error('Error:', error));
+   .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred while updating the goal.');
+  });
 });
