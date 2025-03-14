@@ -16,30 +16,30 @@ $popupMessage = ''; // Message for JavaScript pop-up
 
 // Handle group creation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_group'])) {
-    $group_name = trim($_POST['group_name']);
+    $username = trim($_POST['username']);
     $description = trim($_POST['description']);  // Optional group description
 
-    if (!empty($group_name)) {
+    if (!empty($username)) {
         try {
             $db->beginTransaction();
 
             // Insert new group
-            $insertGroupSql = "INSERT INTO groups (group_name, description) VALUES (:group_name, :description)";
+            $insertGroupSql = "INSERT INTO groups (username, description) VALUES (:username, :description)";
             $stmt = $db->prepare($insertGroupSql);
-            $stmt->bindParam(':group_name', $group_name);
+            $stmt->bindParam(':username', $username);
             $stmt->bindParam(':description', $description);
             $stmt->execute();
 
             $group_id = $db->lastInsertId();
 
             $db->commit();
-            $popupMessage = "Group '$group_name' created successfully! Group ID: $group_id";
+            $popupMessage = "Group '$username' created successfully! Group ID: $group_id";
         } catch (Exception $e) {
             $db->rollBack();
             $message = "Error creating group: " . $e->getMessage();
         }
     } else {
-        $message = "Please enter a valid group name.";
+        $message = "Please enter a valid username.";
     }
 }
 
@@ -106,8 +106,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['join_group'])) {
         <?php endif; ?>
 
         <form method="POST">
-            <label for="group_name">Group Name:</label>
-            <input type="text" id="group_name" name="group_name" required>
+            <label for="username">Username (Group Name):</label>
+            <input type="text" id="username" name="username" required>
             <br>
             <label for="description">Description (optional):</label>
             <textarea id="description" name="description"></textarea>
@@ -130,7 +130,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['join_group'])) {
         <script>
             alert("<?php echo $popupMessage; ?>");
         </script>
-    <?php endif; ?>
-</body>
-</html>
+    <?
 
