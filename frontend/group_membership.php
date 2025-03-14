@@ -17,15 +17,17 @@ $popupMessage = ''; // Message for JavaScript pop-up
 // Handle group creation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_group'])) {
     $group_name = trim($_POST['group_name']);
+    $description = trim($_POST['description']);  // Optional group description
 
     if (!empty($group_name)) {
         try {
             $db->beginTransaction();
 
             // Insert new group
-            $insertGroupSql = "INSERT INTO groups (group_name) VALUES (:group_name)";
+            $insertGroupSql = "INSERT INTO groups (group_name, description) VALUES (:group_name, :description)";
             $stmt = $db->prepare($insertGroupSql);
             $stmt->bindParam(':group_name', $group_name);
+            $stmt->bindParam(':description', $description);
             $stmt->execute();
 
             $group_id = $db->lastInsertId();
@@ -106,6 +108,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['join_group'])) {
         <form method="POST">
             <label for="group_name">Group Name:</label>
             <input type="text" id="group_name" name="group_name" required>
+            <br>
+            <label for="description">Description (optional):</label>
+            <textarea id="description" name="description"></textarea>
             <br>
             <button type="submit" name="create_group" class="submit-btn">Create Group</button>
         </form>
