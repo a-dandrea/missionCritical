@@ -9,7 +9,7 @@ echo "<pre>";
 print_r($_SESSION);
 echo "</pre>";
 
-if (!isset($_SESSION['userID'])) {
+if (!isset($_SESSION['user_id'])) {
     echo "Error: User not logged in.";
     exit();
 }
@@ -31,7 +31,7 @@ try {
 $query = "SELECT * FROM workouts WHERE userID = :userID ORDER BY workoutID DESC";
 try {
     $stmt = $db->prepare($query);
-    $stmt->bindParam(':userID', $_SESSION['userID'], PDO::PARAM_INT);
+    $stmt->bindParam(':userID', $_SESSION['user_id'], PDO::PARAM_INT);
     $stmt->execute();
     $workouts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -64,7 +64,7 @@ try {
         <h2>Log Your Workout</h2>
 
         <form id="workout-form">
-            <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['userID']); ?>">
+            <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
             <label for="workout-type">Workout Type:</label>
             <select id="workout-type" name="workout-type" required>
                 <option value="">Select a Workout Type</option>
