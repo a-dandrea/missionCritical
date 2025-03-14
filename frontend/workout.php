@@ -72,6 +72,8 @@ try {
                 <option value="strength">Strength</option>
                 <option value="cycling">Cycling</option>
             </select>
+            <label for="workout-date">Workout Date:</label>
+            <input type="date" id="workout-date" name="workout-date" required>
             <div id="dynamic-fields"></div>
             <button type="submit">Submit Workout</button>
         </form>
@@ -84,6 +86,7 @@ try {
                     <th>Workout Type</th>
                     <th>Duration</th>
                     <th>Calories Burned</th>
+                    <th>Workout Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -94,11 +97,12 @@ try {
                             <td><?php echo htmlspecialchars($workout['workoutType']); ?></td>
                             <td><?php echo htmlspecialchars($workout['duration']); ?></td>
                             <td><?php echo htmlspecialchars($workout['caloriesBurned']); ?></td>
+                            <td><?php echo htmlspecialchars($workout['startTime']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="4">No workouts logged yet.</td>
+                        <td colspan="5">No workouts logged yet.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
