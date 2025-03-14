@@ -73,7 +73,28 @@ $stmt->closeCursor();
     <!-- Goal & Activity Box -->
     <div class="box">
         <h2>Current Goal</h2>
-        <p><strong>Goal:</strong> <?php echo htmlspecialchars($user['goals']); ?></p>
+        <p>
+            <strong>Goal:</strong> 
+            <?php $goals = htmlspecialchars($user['goals']); 
+               switch($goals) {
+                  case 0:
+                     echo "Maintain Weight";
+                     break;
+                  case 1:
+                     echo "Lose Weight";
+                     break;
+                  case 2:
+                     echo "Increase Muscle Mass";
+                     break;
+                  case 3:
+                     echo "Increase Stamina";
+                     break;
+                  default:
+                     echo $goals; // In case of an unexpected value, just display it
+                     break;
+               }
+            ?>
+         </p>
         <p><strong>Activity Level:</strong> <?php echo htmlspecialchars($user['activity_level']); ?></p>
         <p><strong>Privilege:</strong> <?php echo htmlspecialchars($user['privilege']); ?></p>
     </div>
