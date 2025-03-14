@@ -60,8 +60,18 @@ $groupsResult = $db->query($groupSql);
     <title>Group Management</title>
     <link rel="stylesheet" href="style.css"> 
 </head>
+<header>
+   <nav class="navbar">   
+      <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
+      <div class="nav-links">
+         <a href="index.php">Home</a>
+         <a href="dashboard.php">Dashboard</a>
+         <a href="leaderboard.php">Leaderboard</a>
+         <a href="workout.php">Workouts</a>
+       </div>
+   </nav>
+</header>
 <body>
-
 <div class="container">
     <h1>Group Management</h1>
 
