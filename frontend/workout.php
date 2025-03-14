@@ -4,6 +4,11 @@ ini_set('display_errors', 1);
 
 session_start();
 
+// Debugging session data
+echo "<pre>";
+print_r($_SESSION);
+echo "</pre>";
+
 if (!isset($_SESSION['userID'])) {
     echo "Error: User not logged in.";
     exit();
