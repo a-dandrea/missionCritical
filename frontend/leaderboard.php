@@ -4,16 +4,51 @@ ini_set('display_errors', 1);
 
 session_start();
 
-$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  // Use the correct database name
-$username = 'ejerrier';  // Use the correct MySQL username
-$password = '1788128';  // Use the correct MySQL password
+$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
+$username = 'ejerrier';
+$password = '1788128';
 
 try {
     $db = new PDO($dsn, $username, $password);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    $error_message = $e->getMessage();
-    exit("Database connection failed: " . $error_message);
+    exit("Database connection failed: " . $e->getMessage());
+}
+
+// Get the current user's ID (assuming it's stored in the session)
+$current_user_id = $_SESSION['user_id'] ?? null;
+
+if ($current_user_id) {
+    // Get the group ID for the current user
+    $groupQuery = "
+        SELECT group_id 
+        FROM user_groups 
+        WHERE user_id = :user_id
+    ";
+    $stmt = $db->prepare($groupQuery);
+    $stmt->bindParam(':user_id', $current_user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $group_id = $stmt->fetchColumn();
+
+    if ($group_id) {
+        // Get all users in the same group
+        $leaderboardQuery = "
+            SELECT u.username, u.goal, u.current_status,
+                   (u.current_status / u.goal) * 100 AS completion_percentage
+            FROM users u
+            JOIN user_groups ug ON u.user_id = ug.user_id
+            WHERE ug.group_id = :group_id
+            ORDER BY completion_percentage DESC
+        ";
+        $stmt = $db->prepare($leaderboardQuery);
+        $stmt->bindParam(':group_id', $group_id, PDO::PARAM_INT);
+        $stmt->execute();
+        $group_members = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        $group_members = [];
+    }
+} else {
+    $group_members = [];
 }
 ?>
 
@@ -41,17 +76,6 @@ try {
     <div class="container">
         <h2>Leaderboard</h2>
 
-        <!-- Category Dropdown -->
-        <form method="POST" action="leaderboard.php" id="category-form">
-            <label for="category">Choose Category:</label>
-            <select name="category" id="category" onchange="updateLeaderboard()">
-                <option value="calories">Calories</option>
-                <option value="steps">Steps</option>
-                <option value="distance">Distance (miles)</option>
-            </select>
-        </form>
-
-        <!-- Leaderboard Table -->
         <table id="leaderboard-table">
             <thead>
                 <tr>
@@ -63,7 +87,22 @@ try {
                 </tr>
             </thead>
             <tbody>
-                <!-- Data will be injected here using JavaScript -->
+                <?php if (!empty($group_members)): ?>
+                    <?php $rank = 1; ?>
+                    <?php foreach ($group_members as $member): ?>
+                        <tr>
+                            <td><?php echo $rank++; ?></td>
+                            <td><?php echo htmlspecialchars($member['username']); ?></td>
+                            <td><?php echo htmlspecialchars($member['goal']); ?></td>
+                            <td><?php echo htmlspecialchars($member['current_status']); ?></td>
+                            <td><?php echo round($member['completion_percentage'], 2) . '%'; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="5">No members found in your group.</td>
+                    </tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
@@ -71,3 +110,4 @@ try {
     <script src="assets/leaderboard.js" defer></script>
 </body>
 </html>
+
