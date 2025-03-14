@@ -12,12 +12,13 @@ try {
     exit("Database connection failed: " . $e->getMessage());
 }
 
+$popupMessage = ''; // Message for JavaScript pop-up
+
 // Handle group creation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_group'])) {
     $group_name = trim($_POST['group_name']);
-    $selected_users = $_POST['selected_users'] ?? [];
 
-    if (!empty($group_name) && !empty($selected_users)) {
+    if (!empty($group_name)) {
         try {
             $db->beginTransaction();
 
@@ -29,28 +30,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_group'])) {
 
             $group_id = $db->lastInsertId();
 
-            // Add selected users to the new group
-            $insertUserGroupSql = "INSERT INTO user_groups (user_id, group_id) VALUES (:user_id, :group_id)";
-            $stmt = $db->prepare($insertUserGroupSql);
-
-            foreach ($selected_users as $user_id) {
-                if (filter_var($user_id, FILTER_VALIDATE_INT)) {
-                    $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-                    $stmt->bindParam(':group_id', $group_id, PDO::PARAM_INT);
-                    $stmt->execute();
-                } else {
-                    throw new Exception("Invalid user ID detected.");
-                }
-            }
-
             $db->commit();
-            $message = "Group '$group_name' created successfully! Group ID: $group_id";
+            $popupMessage = "Group '$group_name' created successfully! Group ID: $group_id";
         } catch (Exception $e) {
             $db->rollBack();
             $message = "Error creating group: " . $e->getMessage();
         }
     } else {
-        $message = "Please enter a valid group name and select at least one user.";
+        $message = "Please enter a valid group name.";
     }
 }
 
@@ -67,22 +54,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['join_group'])) {
             $stmt->bindParam(':group_id', $group_id, PDO::PARAM_INT);
             $stmt->execute();
 
-            $message = "Successfully joined group with ID: $group_id";
+            $popupMessage = "Successfully joined group with ID: $group_id";
         } catch (PDOException $e) {
             $message = "Error joining group: " . $e->getMessage();
         }
     } else {
         $message = "Please enter a valid Group ID.";
     }
-}
-
-// Fetch users from the database for display
-try {
-    $userQuery = "SELECT user_id, username FROM users";
-    $users = $db->query($userQuery)->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    $users = [];
-    $message = "Error fetching users: " . $e->getMessage();
 }
 ?>
 
@@ -103,17 +81,6 @@ try {
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             max-width: 400px;
             margin: 50px auto;
-        }
-        .user-checkbox {
-            background-color: #b49bc8;
-            padding: 5px;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-        .user-checkbox input {
-            margin-right: 10px;
         }
         .submit-btn {
             background-color: #7d3c98;
@@ -139,19 +106,6 @@ try {
         <form method="POST">
             <label for="group_name">Group Name:</label>
             <input type="text" id="group_name" name="group_name" required>
-
-            <h3>Select Users:</h3>
-            <?php if (!empty($users)): ?>
-                <?php foreach ($users as $user): ?>
-                    <div class="user-checkbox">
-                        <input type="checkbox" name="selected_users[]" value="<?php echo $user['user_id']; ?>">
-                        <?php echo htmlspecialchars($user['username']); ?>
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>No users available.</p>
-            <?php endif; ?>
-
             <br>
             <button type="submit" name="create_group" class="submit-btn">Create Group</button>
         </form>
@@ -166,6 +120,12 @@ try {
             <button type="submit" name="join_group" class="submit-btn">Join Group</button>
         </form>
     </div>
+
+    <?php if (!empty($popupMessage)) : ?>
+        <script>
+            alert("<?php echo $popupMessage; ?>");
+        </script>
+    <?php endif; ?>
 </body>
 </html>
 
