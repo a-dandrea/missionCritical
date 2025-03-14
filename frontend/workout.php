@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/New_York');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -82,7 +83,6 @@ try {
         <table>
             <thead>
                 <tr>
-                    <th>Workout ID</th>
                     <th>Workout Type</th>
                     <th>Duration</th>
                     <th>Calories Burned</th>
@@ -93,7 +93,6 @@ try {
                 <?php if ($workouts): ?>
                     <?php foreach ($workouts as $workout): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($workout['workoutID']); ?></td>
                             <td><?php echo htmlspecialchars($workout['workoutType']); ?></td>
                             <td><?php echo htmlspecialchars($workout['duration']); ?></td>
                             <td><?php echo htmlspecialchars($workout['caloriesBurned']); ?></td>
@@ -102,7 +101,7 @@ try {
                     <?php endforeach; ?>
                 <?php else: ?>
                     <tr>
-                        <td colspan="5">No workouts logged yet.</td>
+                        <td colspan="4">No workouts logged yet.</td>
                     </tr>
                 <?php endif; ?>
             </tbody>
