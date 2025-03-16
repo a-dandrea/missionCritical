@@ -36,6 +36,7 @@ CREATE TABLE workouts (
    caloriesBurned INT NOT NULL,
    startTime DATETIME NOT NULL,
    endTime DATETIME NOT NULL,
+   stepCount INT NULL,
    FOREIGN KEY (userID) REFERENCES users(user_id)
 );
 
