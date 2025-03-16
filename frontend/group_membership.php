@@ -98,6 +98,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['join_group'])) {
     </style>
 </head>
 <body>
+   <header>
+      <nav class="navbar">
+            <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
+            <div class="nav-links">
+                <a href="index.php">Home</a>
+                <a href="dashboard.php">Dashboard</a>
+                <a href="leaderboard.php">Leaderboard</a>
+                <a href="workout.php">Workouts</a>
+            </div>
+        </nav>
+    </header>
+
     <div class="form-container">
         <h2>Create a New Group</h2>
 
