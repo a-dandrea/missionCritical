@@ -101,8 +101,8 @@ $stmt->closeCursor();
 
     <!-- Action Buttons -->
     <a href="personalinfo.php" class="btn">Update Basic Information</a>
-    <a href="goals.php" class="btn btn-update">Update Goal</a>
-    <a href="workout.php" class="button">Add Workout</a>
+    <a href="goals.php" class="btn">Update Goal</a>
+    <a href="workout.php" class="btn">Add Workout</a>
     <a href="group_membership.php" class="btn">Create Group</a>
 </div>
 
