@@ -1,11 +1,10 @@
 <?php
 session_start();
 
-$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  // Use the correct database name
-$username = 'ejerrier';  // Use the correct MySQL username
-$password = '1788128';  // Use the correct MySQL password
+$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
+$username = 'ejerrier';
+$password = '1788128';
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -14,11 +13,9 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 
 try {
-    // Establish the database connection
     $db = new PDO($dsn, $username, $password);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Fetch user data
     $sql = "SELECT firstName, lastName, email, age, gender, weight, height, goals, activity_level, privilege FROM users WHERE user_id = :user_id";
     $stmt = $db->prepare($sql);
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
@@ -29,6 +26,14 @@ try {
         echo "User not found.";
         exit();
     }
+
+    // Fetch user's groups
+    $sql = "SELECT g.group_name FROM groups g JOIN user_groups ug ON g.group_id = ug.group_id WHERE ug.user_id = :user_id";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
     exit();
@@ -36,31 +41,29 @@ try {
 
 $stmt->closeCursor();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fitness Dashboard</title>
-    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="style.css">
 </head>
 <header>
-   <nav class="navbar">   
-      <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
-      <div class="nav-links">
-         <a href="index.php">Home</a>
-         <a href="dashboard.php">Dashboard</a>
-         <a href="leaderboard.php">Leaderboard</a>
-         <a href="workout.php">Workouts</a>
-       </div>
-   </nav>
+    <nav class="navbar">
+        <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
+        <div class="nav-links">
+            <a href="index.php">Home</a>
+            <a href="dashboard.php">Dashboard</a>
+            <a href="leaderboard.php">Leaderboard</a>
+            <a href="workout.php">Workouts</a>
+        </div>
+    </nav>
 </header>
 <body>
 <div class="container">
     <h1>Welcome, <?php echo htmlspecialchars($user['firstName']); ?>!</h1>
 
-    <!-- Basic Info Box -->
     <div class="box">
         <h2>Basic Information</h2>
         <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
@@ -70,64 +73,20 @@ $stmt->closeCursor();
         <p><strong>Height:</strong> <?php echo htmlspecialchars($user['height']); ?> in</p>
     </div>
 
-    <!-- Goal & Activity Box -->
     <div class="box">
-        <h2>Current Goal</h2>
-        <p>
-            <strong>Goal:</strong> 
-            <?php $goals = htmlspecialchars($user['goals']); 
-               switch($goals) {
-                  case 0:
-                     echo "Maintain Weight";
-                     break;
-                  case 1:
-                     echo "Lose Weight";
-                     break;
-                  case 2:
-                     echo "Increase Muscle Mass";
-                     break;
-                  case 3:
-                     echo "Increase Stamina";
-                     break;
-                  default:
-                     echo $goals; // In case of an unexpected value, just display it
-                     break;
-               }
-            ?>
-         </p>
-        <p><strong>Activity Level:</strong> 
-            <?php $activity_level = htmlspecialchars($user['activity_level']); 
-            switch($activity_level) {
-               case 0:
-                  echo "Sedentary (little or no exercise)";
-                  break;
-               case 1:
-                  echo "Lightly Active (1-3 days/week)";
-                  break;
-               case 2:
-                  echo "Moderately Active (3-5 days/week)";
-                  break;
-               case 3:
-                  echo "Super Active (athletic, intense training)";
-                  break;
-               case 4:
-                  echo "Very Active (6-7 days/week)";
-                  break;
-               default:
-                  echo $activity_level; // In case of an unexpected value, just display it
-                  break;
-            }
-            ?>
-         </p>
-        <p><strong>Privilege:</strong> <?php echo htmlspecialchars($user['privilege']); ?></p>
+        <h2>Your Groups</h2>
+        <?php if (!empty($groups)): ?>
+            <p><strong>Groups:</strong> <?php echo implode(', ', array_column($groups, 'group_name')); ?></p>
+        <?php else: ?>
+            <p>You are not currently in any groups.</p>
+        <?php endif; ?>
     </div>
 
-    <!-- Action Buttons -->
-    <a href="personalinfo.php"> <button type=button>Update Basic Information</button></a>
-      <a href="goals.php"> <button type=button>Update Goal</button></a>
-      <a href="workout.php"> <button type=button>Add Workout</button></a>
-      <a href="group_membership.php"><button type=button>Create Group</button></a>
+    <a href="personalinfo.php"><button type="button">Update Basic Information</button></a>
+    <a href="goals.php"><button type="button">Update Goal</button></a>
+    <a href="workout.php"><button type="button">Add Workout</button></a>
+    <a href="group_membership.php"><button type="button">Create Group</button></a>
 </div>
-
 </body>
 </html>
+
