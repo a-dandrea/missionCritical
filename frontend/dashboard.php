@@ -95,7 +95,30 @@ $stmt->closeCursor();
                }
             ?>
          </p>
-        <p><strong>Activity Level:</strong> <?php echo htmlspecialchars($user['activity_level']); ?></p>
+        <p><strong>Activity Level:</strong> 
+            <?php $activity_level = htmlspecialchars($user['activity_level']); 
+            switch($activity_level) {
+               case 0:
+                  echo "Sedentary (little or no exercise)";
+                  break;
+               case 1:
+                  echo "Lightly Active (1-3 days/week)";
+                  break;
+               case 2:
+                  echo "Moderately Active (3-5 days/week)";
+                  break;
+               case 3:
+                  echo "Super Active (athletic, intense training)";
+                  break;
+               case 4:
+                  echo "Very Active (6-7 days/week)";
+                  break;
+               default:
+                  echo $activity_level; // In case of an unexpected value, just display it
+                  break;
+            }
+            ?>
+         </p>
         <p><strong>Privilege:</strong> <?php echo htmlspecialchars($user['privilege']); ?></p>
     </div>
 
