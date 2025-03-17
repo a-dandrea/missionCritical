@@ -43,19 +43,35 @@ try {
 
         <form id="update-goal-form">
             <label for="goals">Select Goal:</label>
-            <select id="goals" name="goals" required>
-                <option value="">Select a Goal</option>
-                <option value="0">Maintain Weight</option>
-                <option value="1">Lose Weight</option>
-                <option value="2">Increase Muscle Mass</option>
-                <option value="3">Increase Stamina</option>
+            <select id="goals" name="goals">
+               <option value="">Select a Goal</option>
+               <option value="0">Maintain Weight</option>
+               <option value="1">Lose Weight</option>
+               <option value="2">Increase Muscle Mass</option>
+               <option value="3">Increase Stamina</option>
             </select>
 
             <button type="submit">Update Goal</button>
         </form>
     </div>
 
-    <script src="assets/goal.js"></script>  <!-- Link to script.js -->
+   <div class="container">
+      <h2> Update Your Activity Level</h2>
+      <form id="update-activity-form">
+         <label for="activity_level">Select Activity Level:</label>
+         <select id="activity_level" name="activity_level">
+            <option value="">Select an Activity Level</option>
+            <option value="1">Sedentary (little or no exercise)</option>
+            <option value="2">Lightly Active (1-3 days/week)</option>
+            <option value="3">Moderately Active (3-5 days/week)</option>
+            <option value="4">Very Active (6-7 days/week)</option>
+            <option value="5">Super Active (athletic, intense training)</option>
+         </select>
+         <button type="submit">Update Activity Level</button>
+      </form>
+   </div>
+
+   <script src="assets/goal.js"></script>  <!-- Link to goal.js -->
 
 </body>
 </html>
