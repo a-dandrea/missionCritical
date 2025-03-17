@@ -23,7 +23,7 @@ document.getElementById("update-goal-form").addEventListener("submit", function(
 });
 
 // Update activity level stuff
-document.getElementById("update-activity-form").addEventListener("submit", function(event) {
+/*document.getElementById("update-activity-form").addEventListener("submit", function(event) {
    event.preventDefault();  // Prevent form from submitting normally
 
    let formData = new FormData(this);
@@ -44,4 +44,4 @@ document.getElementById("update-activity-form").addEventListener("submit", funct
       console.error('Error:', error);
       alert('An error occurred while updating the activity level.');
   });
-});
+});*/

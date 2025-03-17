@@ -53,6 +53,8 @@ try {
 
             <button type="submit">Update Goal</button>
         </form>
+
+        <script src="assets/goal.js"></script>  <!-- Link to goal.js -->
     </div>
 
    <div class="container">
@@ -69,9 +71,9 @@ try {
          </select>
          <button type="submit">Update Activity Level</button>
       </form>
-   </div>
 
-   <script src="assets/goal.js"></script>  <!-- Link to goal.js -->
+      <script src="assets/activity.js"></script>  <!-- Link to goal.js -->
+   </div>
 
 </body>
 </html>
