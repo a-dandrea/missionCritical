@@ -114,20 +114,6 @@ h1{
   margin-bottom:10px;
 }
 
-.bookForm {
-  margin: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column; /* Added to align items in a column */
-}
-.bookInputs {
-  width: 100%;
-  text-align: center; /* Center align text within input fields */
-  padding: 10px 20px;
-  margin: 8px 8px;
-  box-sizing: border-box;
-}
 button{
   background-color:#0f0a66;
   border-radius: 16px;
@@ -150,16 +136,6 @@ main{
   border-radius: 25px;
   }
 
-.recommendations {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.recommendations .book {
-  margin: 10px;
-  text-align: center;
-}
 /* workout input */
 form {
   display: flex;
@@ -279,4 +255,25 @@ form {
 select {
   padding: 5px;
   font-size: 16px;
+}
+
+
+.form-container {
+   background-color: #d8b9f2;
+   padding: 20px;
+   border-radius: 10px;
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+   max-width: 400px;
+   margin: 50px auto;
+}
+.submit-btn {
+   background-color: #7d3c98;
+   color: #ffffff;
+   border: none;
+   padding: 8px 20px;
+   border-radius: 5px;
+   cursor: pointer;
+}
+.submit-btn:hover {
+   background-color: #5a2e7e;
 }
