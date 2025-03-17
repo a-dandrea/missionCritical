@@ -28,7 +28,7 @@ try {
     }
 
     // Fetch user's groups
-    $sql = "SELECT g.group_name FROM groups g JOIN user_groups ug ON g.group_id = ug.group_id WHERE ug.user_id = :user_id";
+    $sql = "SELECT g.username FROM groups g JOIN user_groups ug ON g.group_id = ug.group_id WHERE ug.user_id = :user_id";
     $stmt = $db->prepare($sql);
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
@@ -76,7 +76,7 @@ $stmt->closeCursor();
     <div class="box">
         <h2>Your Groups</h2>
         <?php if (!empty($groups)): ?>
-            <p><strong>Groups:</strong> <?php echo implode(', ', array_column($groups, 'group_name')); ?></p>
+            <p><strong>Groups:</strong> <?php echo implode(', ', array_column($groups, 'username')); ?></p>
         <?php else: ?>
             <p>You are not currently in any groups.</p>
         <?php endif; ?>
