@@ -74,6 +74,11 @@ $stmt->closeCursor();
     </div>
 
     <div class="box">
+        <h2>Current Goal</h2>
+        <p><strong>Goal:</strong> <?php echo htmlspecialchars($user['goals']); ?></p>
+    </div>
+
+    <div class="box">
         <h2>Your Groups</h2>
         <?php if (!empty($groups)): ?>
             <p><strong>Groups:</strong> <?php echo implode(', ', array_column($groups, 'username')); ?></p>
