@@ -70,32 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['join_group'])) {
 <html>
 <head>
     <title>Create or Join Group</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0e6f6;
-            color: #4b0082;
-        }
-        .form-container {
-            background-color: #d8b9f2;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
-            margin: 50px auto;
-        }
-        .submit-btn {
-            background-color: #7d3c98;
-            color: #ffffff;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .submit-btn:hover {
-            background-color: #5a2e7e;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <header>
       <nav class="navbar">
@@ -109,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['join_group'])) {
         </nav>
     </header>
 <body>
-
+   <div class="container">
     <div class="form-container">
         <h2>Create a New Group</h2>
 
@@ -126,9 +101,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['join_group'])) {
             <br>
             <button type="submit" name="create_group" class="submit-btn">Create Group</button>
         </form>
+        </div>
+        </div>
 
-        <hr>
-
+         <div class="container">
+         <div class="form-container">
         <h2>Join a Group</h2>
         <form method="POST">
             <label for="group_id">Enter Group ID:</label>
@@ -137,12 +114,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['join_group'])) {
             <button type="submit" name="join_group" class="submit-btn">Join Group</button>
         </form>
     </div>
+        </div>
 
     <?php if (!empty($popupMessage)) : ?>
         <script>
             alert("<?php echo $popupMessage; ?>");
         </script>
     <?php endif; ?>
+    </div>
 </body>
 </html>
 
