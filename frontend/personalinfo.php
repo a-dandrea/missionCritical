@@ -1,19 +1,25 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 session_start();
+require_once 'db_connection.php'; // Your database connection logic
 
-// Adjust the database connection parameters to match your setup.
-$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  // Use the correct database name
-$username = 'ejerrier';  // Use the correct MySQL username
-$password = '1788128';  // Use the correct MySQL password
+if (!isset($_SESSION['user_id'])) {
+    echo "Error: User not logged in.";
+    exit();
+}
+
+$userID = $_SESSION['user_id'];
 
 try {
-    $db = new PDO($dsn, $username, $password);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $stmt = $db->prepare("
+        SELECT g.group_name 
+        FROM groups g
+        JOIN user_groups ug ON g.group_id = ug.group_id
+        WHERE ug.user_id = ?
+    ");
+    $stmt->execute([$userID]);
+    $groups = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    echo "Database connection failed: " . $e->getMessage();
+    echo "Error fetching groups: " . $e->getMessage();
     exit();
 }
 ?>
@@ -23,41 +29,22 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Personal Info</title>
-    <link rel="stylesheet" href="style.css">  <!-- Link to styles.css -->
+    <title>Your Groups</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<header>
-<nav class="navbar">   
-    <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
-    <div class="nav-links">
-        <a href="index.php">Home</a>
-        <a href="dashboard.php">Dashboard</a>
-        <a href="leaderboard.php">Leaderboard</a>
-        <a href="workout.php">Workouts</a>
-    </div>
-</nav>
-</header>
-
 <body>
     <div class="container">
-        <h2>Update Personal Information</h2>
-
-        <form id="update-info-form">
-        <input type="hidden" name="userID" value="<?php echo $_SESSION['user_id']; ?>">
-            <!-- Workout Type Selection -->
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age">
-
-            <label for="weight">Weight (lbs):</label>
-            <input type="number" id="weight" name="weight">
-
-            <label for="height">Height (inches):</label>
-            <input type="number" id="height" name="height">
-
-            <button type="submit">Update</button>
-        </form>
+        <h2>Your Groups</h2>
+        <ul>
+            <?php if (!empty($groups)): ?>
+                <?php foreach ($groups as $group): ?>
+                    <li><?php echo htmlspecialchars($group['group_name']); ?></li>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <li>You are not part of any groups yet.</li>
+            <?php endif; ?>
+        </ul>
     </div>
-
-    <script src="assets/info.js"></script>  <!-- Link to script.js -->
 </body>
 </html>
+
