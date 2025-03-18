@@ -30,13 +30,13 @@ try {
         <nav class="navbar">
             <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
             <div class="nav-links">
-                  <a href="index.php">Home</a>
-                  <a href="dashboard.php">Dashboard</a>
-                  <a href="leaderboard.php">Leaderboard</a>
-                  <a href="workout.php">Workouts</a>
-                  <?php if ($isLoggedIn): ?>
-                     <a href="logout.php" class="logout-button">Logout</a>
-                  <?php endif; ?>
+                <a href="index.php">Home</a>
+                <a href="dashboard.php">Dashboard</a>
+                <a href="leaderboard.php">Leaderboard</a>
+                <a href="workout.php">Workouts</a>
+                <?php if ($isLoggedIn): ?>
+                    <a href="logout.php" class="logout-button">Logout</a>
+                <?php endif; ?>
             </div>
         </nav>
     </header>
@@ -65,17 +65,15 @@ try {
             </thead>
             <tbody>
                 <?php
-                $sql = "
-                    SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, w.caloriesBurned, w.duration 
-                    FROM users u
-                    JOIN user_groups ug ON u.user_id = ug.user_id
-                    JOIN groups g ON ug.group_id = g.group_id
-                    JOIN workouts w ON u.user_id = w.userID
-                ";
-                
+                $sql = "SELECT CONCAT(users.firstName, ' ', users.lastName) AS fullName, 
+                               workouts.caloriesBurned, 
+                               workouts.duration 
+                        FROM users
+                        LEFT JOIN workouts ON users.user_id = workouts.userID";
+
                 $stmt = $db->prepare($sql);
                 $stmt->execute();
-                
+
                 $rank = 1;
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     echo "<tr>
@@ -83,8 +81,15 @@ try {
                         <td>{$row['fullName']}</td>
                         <td>{$row['duration']} mins</td>
                         <td>{$row['caloriesBurned']} kcal</td>
-                        <td>" . round(($row['caloriesBurned'] / 2000) * 100, 2) . "%</td>
-                    </tr>";
+                        <td>";
+
+                    if (!is_null($row['caloriesBurned'])) {
+                        echo round(($row['caloriesBurned'] / 2000) * 100, 2) . "%";
+                    } else {
+                        echo "No data";
+                    }
+
+                    echo "</td></tr>";
                     $rank++;
                 }
                 ?>
