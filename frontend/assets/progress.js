@@ -1,4 +1,4 @@
-// Update goal stuff
+// Form submission handling with AJAX (same as before)
 document.getElementById("update-info-form").addEventListener("submit", function(event) {
    event.preventDefault();  // Prevent form from submitting normally
 
@@ -11,13 +11,7 @@ document.getElementById("update-info-form").addEventListener("submit", function(
    .then(response => response.json())
    .then(data => {
        alert(data.message);  // Show success/error message
-       if(data.message === "Progress added successfully!"){
-         //add any needed logic after a successful database update.
-       }
        document.getElementById("update-info-form").reset();  // Reset the form
    })
-   .catch(error => {
-      console.error('Error:', error);
-      alert('An error occurred while updating the goal.');
-  });
+   .catch(error => console.error('Error:', error));  // Log errors
 });

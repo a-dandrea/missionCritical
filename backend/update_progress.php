@@ -8,8 +8,8 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$userID = $_SESSION['user_id']; // Get user_id from session
-error_log("Updating user with ID: " . $userID); // Debugging
+$user_id = $_SESSION['user_id']; // Get user_id from session
+error_log("Updating user with ID: " . $user_id); // Debugging
 
 // Database connection
 $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
@@ -29,7 +29,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve input data and filter out empty values
     $weight = isset($_POST['weight']) && $_POST['weight'] !== '' ? floatval($_POST['weight']) : null;
 
+    $recordedAT = NOW(); // Current date and time in MySQL DATETIME format
+
     error_log("Received - Weight: " . ($weight ?? 'Not provided'));
+    error_log("Timestamp - RecordedAT: " . $recordedAT);
 
     // Check if at least one field is provided
     if ($weight === null) {
@@ -38,23 +41,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     try {
-        $stmt = $db->prepare("SELECT weight FROM progress WHERE userID = :userID");
-        $stmt->execute([":userID" => $userID]);
-        $currentData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$currentData) {
-            echo json_encode(["message" => "User not found."]);
-            exit();
-        }
-
-        // Keep old values if new ones are not provided
-        $weight = $weight ?? $currentData['weight'];
-
-        // Perform the update
-        $stmt = $db->prepare("UPDATE progress SET weight = :weight WHERE userID = :userID");
+        // Add to table
+        $stmt = $db->prepare("INSERT INTO progress (weight, user_id, recordedAT) VALUES (:weight, :user_id, :recordedAT)");
         $stmt->execute([
             ":weight" => $weight,
-            ":userID" => $userID
+            ":user_id" => $user_id
         ]);
 
         error_log("Rows affected: " . $stmt->rowCount()); // Debugging
