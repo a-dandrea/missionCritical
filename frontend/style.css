@@ -48,6 +48,44 @@
   transform: scale(1.1);
 }
 
+/* Dropdown container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown button */
+.dropbtn {
+    background-color: inherit; /* Matches navbar background */
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f4f4f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Dropdown links */
+.dropdown-content a {
+    color: purple;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Hover to show dropdown */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
 /* Ensure links are white and unchanged after click */
 .nav-links a:visited {
   color: white;
