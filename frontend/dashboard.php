@@ -1,23 +1,22 @@
 <?php
 session_start();
-ini_set('session.use_only_cookies', 1);
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
-// Debug session contents
+$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  // Use the correct database name
+$username = 'ejerrier';  // Use the correct MySQL username
+$password = '1788128';  // Use the correct MySQL password
+
+$isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
+
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    echo "User not logged in.";
-    var_dump($_SESSION); // Debugging line to check session variables
+    header("Location: login.php");
     exit();
 }
-
-$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
-$username = 'ejerrier';
-$password = '1788128';
 
 $user_id = $_SESSION['user_id'];
 
 try {
+    // Establish the database connection
     $db = new PDO($dsn, $username, $password);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -32,22 +31,85 @@ try {
         echo "User not found.";
         exit();
     }
-
-    // Fetch user's groups
-    $sql_groups = "SELECT g.username FROM groups g 
-                   JOIN user_groups ug ON g.group_id = ug.group_id
-                   WHERE ug.user_id = :user_id";
-    $stmt_groups = $db->prepare($sql_groups);
-    $stmt_groups->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-    $stmt_groups->execute();
-    $groups = $stmt_groups->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
     exit();
 }
 
-// Close database connections
 $stmt->closeCursor();
-$stmt_groups->closeCursor();
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Dashboard</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<header>
+   <nav class="navbar">   
+      <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
+      <div class="nav-links">
+         <a href="index.php">Home</a>
+         <a href="dashboard.php">Dashboard</a>
+         <a href="leaderboard.php">Leaderboard</a>
+         <a href="workout.php">Workouts</a>
+         <?php if ($isLoggedIn): ?>
+            <a href="logout.php" class="logout-button">Logout</a>
+         <?php endif; ?>
+       </div>
+   </nav>
+</header>
+<body>
+<div class="container">
+    <h1>Welcome, <?php echo htmlspecialchars($user['firstName']); ?>!</h1>
+
+    <!-- Basic Info Box -->
+    <div class="box">
+        <h2>Basic Information</h2>
+        <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+        <p><strong>Age:</strong> <?php echo htmlspecialchars($user['age']); ?></p>
+        <p><strong>Gender:</strong> <?php echo htmlspecialchars($user['gender']); ?></p>
+        <p><strong>Weight:</strong> <?php echo htmlspecialchars($user['weight']); ?> lbs</p>
+        <p><strong>Height:</strong> <?php echo htmlspecialchars($user['height']); ?> in</p>
+    </div>
+
+    <!-- Goal & Activity Box -->
+    <div class="box">
+        <h2>Current Goal</h2>
+        <p>
+            <strong>Goal:</strong> 
+            <?php $goals = htmlspecialchars($user['goals']); 
+               switch($goals) {
+                  case 0:
+                     echo "Maintain Weight";
+                     break;
+                  case 1:
+                     echo "Lose Weight";
+                     break;
+                  case 2:
+                     echo "Increase Muscle Mass";
+                     break;
+                  case 3:
+                     echo "Increase Stamina";
+                     break;
+                  default:
+                     echo $goals; // In case of an unexpected value, just display it
+                     break;
+               }
+            ?>
+         </p>
+        <p><strong>Activity Level:</strong> <?php echo htmlspecialchars($user['activity_level']); ?></p>
+        <p><strong>Privilege:</strong> <?php echo htmlspecialchars($user['privilege']); ?></p>
+    </div>
+
+    <!-- Action Buttons -->
+    <a href="personalinfo.php" class="btn">Update Basic Information</a>
+    <a href="goals.php" class="btn">Update Goal</a>
+    <a href="workout.php" class="btn">Add Workout</a>
+    <a href="group_membership.php" class="btn">Create Group</a>
+</div>
+
+</body>
+</html>
