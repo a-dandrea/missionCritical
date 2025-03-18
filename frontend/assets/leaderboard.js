@@ -1,33 +1,60 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const categorySelect = document.getElementById("category");
-    const leaderboardTable = document.querySelector("#leaderboard-table tbody");
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-    function updateLeaderboard() {
-        const category = categorySelect.value;
+session_start();
 
-        fetch("fetch_leaderboard.php?category=" + category)
-            .then(response => response.json())
-            .then(data => {
-                leaderboardTable.innerHTML = ""; // Clear existing data
+$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
+$username = 'ejerrier';
+$password = '1788128';
 
-                let rank = 1;
-                data.forEach(row => {
-                    leaderboardTable.innerHTML += `
-                        <tr>
-                            <td>${rank}</td>
-                            <td>${row.fullName}</td>
-                            <td>${row.goal} ${category === "distance" ? "miles" : "kcal"}</td>
-                            <td>${row.currentStatus} ${category === "distance" ? "miles" : ""}</td>
-                            <td>${row.goalCompletion}%</td>
-                        </tr>`;
-                    rank++;
-                });
-            })
-            .catch(error => console.error("Error loading leaderboard:", error));
-    }
+try {
+    $db = new PDO($dsn, $username, $password);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    exit(json_encode(["error" => "Database connection failed: " . $e->getMessage()]));
+}
 
-    categorySelect.addEventListener("change", updateLeaderboard);
+$category = $_POST['category'] ?? 'calories'; // Default to calories if no selection
 
-    updateLeaderboard(); // Load initial data on page load
-});
+// Determine which column to pull based on category
+$column = 'caloriesBurned'; // Default
+$goal = 'duration'; // Default goal (time spent)
+
+if ($category === 'steps') {
+    $column = 'stepsTaken';
+    $goal = 'stepGoal';
+} elseif ($category === 'distance') {
+    $column = 'distanceMiles';
+    $goal = 'distanceGoal';
+}
+
+$sql = "SELECT CONCAT(users.firstName, ' ', users.lastName) AS fullName, 
+               workouts.$column AS currentValue, 
+               workouts.$goal AS goalValue
+        FROM users
+        LEFT JOIN workouts ON users.user_id = workouts.userID";
+
+$stmt = $db->prepare($sql);
+$stmt->execute();
+
+$rank = 1;
+$rows = [];
+
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $percentage = (!is_null($row['currentValue']) && !is_null($row['goalValue']) && $row['goalValue'] > 0) 
+        ? round(($row['currentValue'] / $row['goalValue']) * 100, 2) . "%" 
+        : "No data";
+
+    $rows[] = [
+        "rank" => $rank,
+        "fullName" => $row['fullName'],
+        "goal" => !is_null($row['goalValue']) ? $row['goalValue'] . ($category === 'distance' ? ' miles' : ' mins') : 'No data',
+        "currentValue" => !is_null($row['currentValue']) ? $row['currentValue'] . ($category === 'distance' ? ' miles' : ' kcal') : 'No data',
+        "percentage" => $percentage
+    ];
+    $rank++;
+}
+
+echo json_encode($rows);
 
