@@ -34,7 +34,7 @@ try {
     }
 
     // Fetch user's groups
-    $sql_groups = "SELECT g.group_name FROM groups g 
+    $sql_groups = "SELECT g.username FROM groups g 
                    JOIN user_groups ug ON g.group_id = ug.group_id
                    WHERE ug.user_id = :user_id";
     $stmt_groups = $db->prepare($sql_groups);
