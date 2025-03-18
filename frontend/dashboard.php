@@ -5,8 +5,6 @@ $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  /
 $username = 'ejerrier';  // Use the correct MySQL username
 $password = '1788128';  // Use the correct MySQL password
 
-$isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
-
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -42,10 +40,10 @@ $stmt->closeCursor();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitness Dashboard</title>
-    <link rel="stylesheet" href="style.css"> 
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Fitness Dashboard</title>
+   <link rel="stylesheet" href="style.css"> 
 </head>
 <header>
    <nav class="navbar">   
@@ -55,28 +53,25 @@ $stmt->closeCursor();
          <a href="dashboard.php">Dashboard</a>
          <a href="leaderboard.php">Leaderboard</a>
          <a href="workout.php">Workouts</a>
-         <?php if ($isLoggedIn): ?>
-            <a href="logout.php" class="logout-button">Logout</a>
-         <?php endif; ?>
        </div>
    </nav>
 </header>
 <body>
-<div class="container">
-    <h1>Welcome, <?php echo htmlspecialchars($user['firstName']); ?>!</h1>
+   <div class="container">
+      <h1>Welcome, <?php echo htmlspecialchars($user['firstName']); ?>!</h1>
 
-    <!-- Basic Info Box -->
-    <div class="box">
+      <!-- Basic Info Box -->
+      <div class="box">
         <h2>Basic Information</h2>
         <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
         <p><strong>Age:</strong> <?php echo htmlspecialchars($user['age']); ?></p>
         <p><strong>Gender:</strong> <?php echo htmlspecialchars($user['gender']); ?></p>
         <p><strong>Weight:</strong> <?php echo htmlspecialchars($user['weight']); ?> lbs</p>
         <p><strong>Height:</strong> <?php echo htmlspecialchars($user['height']); ?> in</p>
-    </div>
+      </div>
 
-    <!-- Goal & Activity Box -->
-    <div class="box">
+      <!-- Goal & Activity Box -->
+      <div class="box">
         <h2>Current Goal</h2>
         <p>
             <strong>Goal:</strong> 
@@ -100,16 +95,42 @@ $stmt->closeCursor();
                }
             ?>
          </p>
-        <p><strong>Activity Level:</strong> <?php echo htmlspecialchars($user['activity_level']); ?></p>
+        <p><strong>Activity Level:</strong> 
+            <?php $activity_level = htmlspecialchars($user['activity_level']); 
+            switch ($activity_level) {
+               case 0:
+                  echo "Sedentary (little or no exercise)";
+                  break;
+               case 1:
+                  echo "Lightly Active (1-3 days/week)";
+                  break;
+               case 2:
+                  echo "Moderately Active (3-5 days/week)";
+                  break;
+               case 3:
+                  echo "Very Active (6-7 days/week)";
+                  break;
+               case 4:
+                  echo "Super Active (athletic, intense training)";
+                  break;
+               default:
+                  echo $activity_level; // In case of an unexpected value, just display it
+                  break;
+            }
+            ?>
+         </p>
         <p><strong>Privilege:</strong> <?php echo htmlspecialchars($user['privilege']); ?></p>
     </div>
 
     <!-- Action Buttons -->
-    <a href="personalinfo.php" class="btn">Update Basic Information</a>
-    <a href="goals.php" class="btn">Update Goal</a>
-    <a href="workout.php" class="btn">Add Workout</a>
-    <a href="group_membership.php" class="btn">Create Group</a>
-</div>
+      <a href="personalinfo.php"> <button type=button>Update Basic Information</button></a>
+      <a href="goals.php"> <button type=button>Update Goal</button></a>
+      <a href="workout.php"> <button type=button>Add Workout</button></a>
+      <a href="group_membership.php"><button type=button>Create Group</button></a>
+   </div>
 
 </body>
+<footer style="background: #0f0a66; color:white; padding: 10px 20px;">
+        <p>&copy; Copyright Mission Critical Group</p>
+    </footer>
 </html>
