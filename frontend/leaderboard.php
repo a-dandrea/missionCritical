@@ -3,7 +3,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 session_start();
-$isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
 
 $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
 $username = 'ejerrier';
@@ -23,81 +22,65 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard</title>
-    <link rel="stylesheet" href="style.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            updateLeaderboard();
+        });
+
+        function updateLeaderboard() {
+            const category = document.getElementById("category").value;
+            
+            fetch("fetch_leaderboard.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "category=" + category
+            })
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById("leaderboard-body");
+                tableBody.innerHTML = "";
+                
+                data.forEach((row) => {
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td>${row.rank}</td>
+                        <td>${row.fullName}</td>
+                        <td>${row.goal}</td>
+                        <td>${row.currentValue}</td>
+                        <td>${row.percentage}</td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            })
+            .catch(error => console.error("Error fetching leaderboard data:", error));
+        }
+    </script>
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
-            <div class="nav-links">
-                <a href="index.php">Home</a>
-                <a href="dashboard.php">Dashboard</a>
-                <a href="leaderboard.php">Leaderboard</a>
-                <a href="workout.php">Workouts</a>
-                <?php if ($isLoggedIn): ?>
-                    <a href="logout.php" class="logout-button">Logout</a>
-                <?php endif; ?>
-            </div>
-        </nav>
-    </header>
+    <h1>Leaderboard</h1>
+    <label for="category">Select Category:</label>
+    <select name="category" id="category" onchange="updateLeaderboard()">
+        <option value="calories">Calories</option>
+        <option value="steps">Steps</option>
+        <option value="distance">Distance (miles)</option>
+    </select>
 
-    <div class="container">
-        <h2>Leaderboard</h2>
-
-        <form method="POST" action="leaderboard.php" id="category-form">
-            <label for="category">Choose Category:</label>
-            <select name="category" id="category" onchange="updateLeaderboard()">
-                <option value="calories">Calories</option>
-                <option value="steps">Steps</option>
-                <option value="distance">Distance (miles)</option>
-            </select>
-        </form>
-
-        <table id="leaderboard-table">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>User</th>
-                    <th>Goal</th>
-                    <th>Current Status</th>
-                    <th>Percentage of Goal Completion</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $sql = "SELECT CONCAT(users.firstName, ' ', users.lastName) AS fullName, 
-                               workouts.caloriesBurned, 
-                               workouts.duration 
-                        FROM users
-                        LEFT JOIN workouts ON users.user_id = workouts.userID";
-
-                $stmt = $db->prepare($sql);
-                $stmt->execute();
-
-                $rank = 1;
-                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    echo "<tr>
-                        <td>{$rank}</td>
-                        <td>{$row['fullName']}</td>
-                        <td>{$row['duration']} mins</td>
-                        <td>{$row['caloriesBurned']} kcal</td>
-                        <td>";
-
-                    if (!is_null($row['caloriesBurned'])) {
-                        echo round(($row['caloriesBurned'] / 2000) * 100, 2) . "%";
-                    } else {
-                        echo "No data";
-                    }
-
-                    echo "</td></tr>";
-                    $rank++;
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
-
-    <script src="assets/leaderboard.js" defer></script>
+    <table id="leaderboard-table" border="1">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>User</th>
+                <th>Goal</th>
+                <th>Current Status</th>
+                <th>Percentage of Goal Completion</th>
+            </tr>
+        </thead>
+        <tbody id="leaderboard-body">
+            <!-- Data will be inserted here dynamically -->
+        </tbody>
+    </table>
 </body>
 </html>
 
