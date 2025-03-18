@@ -134,6 +134,22 @@ $stmt->closeCursor();
       <a href="group_membership.php"><button type=button>Create Group</button></a>
    </div>
 
+   <div class="container">
+      <h2>Progress Graphs</h2>
+      <form id="graphForm">
+         <label for="year">Year:</label>
+         <input type="number" id="year" name="year" required>
+
+         <label for="month">Month:</label>
+         <input type="number" id="month" name="month" min="1" max="12" required>
+
+         <button type="submit">Generate Graph</button>
+      </form>
+
+      <script src="assets/graph.js"></script>  <!-- Link to graph.js -->
+
+      <img id="graphImage" src="images/weightGraph.png" alt="Weight Graph" style="display:none; width: 600px; height: auto;">
+   </div>
 </body>
 <footer style="background: #0f0a66; color:white; padding: 10px 20px;">
         <p>&copy; Copyright Mission Critical Group</p>
