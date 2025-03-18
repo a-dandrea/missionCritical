@@ -19,7 +19,7 @@ $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
             <a href="leaderboard.php">Leaderboard</a>
             <a href="workout.php">Workouts</a>
             <?php if ($isLoggedIn): ?>
-                <a href="logout.php" class="logout-button">Logout</a>
+               <a href="logout.php" class="logout-button">Logout</a>
             <?php endif; ?>
         </div>
     </nav>
