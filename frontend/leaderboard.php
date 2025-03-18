@@ -4,6 +4,17 @@ ini_set('display_errors', 1);
 
 session_start();
 $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
+
+$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
+$username = 'ejerrier';
+$password = '1788128';
+
+try {
+    $db = new PDO($dsn, $username, $password);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    exit("Database connection failed: " . $e->getMessage());
+}
 ?>
 
 <!DOCTYPE html>
@@ -33,9 +44,9 @@ $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
     <div class="container">
         <h2>Leaderboard</h2>
 
-        <form id="category-form">
+        <form method="POST" action="leaderboard.php" id="category-form">
             <label for="category">Choose Category:</label>
-            <select name="category" id="category">
+            <select name="category" id="category" onchange="updateLeaderboard()">
                 <option value="calories">Calories</option>
                 <option value="steps">Steps</option>
                 <option value="distance">Distance (miles)</option>
@@ -49,11 +60,39 @@ $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
                     <th>User</th>
                     <th>Goal</th>
                     <th>Current Status</th>
-                    <th>Goal Completion (%)</th>
+                    <th>Percentage of Goal Completion</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Data will be dynamically inserted here -->
+                <?php
+                $sql = "SELECT CONCAT(users.firstName, ' ', users.lastName) AS fullName, 
+                               workouts.caloriesBurned, 
+                               workouts.duration 
+                        FROM users
+                        LEFT JOIN workouts ON users.user_id = workouts.userID";
+
+                $stmt = $db->prepare($sql);
+                $stmt->execute();
+
+                $rank = 1;
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    echo "<tr>
+                        <td>{$rank}</td>
+                        <td>{$row['fullName']}</td>
+                        <td>{$row['duration']} mins</td>
+                        <td>{$row['caloriesBurned']} kcal</td>
+                        <td>";
+
+                    if (!is_null($row['caloriesBurned'])) {
+                        echo round(($row['caloriesBurned'] / 2000) * 100, 2) . "%";
+                    } else {
+                        echo "No data";
+                    }
+
+                    echo "</td></tr>";
+                    $rank++;
+                }
+                ?>
             </tbody>
         </table>
     </div>
