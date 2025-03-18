@@ -39,7 +39,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
 
-    // Fetch current user data
     try {
         $stmt = $db->prepare("SELECT age, height, weight FROM users WHERE user_id = :user_id");
         $stmt->execute([":user_id" => $user_id]);
