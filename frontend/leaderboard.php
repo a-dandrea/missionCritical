@@ -23,11 +23,11 @@ $sql = "
         u.goals, 
         SUM(w.caloriesBurned) AS totalCaloriesBurned,
         SUM(w.duration) AS totalDuration,
-        ROUND((SUM(w.caloriesBurned) / u.goals) * 100, 2) AS totalGoalCompletion
+        IF(u.goals > 0, ROUND((SUM(w.caloriesBurned) / u.goals) * 100, 2), 0) AS goalCompletion
     FROM users u
     JOIN workouts w ON u.user_id = w.userID
     GROUP BY u.user_id
-    ORDER BY totalGoalCompletion DESC;
+    ORDER BY goalCompletion DESC;
 ";
 
 $stmt = $db->prepare($sql);
@@ -75,10 +75,9 @@ $stmt->execute();
                 <tr>
                     <th>Rank</th>
                     <th>User</th>
-                    <th>Goal</th>
-                    <th>Current Status</th>
-                    <th>Percentage of Goal Completion</th>
-                    <th>Total Goal Completion</th> <!-- New Column -->
+                    <th>Goal (kcal)</th>
+                    <th>Calories Burned</th>
+                    <th>Goal Completion (%)</th>
                 </tr>
             </thead>
             <tbody>
@@ -90,8 +89,7 @@ $stmt->execute();
                         <td>{$row['fullName']}</td>
                         <td>{$row['goals']} kcal</td>
                         <td>{$row['totalCaloriesBurned']} kcal</td>
-                        <td>" . round(($row['totalCaloriesBurned'] / 2000) * 100, 2) . "%</td>
-                        <td>{$row['totalGoalCompletion']}%</td> <!-- New Column -->
+                        <td>{$row['goalCompletion']}%</td>
                     </tr>";
                     $rank++;
                 }
@@ -99,6 +97,11 @@ $stmt->execute();
             </tbody>
         </table>
     </div>
+
+    <script src="assets/leaderboard.js" defer></script>
+</body>
+</html>
+/div>
 
     <script src="assets/leaderboard.js" defer></script>
 </body>
