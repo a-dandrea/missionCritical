@@ -1,5 +1,6 @@
 <?php
 session_start();
+$isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
 
 $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
 $username = 'ejerrier';
