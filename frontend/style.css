@@ -277,3 +277,51 @@ select {
 .submit-btn:hover {
    background-color: #5a2e7e;
 }
+
+/* Ensure the checkbox container is only as wide as its content */
+#checkBoxes {
+  display: none;
+  background-color: #d8b9f2; /* Match form color */
+  border-radius: 5px;
+  padding: 10px;
+  width: fit-content; /* Makes it only as wide as the content inside */
+  margin: 10px auto; /* Centers the checkbox container */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center; /* Center text inside */
+}
+
+/* Align checkboxes in a vertical column */
+#checkBoxes label {
+  display: block; /* Each label on a new line */
+  text-align: left; /* Aligns text left within the box */
+  padding: 5px;
+  font-size: 1em;
+  color: #333;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+/* Hover effect for checkboxes */
+#checkBoxes label:hover {
+  background-color: #7d3c98;
+  color: white;
+}
+
+/* Style for actual checkboxes */
+#checkBoxes input[type="checkbox"] {
+  margin-right: 10px;
+  accent-color: #7d3c98;
+}
+
+/* Style dropdown button */
+.selectBox {
+  position: relative;
+  width: 100%;
+  background-color: transparent; /* Removes gray background */
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  color: #7d3c98;
+}
