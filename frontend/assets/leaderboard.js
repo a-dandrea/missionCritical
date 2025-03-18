@@ -1,60 +1,75 @@
-<?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+/* 
+const leaderboardData = {
+    calories: [
+        { username: 'User1', goal: 1500, value: 1200 },
+        { username: 'User2', goal: 1200, value: 1000 },
+        { username: 'User3', goal: 1000, value: 850 }
+    ],
+    steps: [
+        { username: 'User1', goal: 20000, value: 15000 },
+        { username: 'User2', goal: 18000, value: 12000 },
+        { username: 'User3', goal: 15000, value: 10000 }
+    ],
+    distance: [
+        { username: 'User1', goal: 60, value: 50 },
+        { username: 'User2', goal: 50, value: 40 },
+        { username: 'User3', goal: 40, value: 30 }
+    ]
+};
+*/
 
-session_start();
+let leaderboardData = {};
 
-$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
-$username = 'ejerrier';
-$password = '1788128';
-
-try {
-    $db = new PDO($dsn, $username, $password);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    exit(json_encode(["error" => "Database connection failed: " . $e->getMessage()]));
+// Function to fetch data from PHP and update the page
+function sendRequest() {
+    // Create new XMLHttpRequest (AJAX)
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "leaderboard.php", true); // Specify the PHP file that will return leaderboard
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200)
+            try {
+                leaderboardData = JSON.parse(xhr.responseText);
+                updateLeaderboard();
+            } catch (error) {
+                console.error("Error parsing JSON response:", error);
+                document.getElementById("response").innerHTML = xhr.responseText;
+            }
+    };
+    xhr.send(); // Send the request to the server
 }
 
-$category = $_POST['category'] ?? 'calories'; // Default to calories if no selection
+// Function to update the leaderboard based on the selected category
+function updateLeaderboard() {
+    const category = document.getElementById('category').value; // Get selected category
+    const tableBody = document.getElementById('leaderboard-table').getElementsByTagName('tbody')[0];
 
-// Determine which column to pull based on category
-$column = 'caloriesBurned'; // Default
-$goal = 'duration'; // Default goal (time spent)
+    // Clear existing table rows
+    tableBody.innerHTML = '';
 
-if ($category === 'steps') {
-    $column = 'stepsTaken';
-    $goal = 'stepGoal';
-} elseif ($category === 'distance') {
-    $column = 'distanceMiles';
-    $goal = 'distanceGoal';
+    // Get the data for the selected category
+    const data = leaderboardData[category];
+
+    // Sort the data based on percentage of goal completion (descending order)
+    data.sort((a, b) => {
+        const percentageA = (a.value / a.goal) * 100;
+        const percentageB = (b.value / b.goal) * 100;
+        return percentageB - percentageA; // Sort in descending order
+    });
+
+    // Populate the table with data
+    data.forEach((entry, index) => {
+        const percentage = ((entry.value / entry.goal) * 100).toFixed(2); // Calculate percentage
+        const row = tableBody.insertRow();
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${entry.username}</td>
+            <td>${entry.goal}</td>
+            <td>${entry.value}</td>
+            <td>${percentage}%</td>
+        `;
+    });
 }
 
-$sql = "SELECT CONCAT(users.firstName, ' ', users.lastName) AS fullName, 
-               workouts.$column AS currentValue, 
-               workouts.$goal AS goalValue
-        FROM users
-        LEFT JOIN workouts ON users.user_id = workouts.userID";
-
-$stmt = $db->prepare($sql);
-$stmt->execute();
-
-$rank = 1;
-$rows = [];
-
-while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-    $percentage = (!is_null($row['currentValue']) && !is_null($row['goalValue']) && $row['goalValue'] > 0) 
-        ? round(($row['currentValue'] / $row['goalValue']) * 100, 2) . "%" 
-        : "No data";
-
-    $rows[] = [
-        "rank" => $rank,
-        "fullName" => $row['fullName'],
-        "goal" => !is_null($row['goalValue']) ? $row['goalValue'] . ($category === 'distance' ? ' miles' : ' mins') : 'No data',
-        "currentValue" => !is_null($row['currentValue']) ? $row['currentValue'] . ($category === 'distance' ? ' miles' : ' kcal') : 'No data',
-        "percentage" => $percentage
-    ];
-    $rank++;
-}
-
-echo json_encode($rows);
+// Initialize leaderboard when page loads
+window.onload = sendRequest;
 
