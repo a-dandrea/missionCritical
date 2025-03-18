@@ -15,6 +15,23 @@ try {
 } catch (PDOException $e) {
     exit("Database connection failed: " . $e->getMessage());
 }
+
+// Fetch leaderboard data
+$sql = "
+    SELECT 
+        CONCAT(u.firstName, ' ', u.lastName) AS fullName,
+        u.goals, 
+        SUM(w.caloriesBurned) AS totalCaloriesBurned,
+        SUM(w.duration) AS totalDuration,
+        ROUND((SUM(w.caloriesBurned) / u.goals) * 100, 2) AS totalGoalCompletion
+    FROM users u
+    JOIN workouts w ON u.user_id = w.userID
+    GROUP BY u.user_id
+    ORDER BY totalGoalCompletion DESC;
+";
+
+$stmt = $db->prepare($sql);
+$stmt->execute();
 ?>
 
 <!DOCTYPE html>
@@ -30,13 +47,13 @@ try {
         <nav class="navbar">
             <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
             <div class="nav-links">
-                  <a href="index.php">Home</a>
-                  <a href="dashboard.php">Dashboard</a>
-                  <a href="leaderboard.php">Leaderboard</a>
-                  <a href="workout.php">Workouts</a>
-                  <?php if ($isLoggedIn): ?>
-                     <a href="logout.php" class="logout-button">Logout</a>
-                  <?php endif; ?>
+                <a href="index.php">Home</a>
+                <a href="dashboard.php">Dashboard</a>
+                <a href="leaderboard.php">Leaderboard</a>
+                <a href="workout.php">Workouts</a>
+                <?php if ($isLoggedIn): ?>
+                    <a href="logout.php" class="logout-button">Logout</a>
+                <?php endif; ?>
             </div>
         </nav>
     </header>
@@ -61,29 +78,20 @@ try {
                     <th>Goal</th>
                     <th>Current Status</th>
                     <th>Percentage of Goal Completion</th>
+                    <th>Total Goal Completion</th> <!-- New Column -->
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $sql = "
-                    SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, w.caloriesBurned, w.duration 
-                    FROM users u
-                    JOIN user_groups ug ON u.user_id = ug.user_id
-                    JOIN groups g ON ug.group_id = g.group_id
-                    JOIN workouts w ON u.user_id = w.userID
-                ";
-                
-                $stmt = $db->prepare($sql);
-                $stmt->execute();
-                
                 $rank = 1;
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     echo "<tr>
                         <td>{$rank}</td>
                         <td>{$row['fullName']}</td>
-                        <td>{$row['duration']} mins</td>
-                        <td>{$row['caloriesBurned']} kcal</td>
-                        <td>" . round(($row['caloriesBurned'] / 2000) * 100, 2) . "%</td>
+                        <td>{$row['goals']} kcal</td>
+                        <td>{$row['totalCaloriesBurned']} kcal</td>
+                        <td>" . round(($row['totalCaloriesBurned'] / 2000) * 100, 2) . "%</td>
+                        <td>{$row['totalGoalCompletion']}%</td> <!-- New Column -->
                     </tr>";
                     $rank++;
                 }
