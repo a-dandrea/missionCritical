@@ -5,6 +5,8 @@ $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  /
 $username = 'ejerrier';  // Use the correct MySQL username
 $password = '1788128';  // Use the correct MySQL password
 
+$isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
+
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -53,6 +55,9 @@ $stmt->closeCursor();
          <a href="dashboard.php">Dashboard</a>
          <a href="leaderboard.php">Leaderboard</a>
          <a href="workout.php">Workouts</a>
+         <?php if ($isLoggedIn): ?>
+            <a href="logout.php" class="logout-button">Logout</a>
+         <?php endif; ?>
        </div>
    </nav>
 </header>
