@@ -30,10 +30,13 @@ try {
         <nav class="navbar">   
             <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
             <div class="nav-links">
-                <a href="index.php">Home</a>
-                <a href="dashboard.php">Dashboard</a>
-                <a href="leaderboard.php">Leaderboard</a>
-                <a href="workout.php">Workouts</a>
+               <a href="index.php">Home</a>
+               <a href="dashboard.php">Dashboard</a>
+               <a href="leaderboard.php">Leaderboard</a>
+               <a href="workout.php">Workouts</a>
+               <?php if ($isLoggedIn): ?>
+                  <a href="logout.php" class="logout-button">Logout</a>
+               <?php endif; ?>
             </div>
         </nav>
     </header>
