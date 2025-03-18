@@ -8,6 +8,11 @@ $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
 $username = 'ejerrier';
 $password = '1788128';
 
+if (!isset($_SESSION['user_id'])) {
+   header("Location: login.php");
+   exit();
+}
+
 try {
     $db = new PDO($dsn, $username, $password);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
