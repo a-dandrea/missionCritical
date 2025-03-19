@@ -63,7 +63,7 @@ try {
     </div>
 
     <script src="assets/info.js"></script> <!-- Link to script.js -->
-    <!--<script src="assets/progress.js"></script> --> <!-- Link to progress.js -->
+    <script src="assets/progress.js"></script> <!-- Link to progress.js -->
 </body>
 </html>
 

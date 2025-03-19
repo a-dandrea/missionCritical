@@ -28,24 +28,26 @@ try {
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve input data and filter out empty values
     $weight = isset($_POST['weight']) && $_POST['weight'] !== '' ? floatval($_POST['weight']) : null;
-
-    $recordedAT = NOW(); // Current date and time in MySQL DATETIME format
+    
+    // Generate current timestamp
+    $recordedAT = date("Y-m-d H:i:s");
 
     error_log("Received - Weight: " . ($weight ?? 'Not provided'));
     error_log("Timestamp - RecordedAT: " . $recordedAT);
 
-    // Check if at least one field is provided
+    // Check if weight is provided
     if ($weight === null) {
         echo json_encode(["message" => "No data provided to update."]);
         exit();
     }
 
     try {
-        // Add to table
+        // Insert into table
         $stmt = $db->prepare("INSERT INTO progress (weight, user_id, recordedAT) VALUES (:weight, :user_id, :recordedAT)");
         $stmt->execute([
             ":weight" => $weight,
-            ":user_id" => $user_id
+            ":user_id" => $user_id,
+            ":recordedAT" => $recordedAT  // Bind the timestamp
         ]);
 
         error_log("Rows affected: " . $stmt->rowCount()); // Debugging
