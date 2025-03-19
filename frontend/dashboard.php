@@ -169,10 +169,10 @@ $stmt->closeCursor();
 
       <script src="assets/graph.js"></script>  <!-- Link to graph.js -->
 
-      <img id="graphImage" src="images/weightGraph.png" alt="Weight Graph" style="display:none; width: 600px; height: auto;">
+      <img id="graphImage" src="./images/weightGraph.png" alt="Weight Graph" style="display:none; width: 600px; height: auto;">
    </div>
 </body>
 <footer style="background: #0f0a66; color:white; padding: 10px 20px;">
-        <p>&copy; Copyright Mission Critical Group</p>
-    </footer>
+   <p>&copy; Copyright Mission Critical Group</p>
+</footer>
 </html>
