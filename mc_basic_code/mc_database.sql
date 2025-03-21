@@ -1,31 +1,34 @@
 CREATE TABLE users (
-   user_id INT PRIMARY KEY AUTO_INCREMENT,
-   firstName VARCHAR(255) NOT NULL,
-   lastName VARCHAR(255) NOT NULL,
-   age INT NULL, 
-   email VARCHAR(255) NOT NULL,
-   passwordHash VARCHAR(255) NOT NULL,
-   dateOfBirth DATE NULL,
-   gender ENUM('M', 'F', 'Other') NULL,
-   weight FLOAT NULL,
-   height FLOAT NULL, 
-   goals INT NULL, 
-   activity_level INT NULL, 
-   privilege INT NULL,
-   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    firstName VARCHAR(255) NOT NULL,
+    lastName VARCHAR(255) NOT NULL,
+    age INT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    passwordHash VARCHAR(255) NOT NULL,
+    dateOfBirth DATE NULL,
+    gender ENUM('M', 'F', 'Other') NULL,
+    weight FLOAT NULL,
+    height FLOAT NULL,
+    goals INT NULL,
+    activity_level INT NULL,
+    privilege INT NULL,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE groups (
     group_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
-    description TEXT
+    type ENUM('Family', 'Friends', 'Coworkers') NOT NULL,
+    parental_control BOOLEAN DEFAULT NULL, -- Only applicable for Family groups
+    description TEXT NULL
 );
 
 CREATE TABLE user_groups (
     user_id INT,
     group_id INT,
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (group_id) REFERENCES groups(group_id)
+    PRIMARY KEY (user_id, group_id),
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (group_id) REFERENCES groups(group_id) ON DELETE CASCADE
 );
 
 CREATE TABLE workouts (
