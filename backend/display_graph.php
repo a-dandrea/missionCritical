@@ -10,13 +10,18 @@ if (isset($_GET['year']) && isset($_GET['month'])) {
         exit();
     }
 
-    // Run the Python script and capture the output (image path)
-    $command = escapeshellcmd("python3 /path/to/generate_graph.py $year $month");
-    $image_path = trim(shell_exec($command));
+   // Run the Python script and capture the output (image path)
+   $command = escapeshellcmd("/usr/bin/python3 ../mc_basic_code/mc_weightGraph.py $year $month 2>&1");
+   $output = shell_exec($command);
+   $image_path = trim(shell_exec($output));
+
+   // Debugging output
+   error_log("Python Output: " . $output); // Logs output to Apache error log
+
 
     // Check if the script executed successfully and the image exists
     if (!empty($image_path) && file_exists($image_path)) {
-        echo "<img src='graph.png?" . time() . "' alt='Weight Graph'>"; // Add timestamp to prevent caching
+        echo "<img src='../frontend/images/weightGraph.png" . time() . "' alt='Weight Graph'>"; // Add timestamp to prevent caching
     } else {
         echo "Error generating graph.";
     }
