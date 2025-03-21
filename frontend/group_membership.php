@@ -26,8 +26,7 @@
               $db->beginTransaction();
 
               // Insert new group
-              $insertGroupSql = "INSERT INTO groups (username, group_type, parental_control) VALUES (:username, :group_type, :parental_control)";
-              $stmt = $db->prepare($insertGroupSql);
+              $$insertGroupSql = "INSERT INTO groups (username, type) VALUES (:username, :type)"; stmt = $db->prepare($insertGroupSql);
               $stmt->bindParam(':username', $username);
               $stmt->bindParam(':group_type', $group_type);
               $stmt->bindParam(':parental_control', $parental_control, PDO::PARAM_INT);
