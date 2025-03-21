@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // Check if year and month parameters are set in the URL
 if (isset($_GET['year']) && isset($_GET['month'])) {
     $year = intval($_GET['year']);   // Sanitize input to ensure it's an integer
@@ -11,20 +15,29 @@ if (isset($_GET['year']) && isset($_GET['month'])) {
     }
 
    // Run the Python script and capture the output (image path)
-   $command = escapeshellcmd("/usr/bin/python3 ../mc_basic_code/mc_weightGraph.py $year $month 2>&1");
+   $command = "/usr/local/bin/python3 " . __DIR__ . "/../mc_basic_code/mc_weightGraph.py $year $month 2>&1";
+
+   error_log("Executing command: " . $command);
+
    $output = shell_exec($command);
-   $image_path = trim(shell_exec($output));
+   $exitCode = shell_exec("echo $?"); // Capture the exit code
 
-   // Debugging output
-   error_log("Python Output: " . $output); // Logs output to Apache error log
+   error_log("Shell Output: " . var_export($output, true));
+   error_log("Exit Code: " . trim($exitCode));
 
+   if ($output === null) {
+      echo json_encode(["status" => "error", "message" => "shell_exec failed."]);
+      exit();
+   }
 
-    // Check if the script executed successfully and the image exists
-    if (!empty($image_path) && file_exists($image_path)) {
-        echo "<img src='../frontend/images/weightGraph.png" . time() . "' alt='Weight Graph'>"; // Add timestamp to prevent caching
-    } else {
-        echo "Error generating graph.";
-    }
+   $image_path = trim($output);
+
+   if (!empty($image_path) && file_exists($image_path)) {
+      echo json_encode(["status" => "success", "path" => $image_path]);
+   } else { 
+      error_log("Error: Image not found at " . $image_path);
+      echo json_encode(["status" => "error", "message" => "Error generating graph."]);
+   }
 } else {
     echo "Error: Year and month are required.";
 }
