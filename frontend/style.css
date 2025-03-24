@@ -315,9 +315,6 @@ select {
 .submit-btn:hover {
    background-color: #5a2e7e;
 }
-<<<<<<< HEAD
-=======
-
 /* Ensure the checkbox container is only as wide as its content */
 #checkBoxes {
   display: none;
@@ -365,4 +362,3 @@ select {
   font-weight: bold;
   color: #7d3c98;
 }
->>>>>>> afc1b4293f73a23f69e511a6d99415474c0e2f72
