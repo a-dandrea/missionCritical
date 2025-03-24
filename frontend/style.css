@@ -362,3 +362,65 @@ select {
   font-weight: bold;
   color: #7d3c98;
 }
+/* Recipe page!!!! */
+
+/* Recipe Grid Styling */
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Smaller grid items */
+  gap: 15px; /* Adjusted space between cards */
+  padding: 15px; /* Padding around the grid */
+}
+
+/* Individual card styling */
+.card {
+  background-color: #fff;
+  border-radius: 8px; /* Slightly smaller border radius */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  height: 100%; /* Ensure cards stretch to fill their container */
+}
+
+/* Hover effect on cards */
+.card:hover {
+  transform: scale(1.05); /* Slightly enlarge the card on hover */
+}
+
+/* Card image styling */
+.card img {
+  width: 100%;
+  height: 180px; /* Reduced image height */
+  object-fit: cover;
+}
+
+/* Card content styling */
+.card-content {
+  padding: 10px; /* Reduced padding */
+}
+
+.card-content h3 {
+  font-size: 1rem; /* Smaller font size for the title */
+  margin: 8px 0;
+}
+
+.card-content p {
+  font-size: 0.8rem; /* Smaller font size for the text */
+  margin: 4px 0;
+}
+
+.card-content a {
+  display: block;
+  text-align: center;
+  margin-top: 8px; /* Adjusted spacing */
+  padding: 8px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 0.9rem; /* Smaller font size for the link */
+}
+
+.card-content a:hover {
+  background-color: #0056b3;
+}
