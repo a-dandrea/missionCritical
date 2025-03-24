@@ -3,53 +3,41 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Check if year and month parameters are set in the URL
 if (isset($_GET['year']) && isset($_GET['month'])) {
-    $year = intval($_GET['year']);
-    $month = intval($_GET['month']);
+    $year = intval($_GET['year']);   // Sanitize input to ensure it's an integer
+    $month = intval($_GET['month']); // Sanitize input to ensure it's an integer
 
+    // Validate inputs
     if ($year < 1900 || $year > 2100 || $month < 1 || $month > 12) {
         echo "Error: Invalid year or month.";
         exit();
     }
 
-    $command = escapeshellcmd("/usr/bin/python3 ../mc_basic_code/mc_weightGraph.py $year $month");
-    $descriptor_spec = [
-        0 => ["pipe", "r"],  // stdin
-        1 => ["pipe", "w"],  // stdout
-        2 => ["pipe", "w"]   // stderr
-    ];
+   // Run the Python script and capture the output (image path)
+   $command = "/usr/local/bin/python3 ../mc_basic_code/mc_weightGraph.py $year $month 2>&1";
 
-    $process = proc_open($command, $descriptor_spec, $pipes);
+   error_log("Executing command: " . $command);
 
-    if (is_resource($process)) {
-        $output = stream_get_contents($pipes[1]);
-        $error_output = stream_get_contents($pipes[2]);
-        fclose($pipes[1]);
-        fclose($pipes[2]);
+   $output = shell_exec($command);
+   $exitCode = shell_exec("echo $?"); // Capture the exit code
 
-        $return_value = proc_close($process);
+   error_log("Shell Output: " . var_export($output, true));
+   error_log("Exit Code: " . trim($exitCode));
 
-        error_log("Command: $command");
-        error_log("Output: $output");
-        error_log("Error Output: $error_output");
-        error_log("Return Value: $return_value");
+   if ($output === null) {
+      echo json_encode(["status" => "error", "message" => "shell_exec failed."]);
+      exit();
+   }
 
-        if ($return_value !== 0) {
-            echo json_encode(["status" => "error", "message" => "Error executing Python script.", "error" => $error_output]);
-            exit();
-        }
+   $image_path = trim($output);
 
-        $image_path = trim($output);
-
-        if (!empty($image_path) && file_exists($image_path)) {
-            echo json_encode(["status" => "success", "path" => $image_path]);
-        } else {
-            error_log("Error: Image not found at " . $image_path);
-            echo json_encode(["status" => "error", "message" => "Error generating graph."]);
-        }
-    } else {
-        echo json_encode(["status" => "error", "message" => "Failed to open process."]);
-    }
+   if (!empty($image_path) && file_exists($image_path)) {
+      echo json_encode(["status" => "success", "path" => $image_path]);
+   } else { 
+      error_log("Error: Image not found at " . $image_path);
+      echo json_encode(["status" => "error", "message" => "Error generating graph."]);
+   }
 } else {
     echo "Error: Year and month are required.";
 }
