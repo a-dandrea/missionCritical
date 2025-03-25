@@ -164,12 +164,14 @@ $stmt->closeCursor();
             <option value="12">December</option>
          </select>
 
+         <input type="hidden" id="user_id" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
+
          <button type="submit">Generate Graph</button>
       </form>
 
       <script src="assets/graph.js"></script>  <!-- Link to graph.js -->
 
-      <img id="graphImage" src="./images/weightGraph.png" alt="Weight Graph" style="display:none; width: 600px; height: auto;">
+      <img id="graphImage" alt="Weight Graph" style="display:none; width: 600px; height: auto;">
    </div>
 </body>
 <footer style="background: #0f0a66; color:white; padding: 10px 20px;">
