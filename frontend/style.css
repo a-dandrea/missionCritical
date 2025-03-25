@@ -8,8 +8,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  padding: 8px 20px; /* Smaller height and spacing */
   z-index: 1000;
+  height: 60px; /* Shorter height */
+
 }
 
 /* Adjust space between elements */
@@ -51,16 +53,11 @@
 /* Dropdown container */
 .dropdown {
     position: relative;
-    display: inline-block;
 }
 
 /* Dropdown button */
 .dropbtn {
-    background-color: inherit; /* Matches navbar background */
-    color: white;
-    padding: 14px 20px;
-    border: none;
-    cursor: pointer;
+  display: inline-block;
 }
 
 /* Dropdown content (hidden by default) */
@@ -68,7 +65,7 @@
     display: none;
     position: absolute;
     background-color: #f4f4f9;
-    min-width: 160px;
+    min-width: 160px; 
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }

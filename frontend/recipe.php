@@ -6,9 +6,33 @@
     <title>Recipe Search</title>
     <link rel="stylesheet" href="style.css">
 </head>
+<header>
+<nav class="navbar">   
+    <div class="dropdown">
+    <a href="index.php" class="dropbtn">
+  <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
+</a>
+ <div class="dropdown-content">
+                <a href="#">Subscriptions</a>
+                <a href="#">Payment</a>
+            </div>
+        </div>
+        <div class="nav-links">
+
+            <a href="dashboard.php">Dashboard</a>
+            <a href="leaderboard.php">Leaderboard</a>
+            <a href="workout.php">Workouts</a>
+            <a href="recipe.php">Recipes</a>
+            <?php if ($isLoggedIn): ?>
+               <a href="logout.php" class="logout-button">Logout</a>
+            <?php endif; ?>
+        </div>
+
+    </nav>
+</header>
 <body>
 
-    <h1>Recipe Search</h1>
+    <h1 style="padding: 80px 10px 0px 10px;">Recipe Search</h1>
 
     <form action="search.php" method="get">
         <!-- Recipe/Ingredient Search -->

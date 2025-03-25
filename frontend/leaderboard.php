@@ -32,18 +32,28 @@ try {
 </head>
 <body>
     <header>
-        <nav class="navbar">
-            <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
-            <div class="nav-links">
-                <a href="index.php">Home</a>
-                <a href="dashboard.php">Dashboard</a>
-                <a href="leaderboard.php">Leaderboard</a>
-                <a href="workout.php">Workouts</a>
-                <?php if ($isLoggedIn): ?>
-                    <a href="logout.php" class="logout-button">Logout</a>
-                <?php endif; ?>
+    <nav class="navbar">   
+    <div class="dropdown">
+    <a href="index.php" class="dropbtn">
+  <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
+</a>
+ <div class="dropdown-content">
+                <a href="#">Subscriptions</a>
+                <a href="#">Payment</a>
             </div>
-        </nav>
+        </div>
+        <div class="nav-links">
+
+            <a href="dashboard.php">Dashboard</a>
+            <a href="leaderboard.php">Leaderboard</a>
+            <a href="workout.php">Workouts</a>
+            <a href="recipe.php">Recipes</a>
+            <?php if ($isLoggedIn): ?>
+               <a href="logout.php" class="logout-button">Logout</a>
+            <?php endif; ?>
+        </div>
+
+    </nav>
     </header>
 
     <div class="container">
