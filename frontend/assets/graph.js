@@ -3,6 +3,11 @@ document.getElementById("graphForm").addEventListener("submit", function(event) 
 
    let year = document.getElementById("year").value;
    let month = document.getElementById("month").value;
+   let user_id = document.getElementById("user_id").value;
+
+   let baseURL = "./frontend/images/";
+   let imageName = "weightGraph_" + user_id + "_" + year + "_" + month;
+   let extention = ".png";
 
    // Call PHP script to generate the graph
    fetch(`../backend/display_graph.php?year=${year}&month=${month}`)
@@ -19,3 +24,5 @@ document.getElementById("graphForm").addEventListener("submit", function(event) 
     .catch(error => console.error("Fetch error:", error));
 
 });
+
+document.getElementById("graphImage").src = baseURL + imageName + extension;

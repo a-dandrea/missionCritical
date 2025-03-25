@@ -21,6 +21,7 @@ if (isset($_GET['year']) && isset($_GET['month'])) {
         exit();
     }
 
+    putenv("MPLCONFIGDIR=/tmp/matplotlib_cache");
     $command = escapeshellcmd("/usr/bin/python3 ../mc_basic_code/mc_weightGraph.py $year $month $user_id");
     $descriptor_spec = [
         0 => ["pipe", "r"],  // stdin
