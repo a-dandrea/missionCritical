@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 # Read year, month, and user ID from command-line arguments
 year = int(sys.argv[1])
 month = int(sys.argv[2])
-user_id = int(sys.argv[3])  # User ID to filter data
+user_id = int(sys.argv[3])
 
 BACKGROUND_COLOR = 'black'
 LABEL_COLOR = 'white'
@@ -53,10 +53,10 @@ for date, weight in data.items():
 
 # Sort data by date to ensure correct chronological order
 if dates:
-    dates, weights = zip(*sorted(zip(dates, weights)))
-    dates = [date.strftime("%Y-%m-%d") for date in dates]
+   dates, weights = zip(*sorted(zip(dates, weights)))
+   dates = [date.strftime("%Y-%m-%d") for date in dates]
 else:
-    dates, weights = [], []
+   dates, weights = [], []
 
 # Set graph appearance
 plt.rcParams['text.color'] = LABEL_COLOR
@@ -72,8 +72,8 @@ ax.set_facecolor(BACKGROUND_COLOR)
 
 # Plot data
 if dates and weights:
-    plt.plot(dates, weights, label="Weight", color='yellow', linestyle='solid', linewidth=1,
-          marker="*", markerfacecolor='yellow')
+   plt.plot(dates, weights, label="Weight", color='yellow', linestyle='solid', linewidth=1,
+         marker="*", markerfacecolor='yellow')
 
 # Set all dates as x-ticks
 plt.xticks(all_dates, rotation=45)
