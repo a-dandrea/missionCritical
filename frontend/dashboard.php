@@ -54,7 +54,7 @@ $stmt->closeCursor();
          <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
       </a>
       <div class="dropdown-content">
-            a href="#">Subscriptions</a>
+            <a href="#">Subscriptions</a>
             <a href="#">Payment</a>
       </div>
    </div>
@@ -81,33 +81,7 @@ $stmt->closeCursor();
         <p><strong>Gender:</strong> <?php echo htmlspecialchars($user['gender']); ?></p>
         <p><strong>Weight:</strong> <?php echo htmlspecialchars($user['weight']); ?> lbs</p>
         <p><strong>Height:</strong> <?php echo htmlspecialchars($user['height']); ?> in</p>
-      </div>
-
-      <!-- Goal & Activity Box -->
-      <div class="box">
-        <h2>Current Goal</h2>
-        <p>
-            <strong>Goal:</strong> 
-            <?php $goals = htmlspecialchars($user['goals']); 
-               switch($goals) {
-                  case 0:
-                     echo "Maintain Weight";
-                     break;
-                  case 1:
-                     echo "Lose Weight";
-                     break;
-                  case 2:
-                     echo "Increase Muscle Mass";
-                     break;
-                  case 3:
-                     echo "Increase Stamina";
-                     break;
-                  default:
-                     echo $goals; // In case of an unexpected value, just display it
-                     break;
-               }
-            ?>
-         </p>
+      
         <p><strong>Activity Level:</strong> 
             <?php $activity_level = htmlspecialchars($user['activity_level']); 
             switch ($activity_level) {
@@ -133,6 +107,31 @@ $stmt->closeCursor();
             ?>
          </p>
         <p><strong>Privilege:</strong> <?php echo htmlspecialchars($user['privilege']); ?></p>
+      </div>
+
+      <!-- Goal & Activity Box -->
+      <div class="box">
+        <h2>Current Goal</h2>
+        <p>
+            <strong>Goal:</strong> 
+            <?php 
+               $goalLabels = [
+                  0 => "Maintain Weight",
+                  1 => "Lose Weight",
+                  2 => "Increase Muscle Mass",
+                  3 => "Increase Stamina"
+               ];
+
+               $selectedGoals = [];
+
+               for ($i = 1; $i <= 4; $i++) {
+                  if (!empty($user["goal$i"]) && isset($goalLabels[$user["goal$i"]])) {
+                     $selectedGoals[] = $goalLabels[$user["goal$i"]];
+                  }
+               }
+               echo !empty($selectedGoals) ? implode(", ", $selectedGoals) : "No goals selected";
+            ?>
+         </p>
     </div>
 
     <!-- Action Buttons -->

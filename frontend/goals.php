@@ -56,9 +56,8 @@ try {
         <h2>Update Your Fitness Goal</h2>
 
         <form id="update-goal-form">
-            <label for="goals">Select Goal:</label>
-            <select id="goals" name="goals">
-               <option value="">Select a Goal</option>
+            <label for="goals">Select Your Goal(s):</label>
+            <select id="goals" name="goals" multiple>
                <option value="0">Maintain Weight</option>
                <option value="1">Lose Weight</option>
                <option value="2">Increase Muscle Mass</option>

@@ -31,40 +31,28 @@ try {
 
 // Ensure data is coming from a POST request
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $goals = isset($_POST['goals']) ? intval($_POST['goals']) : null;
+   $goals = isset($_POST['goals']) ? $_POST['goals'] : [];
 
-    error_log("Received - Goal: " . ($goals ?? 'Not provided'));
-
-    if ($goals === null) {
-        echo json_encode(["message" => "Invalid input data."]);
+    if (!is_array($goals) || count($goals) < 1 || count($goals) > 4) {
+        echo json_encode(["message" => "Invalid input data. Select between 1 and 4 goals."]);
         exit();
     }
 
+    // Fill the goal columns, setting empty values if less than 4 goals are provided
+    $goalValues = array_pad($goals, 4, NULL);
+
     try {
-        $stmt = $db->prepare("SELECT goals FROM users WHERE user_id = :user_id");
-        $stmt->execute([":user_id" => $user_id]);
-        $currentData = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$currentData) {
-            echo json_encode(["message" => "User not found."]);
-            exit();
-        }
-
-        $goals = $goals ?? $currentData['goals'];
-
-        $stmt = $db->prepare("UPDATE users SET goals = :goals WHERE user_id = :user_id");
+        $stmt = $db->prepare("UPDATE users SET goal1 = :goal1, goal2 = :goal2, goal3 = :goal3, goal4 = :goal4 WHERE user_id = :user_id");
         $stmt->execute([
-            ":goals" => $goals,
+            ":goal1" => $goalValues[0],
+            ":goal2" => $goalValues[1],
+            ":goal3" => $goalValues[2],
+            ":goal4" => $goalValues[3],
             ":user_id" => $user_id
         ]);
         
-        error_log("Rows affected: " . $stmt->rowCount()); // Debugging
-        
-        if ($stmt->rowCount() > 0) {
-            echo json_encode(["message" => "Goal updated successfully!"]);
-        } else {
-            echo json_encode(["message" => "No changes made."]);
-        }
+        error_log("Rows affected: " . $stmt->rowCount());
+        echo json_encode(["message" => "Goals updated successfully!"]);
     } catch (PDOException $e) {
         echo json_encode(["message" => "Error: " . $e->getMessage()]);
     }
