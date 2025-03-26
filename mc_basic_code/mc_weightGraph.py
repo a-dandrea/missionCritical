@@ -51,8 +51,6 @@ for date, weight in data.items():
       dates.append(datetime.strptime(date, "%Y-%m-%d"))
       weights.append(weight)
 
-
-
 # Set graph appearance
 plt.rcParams['text.color'] = LABEL_COLOR
 plt.rcParams['axes.labelcolor'] = LABEL_COLOR
