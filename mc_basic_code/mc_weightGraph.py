@@ -76,7 +76,7 @@ if dates and weights:
          marker="*", markerfacecolor='yellow')
 
 # Set all dates as x-ticks
-plt.xticks(all_dates, rotation=45)
+plt.xticks(all_dates, rotation=90)
 
 plt.xlabel("Date")
 plt.ylabel("Weight (lbs)")
