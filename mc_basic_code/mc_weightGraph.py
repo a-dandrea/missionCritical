@@ -51,12 +51,7 @@ for date, weight in data.items():
       dates.append(datetime.strptime(date, "%Y-%m-%d"))
       weights.append(weight)
 
-# Sort data by date to ensure correct chronological order
-if dates:
-   dates, weights = zip(*sorted(zip(dates, weights)))
-   dates = [date.strftime("%Y-%m-%d") for date in dates]
-else:
-   dates, weights = [], []
+
 
 # Set graph appearance
 plt.rcParams['text.color'] = LABEL_COLOR
@@ -75,7 +70,19 @@ if dates and weights:
    plt.plot(dates, weights, label="Weight", color='yellow', linestyle='solid', linewidth=1,
          marker="*", markerfacecolor='yellow')
 
-# Set all dates as x-ticks
+# Sort data by date to ensure correct chronological order
+if dates:
+   dates, weights = zip(*sorted(zip(dates, weights)))
+else:
+   dates, weights = [], []
+
+# Convert dates to string format for plotting and ensure correct x-tick order
+dates = [date.strftime("%Y-%m-%d") for date in dates]
+all_dates_dt = [datetime.strptime(date, "%Y-%m-%d") for date in all_dates]  # Convert all_dates to datetime
+all_dates_dt.sort()  # Ensure sorted order
+all_dates = [date.strftime("%Y-%m-%d") for date in all_dates_dt]  # Convert back to string
+
+# Set all dates as x-ticks in the correct order
 plt.xticks(all_dates, rotation=90)
 
 plt.xlabel("Date")
