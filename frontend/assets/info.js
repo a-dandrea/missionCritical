@@ -11,6 +11,8 @@ document.getElementById("update-info-form").addEventListener("submit", function(
    .then(response => response.json())
    .then(data => {
        alert(data.message);  // Show success/error message
+       if (data.message === "Info updated successfully!") {
+      }
        document.getElementById("update-info-form").reset();  // Reset the form
    })
    .catch(error => console.error('Error:', error));  // Log errors

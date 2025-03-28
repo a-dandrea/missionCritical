@@ -88,6 +88,16 @@ try {
       <script src="assets/activity.js"></script>  <!-- Link to goal.js -->
    </div>
 
+   <div class="container">
+      <h2> Update Your Daily Step Goal </h2>
+      <form id="update-step-goal-form">
+         <label for="daily_step_goal">Enter Your Daily Step Goal:</label>
+         <input type="number" id="daily_step_goal" name="daily_step_goal" min="0" required>
+         <button type="submit">Update Daily Step Goal</button>
+      </form>
+      <script src="assets/step.js"></script>  <!-- Link to goal.js -->
+   </div>
+
 </body>
 </html>
    
