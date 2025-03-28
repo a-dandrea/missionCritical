@@ -27,9 +27,20 @@ try {
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+    $sql = "SELECT daily_step_goal FROM progress WHERE user_id = :user_id";
+      $stmt = $db->prepare($sql);
+      $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+      $stmt->execute();
+      $goals = $stmt->fetch(PDO::FETCH_ASSOC);
+
     if (!$user) {
         echo "User not found.";
         exit();
+    }
+
+    if (!$goals) {
+         echo "No goals found.";
+         exit();
     }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -111,9 +122,9 @@ $stmt->closeCursor();
 
       <!-- Goal & Activity Box -->
       <div class="box">
-        <h2>Current Goal</h2>
+        <h2>Current Goals</h2>
         <p>
-            <strong>Goal:</strong> 
+            <strong>Goals:</strong> 
             <?php 
                $goalLabels = [
                   0 => "Maintain Weight",
@@ -131,6 +142,9 @@ $stmt->closeCursor();
                }
                echo !empty($selectedGoals) ? implode(", ", $selectedGoals) : "No goals selected";
             ?>
+         </p>
+         <p>
+               <strong>Daily Step Goal:</strong> <?php echo htmlspecialchars($goals['daily_step_goal']); ?>
          </p>
     </div>
 
