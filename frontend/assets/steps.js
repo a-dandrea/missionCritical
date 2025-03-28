@@ -1,8 +1,6 @@
 document.getElementById("update-step-goal-form").addEventListener("submit", function(event) {
    event.preventDefault();  // Prevent form from submitting normally
 
-   let selectedGoals = Array.from(document.getElementById("daily-step-goal").selectedOptions).map(option => option.value);
-
    let formData = new FormData();
 
    fetch('../backend/update_steps.php', {  // Submit form data to backend PHP

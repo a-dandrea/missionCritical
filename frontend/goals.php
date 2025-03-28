@@ -95,7 +95,7 @@ try {
          <input type="number" id="daily_step_goal" name="daily_step_goal" min="0" required>
          <button type="submit">Update Daily Step Goal</button>
       </form>
-      <script src="assets/step.js"></script>  <!-- Link to goal.js -->
+      <script src="assets/steps.js"></script>
    </div>
 
 </body>

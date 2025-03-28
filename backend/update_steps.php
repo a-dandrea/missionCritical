@@ -27,20 +27,18 @@ try {
 // Ensure data is coming from a POST request
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve input data and filter out empty values
-    $age = isset($_POST['age']) && $_POST['age'] !== '' ? intval($_POST['age']) : null;
-    $height = isset($_POST['height']) && $_POST['height'] !== '' ? floatval($_POST['height']) : null;
-    $weight = isset($_POST['weight']) && $_POST['weight'] !== '' ? floatval($_POST['weight']) : null;
+    $daily_step_goal = isset($_POST['daily_step_goal']) && $_POST['daily_step_goal'] !== '' ? intval($_POST['daily_step_goal']) : null;
 
-    error_log("Received - Age: " . ($age ?? 'Not provided') . ", Height: " . ($height ?? 'Not provided') . ", Weight: " . ($weight ?? 'Not provided'));
+    error_log("Received - Daily Step Goal: " . ($daily_step_goal ?? 'Not provided'));
 
     // Check if at least one field is provided
-    if ($age === null && $height === null && $weight === null) {
+    if ($daily_step_goal === null) {
         echo json_encode(["message" => "No data provided to update."]);
         exit();
     }
 
     try {
-        $stmt = $db->prepare("SELECT age, height, weight FROM users WHERE user_id = :user_id");
+        $stmt = $db->prepare("SELECT daily_step_goal FROM progress WHERE user_id = :user_id");
         $stmt->execute([":user_id" => $user_id]);
         $currentData = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -50,16 +48,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         // Keep old values if new ones are not provided
-        $age = $age ?? $currentData['age'];
-        $height = $height ?? $currentData['height'];
-        $weight = $weight ?? $currentData['weight'];
+        $daily_step_goal = $daily_step_goal ?? $currentData['daily_step_goal'];
 
         // Perform the update
-        $stmt = $db->prepare("UPDATE users SET age = :age, height = :height, weight = :weight WHERE user_id = :user_id");
+        $stmt = $db->prepare("UPDATE progress SET daily_step_goal = :daily_step_goal WHERE user_id = :user_id");
         $stmt->execute([
-            ":age" => $age,
-            ":height" => $height,
-            ":weight" => $weight,
+            ":daily_step_goal" => $daily_step_goal,
             ":user_id" => $user_id
         ]);
 
