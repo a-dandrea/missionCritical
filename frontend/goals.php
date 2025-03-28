@@ -71,28 +71,11 @@ try {
     </div>
 
    <div class="container">
-      <h2> Update Your Activity Level</h2>
-      <form id="update-activity-form">
-         <label for="activity_level">Select Activity Level:</label>
-         <select id="activity_level" name="activity_level">
-            <option value="">Select an Activity Level</option>
-            <option value="1">Sedentary (little or no exercise)</option>
-            <option value="2">Lightly Active (1-3 days/week)</option>
-            <option value="3">Moderately Active (3-5 days/week)</option>
-            <option value="4">Very Active (6-7 days/week)</option>
-            <option value="5">Super Active (athletic, intense training)</option>
-         </select>
-         <button type="submit">Update Activity Level</button>
-      </form>
-
-      <script src="assets/activity.js"></script>  <!-- Link to goal.js -->
-   </div>
-
-   <div class="container">
       <h2> Update Your Daily Step Goal </h2>
       <form id="update-step-goal-form">
          <label for="daily_step_goal">Enter Your Daily Step Goal:</label>
-         <input type="number" id="daily_step_goal" name="daily_step_goal" min="0" required>
+         <input type="number" id="daily_step_goal" name="daily_step_goal" min="0">
+         
          <button type="submit">Update Daily Step Goal</button>
       </form>
       <script src="assets/steps.js"></script>
