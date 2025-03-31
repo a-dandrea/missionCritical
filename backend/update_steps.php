@@ -2,6 +2,13 @@
 header("Content-Type: application/json");  
 session_start();
 
+error_log("Raw POST data: " . print_r($_POST, true));  // Debugging
+
+if (empty($_POST)) {
+    echo json_encode(["message" => "No POST data received. Check if the form is submitting correctly."]);
+    exit();
+}
+
 // Check if the user is logged in and has a user_id in the session
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(["message" => "Unauthorized: User not logged in."]);
