@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         error_log("Rows affected: " . $stmt->rowCount()); // Debugging
 
         if ($stmt->rowCount() > 0) {
-            echo json_encode(["message" => "User info updated successfully!"]);
+            echo json_encode(["message" => "Step goal updated successfully!"]);
         } else {
             echo json_encode(["message" => "No changes made. Data is the same as before."]);
         }

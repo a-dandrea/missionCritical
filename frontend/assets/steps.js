@@ -1,8 +1,6 @@
 document.getElementById("update-step-goal-form").addEventListener("submit", function(event) {
    event.preventDefault();  // Prevent form from submitting normally
 
-   // Grab the step goal value from the input field
-
    let formData = new FormData(this);
 
    fetch('../backend/update_steps.php', {  // Submit form data to backend PHP
