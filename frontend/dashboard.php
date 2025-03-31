@@ -27,7 +27,7 @@ try {
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $sql = "SELECT daily_step_goal FROM progress WHERE user_id = :user_id";
+    $sql = "SELECT daily_step_goal FROM users WHERE user_id = :user_id";
       $stmt = $db->prepare($sql);
       $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
       $stmt->execute();
