@@ -4,6 +4,12 @@ document.getElementById("update-step-goal-form").addEventListener("submit", func
    // Grab the step goal value from the input field
    let stepGoal = document.getElementById("daily_step_goal").value;
 
+    // Check if the step goal is a valid number
+    if (stepGoal === "" || stepGoal < 0) {
+        alert("Please enter a valid step goal.");
+        return;  // Stop if the value is invalid
+    }
+
    let formData = new FormData();
    formData.append("daily_step_goal", stepGoal);
 
