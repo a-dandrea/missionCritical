@@ -2,10 +2,8 @@ document.getElementById("update-step-goal-form").addEventListener("submit", func
    event.preventDefault();  // Prevent form from submitting normally
 
    // Grab the step goal value from the input field
-   let stepGoal = document.getElementById("daily_step_goal").value;
 
-   let formData = new FormData();
-   formData.append("daily_step_goal", stepGoal);
+   let formData = new FormData(this);
 
    fetch('../backend/update_steps.php', {  // Submit form data to backend PHP
        method: 'POST',
@@ -18,8 +16,5 @@ document.getElementById("update-step-goal-form").addEventListener("submit", func
        }
        document.getElementById("update-step-goal-form").reset();  // Reset the form
    })
-   .catch(error => {
-       console.error('Error:', error);
-       alert('An error occurred while updating the goal.');
-   });
+   .catch(error => console.error('Error:', error));
 });
