@@ -1,64 +1,63 @@
 /* 
-const leaderboardData = {
-    calories: [
-        { username: 'User1', goal: 1500, value: 1200 },
-        { username: 'User2', goal: 1200, value: 1000 },
-        { username: 'User3', goal: 1000, value: 850 }
-    ],
-    steps: [
-        { username: 'User1', goal: 20000, value: 15000 },
-        { username: 'User2', goal: 18000, value: 12000 },
-        { username: 'User3', goal: 15000, value: 10000 }
-    ],
-    distance: [
-        { username: 'User1', goal: 60, value: 50 },
-        { username: 'User2', goal: 50, value: 40 },
-        { username: 'User3', goal: 40, value: 30 }
-    ]
-};
-*/
+  2 const leaderboardData = {
+  3     calories: [
+  4         { username: 'User1', goal: 1500, value: 1200 },
+  5         { username: 'User2', goal: 1200, value: 1000 },
+  6         { username: 'User3', goal: 1000, value: 850 }
+  7     ],
+  8     steps: [
+  9         { username: 'User1', goal: 20000, value: 15000 },
+ 10         { username: 'User2', goal: 18000, value: 12000 },
+ 11         { username: 'User3', goal: 15000, value: 10000 }
+ 12     ],
+ 13     distance: [
+ 14         { username: 'User1', goal: 60, value: 50 },
+ 15         { username: 'User2', goal: 50, value: 40 },
+ 16         { username: 'User3', goal: 40, value: 30 }
+ 17     ]
+ 18 };
+ 19 */
 
-let leaderboardData = {};
+let leaderboardData = {}; // Object to store fetched leaderboard data
 
 // Function to fetch data from PHP and update the page
 function sendRequest() {
-    // Create new XMLHttpRequest (AJAX)
+    let category = document.getElementById('category').value; // Get selected category
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "leaderboard.php", true); // Specify the PHP file that will return leaderboard
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200)
+    xhr.open("POST", "leaderboard.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
             try {
                 leaderboardData = JSON.parse(xhr.responseText);
                 updateLeaderboard();
             } catch (error) {
-                console.error("Error parsing JSON response:", error);
+                console.error("Error parsing JSON:", error);
                 document.getElementById("response").innerHTML = xhr.responseText;
             }
+        }
     };
-    xhr.send(); // Send the request to the server
+    xhr.send("category=" + encodeURIComponent(category)); // Send category to PHP
 }
 
 // Function to update the leaderboard based on the selected category
 function updateLeaderboard() {
-    const category = document.getElementById('category').value; // Get selected category
+    const category = document.getElementById('category').value;
     const tableBody = document.getElementById('leaderboard-table').getElementsByTagName('tbody')[0];
 
-    // Clear existing table rows
-    tableBody.innerHTML = '';
+    tableBody.innerHTML = ''; // Clear existing table rows
 
-    // Get the data for the selected category
-    const data = leaderboardData[category];
+    const data = leaderboardData[category] || [];
+    if (data.length === 0) {
+        tableBody.innerHTML = "<tr><td colspan='5'>No data available</td></tr>";
+        return;
+    }
 
-    // Sort the data based on percentage of goal completion (descending order)
-    data.sort((a, b) => {
-        const percentageA = (a.value / a.goal) * 100;
-        const percentageB = (b.value / b.goal) * 100;
-        return percentageB - percentageA; // Sort in descending order
-    });
+    data.sort((a, b) => (b.value / b.goal) - (a.value / a.goal)); // Sort by goal completion %
 
-    // Populate the table with data
     data.forEach((entry, index) => {
-        const percentage = ((entry.value / entry.goal) * 100).toFixed(2); // Calculate percentage
+        const percentage = ((entry.value / entry.goal) * 100).toFixed(2);
         const row = tableBody.insertRow();
         row.innerHTML = `
             <td>${index + 1}</td>
@@ -71,5 +70,8 @@ function updateLeaderboard() {
 }
 
 // Initialize leaderboard when page loads
-window.onload = sendRequest;
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("category").addEventListener("change", sendRequest);
+    sendRequest(); // Load initial data
+});
 
