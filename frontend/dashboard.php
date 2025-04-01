@@ -21,26 +21,20 @@ try {
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Fetch user data
-    $sql = "SELECT firstName, lastName, email, age, gender, weight, height, goal1, goal2, goal3, goal4, activity_level, privilege FROM users WHERE user_id = :user_id";
+    $sql = "SELECT firstName, lastName, email, age, gender, weight, height, 
+               daily_step_goal, daily_calorie_goal, daily_active_goal, 
+               daily_sleep_goal, daily_outside_goal, daily_water_goal, 
+               goal1, goal2, goal3, goal4, activity_level, privilege 
+            FROM users 
+            WHERE user_id = :user_id";
     $stmt = $db->prepare($sql);
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $sql = "SELECT daily_step_goal FROM users WHERE user_id = :user_id";
-      $stmt = $db->prepare($sql);
-      $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-      $stmt->execute();
-      $goals = $stmt->fetch(PDO::FETCH_ASSOC);
-
     if (!$user) {
-        echo "User not found.";
-        exit();
-    }
-
-    if (!$goals) {
-         echo "No goals found.";
-         exit();
+      echo "User not found.";
+      exit();
     }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
@@ -144,19 +138,19 @@ $stmt->closeCursor();
             ?>
          </p>
          <p>
-            <strong>Daily Step Goal:</strong> <?php echo htmlspecialchars($goals['daily_step_goal']); ?>
+            <strong>Daily Step Goal:</strong> <?php echo htmlspecialchars($user['daily_step_goal']); ?> step
          </p>
          <p>
-            <strong> Daily Calorie Goal:</strong> <?php echo htmlspecialchars($user['daily_calorie_goal']); ?>
+            <strong> Daily Calorie Goal:</strong> <?php echo htmlspecialchars($user['daily_calorie_goal']); ?> calories
          </p>
          <p>
-            <strong> Daily Time Spent Outdoors Goal:</strong> <?php echo htmlspecialchars($user['daily_time_outdoors_goal']); ?>
+            <strong> Daily Time Spent Outdoors Goal:</strong> <?php echo htmlspecialchars($user['daily_outside_goal']); ?> hours
          </p>
          <p>
-            <strong> Daily Sleep Goal:</strong> <?php echo htmlspecialchars($user['daily_sleep_goal']); ?>
+            <strong> Daily Sleep Goal:</strong> <?php echo htmlspecialchars($user['daily_sleep_goal']); ?> hours
          </p>
          <p>
-            <strong> Daily Active Minutes Goal:</strong> <?php echo htmlspecialchars($user['daily_active_minutes_goal']); ?>
+            <strong> Daily Active Minutes Goal:</strong> <?php echo htmlspecialchars($user['daily_active_goal']); ?> minutes
          </p>
     </div>
 

@@ -1,10 +1,10 @@
 document.getElementById("update-outside-goal-form").addEventListener("submit", function(event) {
     event.preventDefault();  // Prevent form from submitting normally
 
-    // Grab the active goal value from the input field
+    // Grab the outside time goal value from the input field
     let outsideGoal = document.getElementById("daily_outside_goal").value;
  
-     // Check if the active goal is a valid number
+     // Check if the outside time goal is a valid number
      if (outsideGoal === "" || outsideGoal < 0) {
          alert("Please enter a valid goal for time spent outside.");
          return;  // Stop if the value is invalid
