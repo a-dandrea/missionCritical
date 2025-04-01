@@ -3,10 +3,6 @@ document.getElementById("update-step-goal-form").addEventListener("submit", func
 
    let formData = new FormData(this);
 
-   for (let pair of formData.entries()) {
-      console.log("Sending data:", pair[0], pair[1]);
-  }
-
    fetch('../backend/update_steps.php', {  // Submit form data to backend PHP
        method: 'POST',
        body: formData
