@@ -196,7 +196,7 @@ $stmt->closeCursor();
          <button type="submit">Generate Graph</button>
       </form>
 
-      <script src="assets/graph.js"></script>  <!-- Link to graph.js -->
+      <script src="assets/weightGraph.js"></script>  <!-- Link to graph.js -->
 
       <img id="graphImage" alt="Weight Graph" style="width: 600px; height: auto;">
    </div>
