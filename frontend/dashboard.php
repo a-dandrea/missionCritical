@@ -144,7 +144,13 @@ $stmt->closeCursor();
             ?>
          </p>
          <p>
-               <strong>Daily Step Goal:</strong> <?php echo htmlspecialchars($goals['daily_step_goal']); ?>
+            <strong>Daily Step Goal:</strong> <?php echo htmlspecialchars($goals['daily_step_goal']); ?>
+         </p>
+         <p>
+            <strong> Daily Calorie Goal:</strong> <?php echo htmlspecialchars($user['calorie_goal']); ?>
+         </p>
+         <p>
+            <strong> Daily Time Spent Outdoors Goal:</strong> <?php echo htmlspecialchars($user['time_outside_goal']); ?>
          </p>
     </div>
 
