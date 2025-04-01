@@ -193,10 +193,11 @@ $stmt->closeCursor();
 
          <input type="hidden" id="user_id" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
 
-         <button type="submit">Generate Graph</button>
+         <button type="submit">Generate Graphs</button>
       </form>
 
-      <script src="assets/weightGraph.js"></script>  <!-- Link to graph.js -->
+      <script src="assets/weightGraph.js"></script>  <!-- Link to weightGraph.js -->
+      <script src="assets/stepGraph.js"></script>  <!-- Link to stepGraph.js -->
 
       <img id="graphImage" alt="Weight Graph" style="width: 600px; height: auto;">
    </div>
