@@ -71,9 +71,8 @@ try {
     </div>
 
    <div class="container">
-      <h2> Daily Step Goal: </h2>
+      <h2> Update Daily Step Goal </h2>
       <form id="update-step-goal-form">
-         <!-- <label for="daily_step_goal">Enter Your Daily Step Goal:</label> -->
          <input type="number" id="daily_step_goal" name="daily_step_goal" min="0">
          
          <button type="submit">Update</button>
@@ -82,9 +81,8 @@ try {
    </div>
 
    <div class="container">
-      <h2> Daily "Active" Minutes Goal: </h2>
+      <h2> Update Daily "Active" Minutes Goal </h2>
       <form id="update-active-goal-form">
-         <!-- <label for="daily_active_goal">Enter Your Daily "Active" Minutes Goal:</label> -->
          <input type="number" id="daily_active_goal" name="daily_active_goal" min="0">
          
          <button type="submit">Update</button>
@@ -93,9 +91,9 @@ try {
    </div>
 
    <div class="container">
-      <h2> Daily Sleep Goal: </h2>
+      <h2> Update Daily Sleep Goal </h2>
       <form id="update-sleep-goal-form">
-        <label for="daily_sleep_goal">Please enter in minutes</label>
+        <label for="daily_sleep_goal">Please enter in hours</label>
         <input type="number" id="daily_sleep_goal" name="daily_sleep_goal" min="0">
          
         <button type="submit">Update</button>
@@ -104,7 +102,7 @@ try {
    </div>
 
    <div class="container">
-      <h2> Daily Goal for Time Spent Outside: </h2>
+      <h2> Update Daily Goal for Time Spent Outside </h2>
       <form id="update-outside-goal-form">
         <label for="daily_outside_goal">Please enter in minutes</label>
         <input type="number" id="daily_outside_goal" name="daily_outside_goal" min="0">

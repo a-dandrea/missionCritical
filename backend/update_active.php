@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     try {
-        $stmt = $db->prepare("SELECT daily_active_goal FROM progress WHERE user_id = :user_id");
+        $stmt = $db->prepare("SELECT daily_active_goal FROM users WHERE user_id = :user_id");
         $stmt->execute([":user_id" => $user_id]);
         $currentData = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -51,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $daily_active_goal = $daily_active_goal ?? $currentData['daily_active_goal'];
 
         // Perform the update
-        $stmt = $db->prepare("UPDATE progress SET daily_active_goal = :daily_active_goal WHERE user_id = :user_id");
+        $stmt = $db->prepare("UPDATE users SET daily_active_goal = :daily_active_goal WHERE user_id = :user_id");
         $stmt->execute([
             ":daily_active_goal" => $daily_active_goal,
             ":user_id" => $user_id
