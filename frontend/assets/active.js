@@ -6,7 +6,7 @@ document.getElementById("update-active-goal-form").addEventListener("submit", fu
  
      // Check if the active goal is a valid number
      if (activeGoal === "" || activeGoal < 0) {
-         alert("Please enter a valid step goal.");
+         alert("Please enter a valid active minutes goal.");
          return;  // Stop if the value is invalid
      }
  
