@@ -64,30 +64,30 @@ try {
                <option value="3">Increase Stamina</option>
             </select>
 
-            <button type="submit">Update Goal</button>
+            <button type="submit">Update</button>
         </form>
 
         <script src="assets/goal.js"></script>  <!-- Link to goal.js -->
     </div>
 
    <div class="container">
-      <h2> Update Your Daily Step Goal </h2>
+      <h2> Daily Step Goal: </h2>
       <form id="update-step-goal-form">
          <label for="daily_step_goal">Enter Your Daily Step Goal:</label>
          <input type="number" id="daily_step_goal" name="daily_step_goal" min="0">
          
-         <button type="submit">Update Daily Step Goal</button>
+         <button type="submit">Update</button>
       </form>
       <script src="assets/steps.js"></script>
    </div>
 
    <div class="container">
-      <h2> Update Your Daily "Active" Minutes Goal </h2>
+      <h2> Daily "Active" Minutes Goal: </h2>
       <form id="update-active-goal-form">
          <label for="daily_active_goal">Enter Your Daily "Active" Minutes Goal:</label>
          <input type="number" id="daily_active_goal" name="daily_active_goal" min="0">
          
-         <button type="submit">Update Daily "Active" Minutes Goal </button>
+         <button type="submit">Update</button>
       </form>
       <script src="assets/active.js"></script>
    </div>
