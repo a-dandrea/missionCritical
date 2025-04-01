@@ -1,4 +1,3 @@
-// Form submission handling with AJAX (same as before)
 document.getElementById("update-info-form").addEventListener("submit", function(event) {
    event.preventDefault();  // Prevent form from submitting normally
 

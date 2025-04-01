@@ -16,15 +16,15 @@ document.getElementById("graphForm").addEventListener("submit", function(event) 
    .then(data => {
       console.log("Server response:", data);
       if (data.status === "success") {
-         document.getElementById("graphImage").src = data.path + "?" + new Date().getTime();
-         document.getElementById("graphImage").style.display = "block";
+         document.getElementById("weightGraphImage").src = data.path + "?" + new Date().getTime();
+         document.getElementById("weightGraphImage").style.display = "block";
       } else {
          console.error(`Error on line ${new Error().lineNumber}:`, data.message);
       }
    })
    .catch(error => console.error(`Fetch error on line ${new Error().lineNumber}:`, error));
 
-   document.getElementById("graphImage").src = baseURL + imageName + extension;
+   document.getElementById("weightGraphImage").src = baseURL + imageName + extension;
    } catch (error) {
       console.error(`Unexpected error on line ${new Error().lineNumber}:`, error);
    }

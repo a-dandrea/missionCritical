@@ -90,7 +90,7 @@ try {
          <button type="submit">Update Activity Level</button>
       </form>
 
-      <script src="assets/activity.js"></script>  <!-- Link to goal.js -->
+      <script src="assets/activity.js"></script>  <!-- Link to activity.js -->
    </div>
 </body>
 </html>

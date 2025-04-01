@@ -27,7 +27,7 @@ try {
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $sql = "SELECT daily_step_goal FROM progress WHERE user_id = :user_id";
+    $sql = "SELECT daily_step_goal FROM users WHERE user_id = :user_id";
       $stmt = $db->prepare($sql);
       $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
       $stmt->execute();
@@ -193,12 +193,14 @@ $stmt->closeCursor();
 
          <input type="hidden" id="user_id" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
 
-         <button type="submit">Generate Graph</button>
+         <button type="submit">Generate Graphs</button>
       </form>
 
-      <script src="assets/graph.js"></script>  <!-- Link to graph.js -->
+      <script src="assets/weightGraph.js"></script>  <!-- Link to weightGraph.js -->
+      <script src="assets/stepGraph.js"></script>  <!-- Link to stepGraph.js -->
 
-      <img id="graphImage" alt="Weight Graph" style="width: 600px; height: auto;">
+      <img id="weightGraphImage" alt="Weight Graph" style="width: 600px; height: auto;">
+      <img id="stepGraphImage" alt="Step Graph" style="width: 600px; height: auto;">
    </div>
 </body>
 <footer style="background: #0f0a66; color:white; padding: 10px 20px;">

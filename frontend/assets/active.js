@@ -1,7 +1,17 @@
 document.getElementById("update-active-goal-form").addEventListener("submit", function(event) {
     event.preventDefault();  // Prevent form from submitting normally
+
+    // Grab the active goal value from the input field
+    let activeGoal = document.getElementById("daily_active_goal").value;
+ 
+     // Check if the active goal is a valid number
+     if (activeGoal === "" || activeGoal < 0) {
+         alert("Please enter a valid step goal.");
+         return;  // Stop if the value is invalid
+     }
  
     let formData = new FormData();
+    formData.append("daily_active_goal", activeGoal);
  
     fetch('../backend/update_active.php', {  // Submit form data to backend PHP
         method: 'POST',
