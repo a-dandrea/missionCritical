@@ -22,8 +22,8 @@ try {
 
     // Fetch user data
     $sql = "SELECT firstName, lastName, email, age, gender, weight, height, 
-               daily_step_goal, daily_calorie_goal, daily_active_minutes_goal, 
-               daily_sleep_goal, daily_time_outdoors_goal, daily_water_intake_goal, 
+               daily_step_goal, daily_calorie_goal, daily_active_goal, 
+               daily_sleep_goal, daily_outside_goal, daily_water_goal, 
                goal1, goal2, goal3, goal4, activity_level, privilege 
             FROM users 
             WHERE user_id = :user_id";
@@ -138,19 +138,19 @@ $stmt->closeCursor();
             ?>
          </p>
          <p>
-            <strong>Daily Step Goal:</strong> <?php echo htmlspecialchars($goals['daily_step_goal']); ?> step
+            <strong>Daily Step Goal:</strong> <?php echo htmlspecialchars($user['daily_step_goal']); ?> step
          </p>
          <p>
             <strong> Daily Calorie Goal:</strong> <?php echo htmlspecialchars($user['daily_calorie_goal']); ?> calories
          </p>
          <p>
-            <strong> Daily Time Spent Outdoors Goal:</strong> <?php echo htmlspecialchars($user['daily_time_outdoors_goal']); ?> hours
+            <strong> Daily Time Spent Outdoors Goal:</strong> <?php echo htmlspecialchars($user['daily_outside_goal']); ?> hours
          </p>
          <p>
             <strong> Daily Sleep Goal:</strong> <?php echo htmlspecialchars($user['daily_sleep_goal']); ?> hours
          </p>
          <p>
-            <strong> Daily Active Minutes Goal:</strong> <?php echo htmlspecialchars($user['daily_active_minutes_goal']); ?> minutes
+            <strong> Daily Active Minutes Goal:</strong> <?php echo htmlspecialchars($user['daily_active_goal']); ?> minutes
          </p>
     </div>
 

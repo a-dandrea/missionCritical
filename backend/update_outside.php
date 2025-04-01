@@ -34,7 +34,7 @@ try {
 // Ensure data is coming from a POST request
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Retrieve input data and filter out empty values
-    $daily_outside_goal = isset($_POST['daily_outside_goal']) && $_POST['daily_outside_goal'] !== '' ? intval($_POST['daily_outside_goal']) : null;
+    $daily_outside_goal = isset($_POST['daily_outside_goal']) && $_POST['daily_outside_goal'] !== '' ? floatval($_POST['daily_outside_goal']) : null;
 
     error_log("Received - Daily Outside Time Goal: " . ($daily_outside_goal ?? 'Not provided'));
 
