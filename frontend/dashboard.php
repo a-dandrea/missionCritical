@@ -199,7 +199,8 @@ $stmt->closeCursor();
       <script src="assets/weightGraph.js"></script>  <!-- Link to weightGraph.js -->
       <script src="assets/stepGraph.js"></script>  <!-- Link to stepGraph.js -->
 
-      <img id="graphImage" alt="Weight Graph" style="width: 600px; height: auto;">
+      <img id="weightGraphImage" alt="Weight Graph" style="width: 600px; height: auto;">
+      <img id="stepGraphImage" alt="Step Graph" style="width: 600px; height: auto;">
    </div>
 </body>
 <footer style="background: #0f0a66; color:white; padding: 10px 20px;">

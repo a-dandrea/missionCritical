@@ -6,7 +6,7 @@ document.getElementById("graphForm").addEventListener("submit", function(event) 
    let user_id = document.getElementById("user_id").value;
 
    let baseURL = "./images/";
-   let imageName = "weightGraph_" + user_id + "_" + year + "_" + month;
+   let imageName = "stepGraph_" + user_id + "_" + year + "_" + month;
    let extension = ".png";
 
    // Call PHP script to generate the graph
@@ -16,15 +16,15 @@ document.getElementById("graphForm").addEventListener("submit", function(event) 
    .then(data => {
       console.log("Server response:", data);
       if (data.status === "success") {
-         document.getElementById("weightGraphImage").src = data.path + "?" + new Date().getTime();
-         document.getElementById("weightGraphImage").style.display = "block";
+         document.getElementById("stepGraphImage").src = data.path + "?" + new Date().getTime();
+         document.getElementById("stepGraphImage").style.display = "block";
       } else {
          console.error(`Error on line ${new Error().lineNumber}:`, data.message);
       }
    })
    .catch(error => console.error(`Fetch error on line ${new Error().lineNumber}:`, error));
 
-   document.getElementById("weightGraphImage").src = baseURL + imageName + extension;
+   document.getElementById("stepGraphImage").src = baseURL + imageName + extension;
    } catch (error) {
       console.error(`Unexpected error on line ${new Error().lineNumber}:`, error);
    }
