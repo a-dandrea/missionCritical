@@ -96,10 +96,9 @@ try {
       <h2> Daily Sleep Goal: </h2>
       <form id="update-sleep-goal-form">
         <label for="daily_sleep_goal">Please enter in minutes</label>
-
-         <input type="number" id="daily_sleep_goal" name="daily_sleep_goal" min="0">
+        <input type="number" id="daily_sleep_goal" name="daily_sleep_goal" min="0">
          
-         <button type="submit">Update</button>
+        <button type="submit">Update</button>
       </form>
       <script src="assets/sleep.js"></script>
    </div>
@@ -107,9 +106,10 @@ try {
    <div class="container">
       <h2> Daily Goal for Time Spent Outside: </h2>
       <form id="update-outside-goal-form">
-         <input type="number" id="daily_outside_goal" name="daily_outside_goal" min="0">
+        <label for="daily_outside_goal">Please enter in minutes</label>
+        <input type="number" id="daily_outside_goal" name="daily_outside_goal" min="0">
          
-         <button type="submit">Update</button>
+        <button type="submit">Update</button>
       </form>
       <script src="assets/outside.js"></script>
    </div>
