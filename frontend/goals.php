@@ -95,7 +95,7 @@ try {
    <div class="container">
       <h2> Daily Sleep Goal: </h2>
       <form id="update-sleep-goal-form">
-        <label for="daily_sleep_goal">(Please enter in minutes)</label>
+        <label for="daily_sleep_goal">Please enter in minutes</label>
 
          <input type="number" id="daily_sleep_goal" name="daily_sleep_goal" min="0">
          
