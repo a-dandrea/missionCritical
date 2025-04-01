@@ -81,6 +81,17 @@ try {
       <script src="assets/steps.js"></script>
    </div>
 
+   <div class="container">
+      <h2> Update Your Daily "Active" Minutes Goal </h2>
+      <form id="update-active-goal-form">
+         <label for="daily_active_goal">Enter Your Daily "Active" Minutes Goal:</label>
+         <input type="number" id="daily_active_goal" name="daily_active_goal" min="0">
+         
+         <button type="submit">Update Daily "Active" Minutes Goal </button>
+      </form>
+      <script src="assets/steps.js"></script>
+   </div>
+
 </body>
 </html>
    

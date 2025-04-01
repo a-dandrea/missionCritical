@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 import mysql.connector
 import sys
 import os
@@ -35,21 +36,18 @@ cursor.execute("""
 """, (year, month, user_id))
 
 # Store data from database
-data = {date: None for date in all_dates}  # Initialize all days as None
-for log_date, steps in cursor.fetchall():
-   data[str(log_date)] = steps  # Fill actual values from database
+data = {date: 0 for date in all_dates}  # Initialize all days as None
+for log_date, step_count in cursor.fetchall():
+   data[str(log_date)] = step_count  # Fill actual values from database
 
 cursor.close()
 conn.close()
 
 # Prepare data for graph
-dates = []
-steps = []
+dates = [datetime.strptime(date, "%Y-%m-%d") for date in data.keys()]
+steps = list(data.values())
 
-for date, steps in data.items():
-   if steps is not None:  # Only plot existing data points
-      dates.append(datetime.strptime(date, "%Y-%m-%d"))
-      steps.append(steps)
+
 
 # Set graph appearance
 plt.rcParams['text.color'] = LABEL_COLOR
@@ -58,24 +56,25 @@ plt.rcParams['axes.edgecolor'] = LABEL_COLOR
 plt.rcParams['xtick.color'] = LABEL_COLOR
 plt.rcParams['ytick.color'] = LABEL_COLOR
 
-fig = plt.figure(figsize=(10, 5))
+fig, ax = plt.subplots(figsize=(12, 6))
 fig.patch.set_facecolor(BACKGROUND_COLOR)
-ax = fig.add_subplot(1, 1, 1)
 ax.set_facecolor(BACKGROUND_COLOR)
 
+# Format x-axis
+ax.xaxis.set_major_locator(mdates.DayLocator(interval=1))  # Show every day
+ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))  # Format as YYYY-MM-DD
+
+
 # Plot data
-if dates and steps:
-   plt.plot(dates, steps, label="Steps", color='yellow', linestyle='solid', linewidth=1,
-         marker="*", markerfacecolor='yellow')
+ax.bar(dates, steps, label="Steps", color='yellow', width=0.6)
 
 # Sort data by date to ensure correct chronological order
-if dates:
-   dates, steps = zip(*sorted(zip(dates, steps)))
-else:
-   dates, steps = [], []
+#if dates:
+#   dates, steps = zip(*sorted(zip(dates, steps)))
+#else:
+#   dates, steps = [], []
 
 # Convert dates to string format for plotting and ensure correct x-tick order
-dates = [date.strftime("%Y-%m-%d") for date in dates]
 all_dates_dt = [datetime.strptime(date, "%Y-%m-%d") for date in all_dates]  # Convert all_dates to datetime
 all_dates_dt.sort()  # Ensure sorted order
 all_dates = [date.strftime("%Y-%m-%d") for date in all_dates_dt]  # Convert back to string
@@ -89,7 +88,7 @@ plt.title(f"Step Log for {datetime(year, month, 1).strftime('%B %Y')}")
 plt.grid(True, linestyle="--", alpha=0.6)
 
 # Ensure output directory exists
-output_path = "./frontend/images/stepGraph_" + str(user_id) + "_" + str(year) + "_" + str(month) + ".png"
+output_path = f"./frontend/images/stepGraph_{user_id}_{year}_{month}.png"
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
 # Save the graph

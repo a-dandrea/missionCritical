@@ -2,6 +2,13 @@
 header("Content-Type: application/json");  
 session_start();
 
+error_log("Raw POST data: " . print_r($_POST, true));  // Debugging
+
+if (empty($_POST)) {
+    echo json_encode(["message" => "No POST data received. Check if the form is submitting correctly."]);
+    exit();
+}
+
 // Check if the user is logged in and has a user_id in the session
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(["message" => "Unauthorized: User not logged in."]);
@@ -38,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     try {
-        $stmt = $db->prepare("SELECT daily_step_goal FROM progress WHERE user_id = :user_id");
+        $stmt = $db->prepare("SELECT daily_step_goal FROM users WHERE user_id = :user_id");
         $stmt->execute([":user_id" => $user_id]);
         $currentData = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -51,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $daily_step_goal = $daily_step_goal ?? $currentData['daily_step_goal'];
 
         // Perform the update
-        $stmt = $db->prepare("UPDATE progress SET daily_step_goal = :daily_step_goal WHERE user_id = :user_id");
+        $stmt = $db->prepare("UPDATE users SET daily_step_goal = :daily_step_goal WHERE user_id = :user_id");
         $stmt->execute([
             ":daily_step_goal" => $daily_step_goal,
             ":user_id" => $user_id
@@ -60,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         error_log("Rows affected: " . $stmt->rowCount()); // Debugging
 
         if ($stmt->rowCount() > 0) {
-            echo json_encode(["message" => "User info updated successfully!"]);
+            echo json_encode(["message" => "Step goal updated successfully!"]);
         } else {
             echo json_encode(["message" => "No changes made. Data is the same as before."]);
         }
