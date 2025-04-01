@@ -92,6 +92,26 @@ try {
       <script src="assets/active.js"></script>
    </div>
 
+   <div class="container">
+      <h2> Daily Sleep Goal: </h2>
+      <form id="update-sleep-goal-form">
+         <input type="number" id="daily_sleep_goal" name="daily_sleep_goal" min="0">
+         
+         <button type="submit">Update</button>
+      </form>
+      <script src="assets/sleep.js"></script>
+   </div>
+
+   <div class="container">
+      <h2> Daily Goal for Time Spent Outside: </h2>
+      <form id="update-outside-goal-form">
+         <input type="number" id="daily_outside_goal" name="daily_outside_goal" min="0">
+         
+         <button type="submit">Update</button>
+      </form>
+      <script src="assets/outside.js"></script>
+   </div>
+
 </body>
 </html>
    
