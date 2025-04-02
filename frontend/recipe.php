@@ -32,7 +32,7 @@
     </nav>
 </header>
 <body>
-
+<div class="container">
     <h1 style="padding: 80px 10px 0px 10px;">Recipe Search</h1>
 
     <form action="search.php" method="get">
@@ -75,6 +75,7 @@
         <!-- Submit Button -->
         <button type="submit">Search</button>
     </form>
+</div>
 
 </body>
 </html>
