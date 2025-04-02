@@ -1,6 +1,6 @@
 /* Navbar Styles */
 .navbar {
-  /*position: fixed;*/
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -11,8 +11,6 @@
   padding: 8px 20px; /* Smaller height and spacing */
   z-index: 1000;
   height: 60px; /* Shorter height */
-
-
 }
 
 /* Adjust space between elements */
@@ -421,4 +419,11 @@ select {
 
 .card-content a:hover {
   background-color: #0056b3;
+}
+
+.center {
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
+   width: 50%;
 }
