@@ -209,4 +209,8 @@ footer {
         </div>
     </div>
 </body>
+
+<footer style="background: #0f0a66; color:white; padding: 10px 20px;">
+    <p>&copy; Copyright Mission Critical Group</p>
+</footer>
 </html>

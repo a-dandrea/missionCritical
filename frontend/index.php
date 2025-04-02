@@ -6,10 +6,11 @@ $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
 <!DOCTYPE html>
 <html>
 <head>
+   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link rel="stylesheet" href="style.css">
    <title>Mission Critical</title>
 </head>
-<body>
 <header>
 <nav class="navbar">   
     <div class="dropdown">
@@ -17,9 +18,9 @@ $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
   <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
 </a>
  <div class="dropdown-content">
-                <a href="subscriptions.php">Subscriptions</a>
-                <a href="payment.php">Payment</a>
-            </div>
+      <a href="subscriptions.php">Subscriptions</a>
+      <a href="payment.php">Payment</a>
+   </div>
         </div>
         <div class="nav-links">
 
@@ -36,6 +37,7 @@ $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
     </nav>
 </header>
 
+<body>
 <div class="hero-image">
     <div class="hero-text">
         <h1 style="font-size:64px;">Mission Critical</h1>
@@ -51,8 +53,9 @@ $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
     </div>
 </div>
 
+</body>
+
 <footer style="background: #0f0a66; color:white; padding: 10px 20px;">
     <p>&copy; Copyright Mission Critical Group</p>
 </footer>
-</body>
 </html>

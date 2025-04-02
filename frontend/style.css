@@ -120,6 +120,10 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
+    width: 60%;
+    margin: 50px auto;
+    background-color: #00000000;
+    padding: 20px;
 }
 .hero-text {
     font-family: 'Anonymous Pro', monospace; 
