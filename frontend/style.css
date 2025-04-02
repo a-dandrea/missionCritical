@@ -72,7 +72,7 @@
 
 /* Dropdown links */
 .dropdown-content a {
-    color: purple;
+    color: #0f0a66;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
@@ -97,12 +97,12 @@
 /* Hero image and index css */
 @import url(https://fonts.googleapis.com/css?family=Anonymous+Pro);
 
-body, html {
+body {
   font-family: 'Arial', sans-serif; /* Set a default font for the body */
   margin: 0;
   padding: 0;
   height: 100%;
-  background-color: #f4f4f9; /* Light background color for a clean look */
+  background-image: url('./images/starry-sky.jpg'); /* Light background color for a clean look */
 }
 
 .container {

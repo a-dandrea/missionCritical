@@ -78,7 +78,6 @@ try {
     <div class="container">
       <h2> Update Your Activity Level</h2>
       <form id="update-activity-form">
-         <label for="activity_level">Select Activity Level:</label>
          <select id="activity_level" name="activity_level">
             <option value="">Select an Activity Level</option>
             <option value="1">Sedentary (little or no exercise)</option>
