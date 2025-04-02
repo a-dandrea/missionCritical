@@ -81,6 +81,7 @@ all_dates = [date.strftime("%Y-%m-%d") for date in all_dates_dt]  # Convert back
 
 # Set all dates as x-ticks in the correct order
 plt.xticks(all_dates, rotation=90)
+plt.ylim(bottom=0)  # Ensure y-axis starts from 0 for better visualization
 
 plt.xlabel("Date")
 plt.ylabel("Steps")
