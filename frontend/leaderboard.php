@@ -135,6 +135,7 @@
         <a href="journal.php">Journal</a>
         <a href="leaderboard.php">Leaderboard</a>
         <a href="workout.php">Workouts</a>
+        <a href="recipe.php">Recipes</a>
         <?php if ($isLoggedIn): ?>
           <a href="logout.php" class="logout-button">Logout</a>
         <?php endif; ?>

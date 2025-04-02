@@ -1,3 +1,17 @@
+<?php
+   session_start();     
+     $isLoggedIn = isset($_SESSION['user_id']);
+
+     $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
+     $username = 'ejerrier';
+     $password = '1788128';
+   
+     if (!$isLoggedIn) {
+       header("Location: login.php");
+       exit();
+     }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,7 +47,7 @@
 </header>
 <body>
 <div class="container">
-    <h1 style="padding: 80px 10px 0px 10px;">Recipe Search</h1>
+    <h2>Recipe Search</h2>
 
     <form action="search.php" method="get">
         <!-- Recipe/Ingredient Search -->
