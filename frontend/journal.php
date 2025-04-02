@@ -64,7 +64,7 @@ $stmt->closeCursor();
          <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
       </a>
       <div class="dropdown-content">
-            <a href="subspriptions.php">Subscriptions</a>
+            <a href="subcriptions.php">Subscriptions</a>
             <a href="payment.php">Payment</a>
       </div>
    </div>

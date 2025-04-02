@@ -29,4 +29,11 @@
     </div>
     </nav>
 </header>
+
+<body>
+   <div class="container">
+      <h2>Subscriptions</h2>
+      <p> Coming soon...</p>
+   </div>
+</body>
 </html>
