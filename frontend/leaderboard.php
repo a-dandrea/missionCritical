@@ -35,7 +35,7 @@
       $unit = "steps";
       break;
 
-    case 'daily_active_minutes': // Adjusted for the `daily_active_minutes` table
+    case 'daily_active_minutes':
       $sql = "
         SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, SUM(dam.daily_active_minutes) AS value, 120 AS goal
         FROM users u
@@ -44,6 +44,39 @@
         ORDER BY value DESC
       ";
       $unit = "minutes";
+      break;
+
+    case 'daily_water_intake':
+      $sql = "
+        SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, SUM(dwi.daily_water_intake) AS value, 3000 AS goal
+        FROM users u
+        JOIN daily_water_intake dwi ON u.user_id = dwi.user_id
+        GROUP BY u.user_id
+        ORDER BY value DESC
+      ";
+      $unit = "ml";
+      break;
+
+    case 'daily_time_outdoors':
+      $sql = "
+        SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, SUM(dto.daily_time_outdoors) AS value, 120 AS goal
+        FROM users u
+        JOIN daily_time_outdoors dto ON u.user_id = dto.user_id
+        GROUP BY u.user_id
+        ORDER BY value DESC
+      ";
+      $unit = "minutes";
+      break;
+
+    case 'daily_sleep':
+      $sql = "
+        SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, SUM(dsl.daily_sleep_hours) AS value, 8 AS goal
+        FROM users u
+        JOIN daily_sleep_log dsl ON u.user_id = dsl.user_id
+        GROUP BY u.user_id
+        ORDER BY value DESC
+      ";
+      $unit = "hours";
       break;
 
     case 'calories':
@@ -117,6 +150,9 @@
         <option value="calories" <?= ($category == 'calories') ? 'selected' : '' ?>>Calories</option>
         <option value="steps" <?= ($category == 'steps') ? 'selected' : '' ?>>Steps</option>
         <option value="daily_active_minutes" <?= ($category == 'daily_active_minutes') ? 'selected' : '' ?>>Daily Active Minutes</option>
+        <option value="daily_water_intake" <?= ($category == 'daily_water_intake') ? 'selected' : '' ?>>Daily Water Intake (ml)</option>
+        <option value="daily_time_outdoors" <?= ($category == 'daily_time_outdoors') ? 'selected' : '' ?>>Daily Time Outdoors (minutes)</option>
+        <option value="daily_sleep" <?= ($category == 'daily_sleep') ? 'selected' : '' ?>>Daily Sleep (hours)</option>
       </select>
     </form>
 
