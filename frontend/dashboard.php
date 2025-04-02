@@ -153,6 +153,9 @@ $stmt->closeCursor();
          <p>
             <strong> Daily Active Minutes Goal:</strong> <?php echo htmlspecialchars($user['daily_active_goal']); ?> minutes
          </p>
+         <p>
+            <strong> Daily Water Intake Goal:</strong> <?php echo htmlspecialchars($user['daily_water_goal']); ?> oz
+         </p>
     </div>
 
     <!-- Action Buttons -->
