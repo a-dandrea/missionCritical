@@ -31,15 +31,14 @@ try {
     <nav class="navbar">   
     <div class="dropdown">
     <a href="index.php" class="dropbtn">
-  <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
-</a>
- <div class="dropdown-content">
-                <a href="#">Subscriptions</a>
-                <a href="#">Payment</a>
-            </div>
-        </div>
-        <div class="nav-links">
-
+      <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
+   </a>
+   <div class="dropdown-content">
+         <a href="subscriptions.php">Subscriptions</a>
+         <a href="payment.php">Payment</a>
+      </div>
+   </div>
+   <div class="nav-links">
             <a href="dashboard.php">Dashboard</a>
             <a href="journal.php">Journal</a>
             <a href="leaderboard.php">Leaderboard</a>

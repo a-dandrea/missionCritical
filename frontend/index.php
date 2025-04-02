@@ -17,8 +17,8 @@ $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
   <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
 </a>
  <div class="dropdown-content">
-                <a href="#">Subscriptions</a>
-                <a href="#">Payment</a>
+                <a href="subscriptions.php">Subscriptions</a>
+                <a href="payment.php">Payment</a>
             </div>
         </div>
         <div class="nav-links">

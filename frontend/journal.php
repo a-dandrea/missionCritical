@@ -64,8 +64,8 @@ $stmt->closeCursor();
          <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
       </a>
       <div class="dropdown-content">
-            <a href="#">Subscriptions</a>
-            <a href="#">Payment</a>
+            <a href="subspriptions.php">Subscriptions</a>
+            <a href="payment.php">Payment</a>
       </div>
    </div>
    <div class="nav-links">
@@ -83,7 +83,7 @@ $stmt->closeCursor();
 <body>
 <div class="container">
       <h2>Mission Log</h2>
-      <form method="POST" action="submit_journal.php" id="habitform">
+      <form id="habit-form">
          <label>Journal Date: <input type="date" name="date" required></label><br>
          <label>Steps: <input type="number" name="steps"></label><br>
          <label>Active Minutes: <input type="number" name="active_minutes"></label><br>
@@ -92,4 +92,6 @@ $stmt->closeCursor();
          <label>Time Outdoors (minutes): <input type="number" name="outdoor_time"></label><br>
          <button type="submit">Submit</button>
       </form>
+
+      <script src="assets/journal.js"></script>
    </div>
