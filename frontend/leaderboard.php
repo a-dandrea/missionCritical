@@ -132,6 +132,7 @@
       </div>
       <div class="nav-links">
         <a href="dashboard.php">Dashboard</a>
+        <a href="journal.php">Journal</a>
         <a href="leaderboard.php">Leaderboard</a>
         <a href="workout.php">Workouts</a>
         <?php if ($isLoggedIn): ?>
