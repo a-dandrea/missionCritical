@@ -1,6 +1,6 @@
 /* Navbar Styles */
 .navbar {
-  position: fixed;
+  /*position: fixed;*/
   top: 0;
   left: 0;
   width: 100%;
@@ -11,6 +11,7 @@
   padding: 8px 20px; /* Smaller height and spacing */
   z-index: 1000;
   height: 60px; /* Shorter height */
+
 
 }
 
