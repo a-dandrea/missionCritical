@@ -80,85 +80,74 @@ $stmt->closeCursor();
    <div class="container">
       <h1>Welcome, <?php echo htmlspecialchars($user['firstName']); ?>!</h1>
 
-      <!-- Basic Info Box -->
       <div class="box">
-        <h2>Basic Information</h2>
-        <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
-        <p><strong>Age:</strong> <?php echo htmlspecialchars($user['age']); ?></p>
-        <p><strong>Gender:</strong> <?php echo htmlspecialchars($user['gender']); ?></p>
-        <p><strong>Weight:</strong> <?php echo htmlspecialchars($user['weight']); ?> lbs</p>
-        <p><strong>Height:</strong> <?php echo htmlspecialchars($user['height']); ?> in</p>
+         <!-- Basic Info Box -->
+         <div class="box left">
+            <h2>Basic Information</h2>
+            <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
+            <p><strong>Age:</strong> <?php echo htmlspecialchars($user['age']); ?></p>
+            <p><strong>Gender:</strong> <?php echo htmlspecialchars($user['gender']); ?></p>
+            <p><strong>Weight:</strong> <?php echo htmlspecialchars($user['weight']); ?> lbs</p>
+            <p><strong>Height:</strong> <?php echo htmlspecialchars($user['height']); ?> in</p>
       
-        <p><strong>Activity Level:</strong> 
-            <?php $activity_level = htmlspecialchars($user['activity_level']); 
-            switch ($activity_level) {
-               case 0:
-                  echo "Sedentary (little or no exercise)";
-                  break;
-               case 1:
-                  echo "Lightly Active (1-3 days/week)";
-                  break;
-               case 2:
-                  echo "Moderately Active (3-5 days/week)";
-                  break;
-               case 3:
-                  echo "Very Active (6-7 days/week)";
-                  break;
-               case 4:
-                  echo "Super Active (athletic, intense training)";
-                  break;
-               default:
-                  echo $activity_level; // In case of an unexpected value, just display it
-                  break;
-            }
-            ?>
-         </p>
-        <p><strong>Privilege:</strong> <?php echo htmlspecialchars($user['privilege']); ?></p>
-      </div>
-
-      <!-- Goal & Activity Box -->
-      <div class="box">
-        <h2>Current Goals</h2>
-        <p>
-            <strong>Goals:</strong> 
-            <?php 
-               $goalLabels = [
-                  0 => "Maintain Weight",
-                  1 => "Lose Weight",
-                  2 => "Increase Muscle Mass",
-                  3 => "Increase Stamina"
-               ];
-
-               $selectedGoals = [];
-
-               for ($i = 1; $i <= 4; $i++) {
-                  if (!empty($user["goal$i"]) && isset($goalLabels[$user["goal$i"]])) {
-                     $selectedGoals[] = $goalLabels[$user["goal$i"]];
-                  }
+            <p><strong>Activity Level:</strong> 
+               <?php $activity_level = htmlspecialchars($user['activity_level']); 
+               switch ($activity_level) {
+                  case 0:
+                     echo "Sedentary (little or no exercise)";
+                     break;
+                  case 1:
+                     echo "Lightly Active (1-3 days/week)";
+                     break;
+                  case 2:
+                     echo "Moderately Active (3-5 days/week)";
+                     break;
+                  case 3:
+                     echo "Very Active (6-7 days/week)";
+                     break;
+                  case 4:
+                     echo "Super Active (athletic, intense training)";
+                     break;
+                  default:
+                     echo $activity_level; // In case of an unexpected value, just display it
+                     break;
                }
-               echo !empty($selectedGoals) ? implode(", ", $selectedGoals) : "No goals selected";
-            ?>
-         </p>
-         <p>
-            <strong>Daily Step Goal:</strong> <?php echo htmlspecialchars($user['daily_step_goal']); ?> step
-         </p>
-         <p>
-            <strong> Daily Calorie Goal:</strong> <?php echo htmlspecialchars($user['daily_calorie_goal']); ?> calories
-         </p>
-         <p>
-            <strong> Daily Time Spent Outdoors Goal:</strong> <?php echo htmlspecialchars($user['daily_outside_goal']); ?> hours
-         </p>
-         <p>
-            <strong> Daily Sleep Goal:</strong> <?php echo htmlspecialchars($user['daily_sleep_goal']); ?> hours
-         </p>
-         <p>
-            <strong> Daily Active Minutes Goal:</strong> <?php echo htmlspecialchars($user['daily_active_goal']); ?> minutes
-         </p>
-         <p>
-            <strong> Daily Water Intake Goal:</strong> <?php echo htmlspecialchars($user['daily_water_goal']); ?> oz
-         </p>
-    </div>
+               ?>
+            </p>
+            <p><strong>Privilege:</strong> <?php echo htmlspecialchars($user['privilege']); ?></p>
+         </div>
 
+         <!-- Goal & Activity Box -->
+         <div class="box right">
+            <h2>Current Goals</h2>
+            <p>
+               <strong>Goals:</strong> 
+               <?php 
+                  $goalLabels = [
+                     0 => "Maintain Weight",
+                     1 => "Lose Weight",
+                     2 => "Increase Muscle Mass",
+                     3 => "Increase Stamina"
+                  ];
+
+                  $selectedGoals = [];
+
+                  for ($i = 1; $i <= 4; $i++) {
+                     if (!empty($user["goal$i"]) && isset($goalLabels[$user["goal$i"]])) {
+                        $selectedGoals[] = $goalLabels[$user["goal$i"]];
+                     }
+                  }
+                  echo !empty($selectedGoals) ? implode(", ", $selectedGoals) : "No goals selected";
+               ?>
+            </p>
+            <p><strong>Daily Step Goal:</strong> <?php echo htmlspecialchars($user['daily_step_goal']); ?> step</p>
+            <p><strong> Daily Calorie Goal:</strong> <?php echo htmlspecialchars($user['daily_calorie_goal']); ?> calories</p>
+            <p><strong> Daily Time Spent Outdoors Goal:</strong> <?php echo htmlspecialchars($user['daily_outside_goal']); ?> hours</p>
+            <p><strong> Daily Sleep Goal:</strong> <?php echo htmlspecialchars($user['daily_sleep_goal']); ?> hours</p>
+            <p><strong> Daily Active Minutes Goal:</strong> <?php echo htmlspecialchars($user['daily_active_goal']); ?> minutes</p>
+            <p><strong> Daily Water Intake Goal:</strong> <?php echo htmlspecialchars($user['daily_water_goal']); ?> oz</p>
+         </div>
+      </div>
     <!-- Action Buttons -->
       <a href="personalinfo.php"> <button type=button>Update Basic Information</button></a>
       <a href="goals.php"> <button type=button>Update Goal</button></a>

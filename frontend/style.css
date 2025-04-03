@@ -110,12 +110,37 @@ footer {
 }
 
 .container {
-  width: 60%; /* Reduced the width of the container */
+  width: 60%;
   margin: 50px auto; /* Centers the container and adds top margin */
   background-color: #eeedf8;
-  padding: 20px;
+  padding: 1%;
   border-radius: 10px; /* Rounded corners for a modern look */
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+.container::after {
+   content: "";
+   display: table;
+   clear: both;
+}
+
+.box {
+   float: left;
+   margin: auto;
+}
+
+.box.left{
+   width: 47.5%;
+   background-color: #ffffff;
+   border-radius: 10px;
+   padding-left: 10px;
+   margin-right: 1%;
+}
+.box.right{
+   width: 47.5%;
+   background-color: #ffffff;
+   border-radius: 10px;
+   padding-left: 10px;
+   margin-left: 1%;
 }
 
 .hero-image {
@@ -161,7 +186,7 @@ footer {
 /* profile code and general? */
 h1{
   text-align: center;
-  font-size:3vw;
+  font-size:3em;
   margin-bottom:10px;
 }
 
