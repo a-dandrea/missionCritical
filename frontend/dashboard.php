@@ -200,6 +200,7 @@ $stmt->closeCursor();
       <script src="assets/stepGraph.js"></script>  <!-- Link to stepGraph.js -->
 
       <img id="weightGraphImage" alt="Weight Graph" style="width: 600px; height: auto;" class="center">
+      <p></p>
       <img id="stepGraphImage" alt="Step Graph" style="width: 600px; height: auto;" class="center">
    </div>
 </body>

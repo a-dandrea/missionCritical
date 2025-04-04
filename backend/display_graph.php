@@ -30,7 +30,7 @@ if (isset($_GET['year']) && isset($_GET['month'])) {
       2 => ["pipe", "w"]   // stderr
    ];
 
-   $weightProcess = proc_open($graphCommand, $descriptor_spec, $pipes);
+   $weightProcess = proc_open($weightCommand, $descriptor_spec, $pipes);
    $stepProcess = proc_open($stepCommand, $descriptor_spec, $pipes);
 
    if (is_resource($weightProcess)) {
