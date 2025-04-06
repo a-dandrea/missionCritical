@@ -128,6 +128,15 @@ footer {
    margin: auto;
 }
 
+.box.full {
+   /* Full width box */
+   width: 100%; /* Takes the full width of the container */
+   background-color: #ffffff; /* Ensures the background is white */
+   border-radius: 10px; /* Rounded corners for consistency */
+   padding: 20px; /* Padding for content inside the box */
+   box-sizing: border-box; /* Ensures padding is included in width calculation */
+}
+
 .box.left{
    width: 47.5%;
    background-color: #ffffff;

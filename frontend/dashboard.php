@@ -65,7 +65,7 @@ $stmt->closeCursor();
    </div>
    <div class="nav-links">
       <a href="dashboard.php">Dashboard</a>
-      <a href="journal.php">Journal</a>
+      <a href="journal.php">Mission Logs</a>
       <a href="leaderboard.php">Leaderboard</a>
       <a href="workout.php">Workouts</a>
       <a href="recipe.php">Recipes</a>
@@ -140,7 +140,7 @@ $stmt->closeCursor();
                   echo !empty($selectedGoals) ? implode(", ", $selectedGoals) : "No goals selected";
                ?>
             </p>
-            <p><strong>Daily Step Goal:</strong> <?php echo htmlspecialchars($user['daily_step_goal']); ?> step</p>
+            <p><strong>Daily Step Goal:</strong> <?php echo htmlspecialchars($user['daily_step_goal']); ?> steps</p>
             <p><strong> Daily Calorie Goal:</strong> <?php echo htmlspecialchars($user['daily_calorie_goal']); ?> calories</p>
             <p><strong> Daily Time Spent Outdoors Goal:</strong> <?php echo htmlspecialchars($user['daily_outside_goal']); ?> hours</p>
             <p><strong> Daily Sleep Goal:</strong> <?php echo htmlspecialchars($user['daily_sleep_goal']); ?> hours</p>

@@ -27,11 +27,44 @@ try {
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $sql = "SELECT daily_step_goal FROM users WHERE user_id = :user_id";
-      $stmt = $db->prepare($sql);
-      $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
-      $stmt->execute();
-      $goals = $stmt->fetch(PDO::FETCH_ASSOC);
+    $sql = "SELECT daily_step_goal, daily_calorie_goal, daily_active_goal, daily_outside_goal, daily_sleep_goal, daily_water_goal FROM users WHERE user_id = :user_id";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $goals = $stmt->fetch(PDO::FETCH_ASSOC);
+
+   // Fetch weekly step count for the current week
+    $sql = "SELECT SUM(daily_step_count) AS total_steps
+         FROM daily_steps
+         WHERE date >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+         AND date < DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
+         AND user_id = :user_id";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $daily_steps = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Fetch weekly active minutes count for the current week
+    $sql = "SELECT SUM(daily_active_minutes) AS total_active_minutes
+         FROM daily_active_minutes
+         WHERE date >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+         AND date < DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
+         AND user_id = :user_id";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $daily_active_minutes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Fetch weekly active minutes count for the current week
+    $sql = "SELECT SUM(daily_water_intake) AS total_water_intake
+         FROM daily_water_intake
+         WHERE date >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+         AND date < DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
+         AND user_id = :user_id";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $daily_water_intake = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (!$user) {
         echo "User not found.";
@@ -42,6 +75,11 @@ try {
          echo "No goals found.";
          exit();
     }
+
+      if (!$daily_steps || !$daily_active_minutes || !$daily_water_intake) {
+         echo "No data found for weekly progress.";
+         exit();
+      }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
     exit();
@@ -70,7 +108,7 @@ $stmt->closeCursor();
    </div>
    <div class="nav-links">
       <a href="dashboard.php">Dashboard</a>
-      <a href="journal.php">Journal</a>
+      <a href="journal.php">Mission Logs</a>
       <a href="leaderboard.php">Leaderboard</a>
       <a href="workout.php">Workouts</a>
       <a href="recipe.php">Recipes</a>
@@ -82,7 +120,65 @@ $stmt->closeCursor();
 </header>
 <body>
 <div class="container">
-      <h2>Mission Log</h2>
+   <h2> Mission Logs </h2>
+   <div class="box full">
+   <label for="step-progress">Weekly Step Progress:</label>
+   <progress 
+      id="step-progress" 
+      value="<?php echo $daily_steps['total_steps']; ?>" 
+      max="<?php echo 7 * $goals['daily_step_goal']; ?>" 
+      style="width: 100%; height: 20px;">
+      <?php echo $daily_steps['total_steps']; ?> steps
+   </progress>
+   <label for="step-progress-value">
+      <?php 
+         $percentage = ($daily_steps['total_steps'] / (7 * $goals['daily_step_goal'])) * 100;
+         echo round($percentage, 2) . "% of your weekly step goal.";
+      ?>
+   </label>
+   </div> <!-- End of box for steps -->
+
+   <div class="box full">
+   <label for="active-minute-progress">Weekly Active Minutes Progress:</label>
+   <progress 
+      id="active-minute-progress" 
+      value="<?php echo $daily_active_minutes['total_active_minutes']; ?>" 
+      max="<?php echo 7 * $goals['daily_active_goal']; ?>" 
+      style="width: 100%; height: 20px;">
+      <?php echo $daily_active_minutes['total_active_minutes']; ?> steps
+   </progress>
+   <label for="step-progress-value">
+      <?php 
+         $percentage = ($daily_active_minutes['total_active_minutes'] / (7 * $goals['daily_active_goal'])) * 100;
+         echo round($percentage, 2) . "% of your weekly step goal.";
+      ?>
+   </label>
+   </div> <!-- End of box for active minutes -->
+
+   <div class="box full">
+   <label for="water-progress">Weekly Water Intake Progress:</label>
+   <progress 
+      id="water-progress" 
+      value="<?php echo $daily_active_minutes['total_water_intake']; ?>" 
+      max="<?php echo 7 * $goals['daily_water_goal']; ?>" 
+      style="width: 100%; height: 20px;">
+      <?php echo $daily_active_minutes['total_water_intake']; ?> oz
+   </progress>
+   <label for="water-progress-value">
+      <?php 
+         if ($goals['daily_water_goal'] > 0) {
+            $percentage = ($daily_active_minutes['total_water_intake'] / (7 * $goals['daily_water_goal'])) * 100;
+            echo round($percentage, 2) . "% of your weekly water intake goal.";
+         } else {
+            echo "No water intake goal set.";
+         }
+      ?>
+   </label>
+   </div> <!-- End of box for water intake -->
+</div>
+
+<div class="container">
+      <h2>Log New Mission</h2>
       <form id="habit-form">
          <label>Journal Date: <input type="date" name="date" required></label><br>
          <label>Steps: <input type="number" name="steps"></label><br>
