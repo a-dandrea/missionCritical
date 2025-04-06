@@ -3,6 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+error_log("PHP is running.");
+
+
 session_start(); // Start session to get user ID
 
 if (!isset($_SESSION['user_id'])) {
@@ -21,9 +24,18 @@ if (isset($_GET['year']) && isset($_GET['month'])) {
       exit();
    }
 
+   $yearEscaped = escapeshellarg($year);
+   $monthEscaped = escapeshellarg($month);
+   $userIdEscaped = escapeshellarg($user_id);
+
+   $weightCommand = "/usr/bin/python3 /home/students/adandrea/public_html/missionCritical/mc_basic_code/mc_weightGraph.py $year $month $user_id";
+   $stepCommand = "/usr/bin/python3 /home/students/adandrea/public_html/missionCritical/mc_basic_code/mc_stepGraph.py $year $month $user_id";
+
+   echo "Weight Command: " . $weightCommand . "<br>";
+   echo "Step Command: " . $stepCommand . "<br>";
+
    putenv("MPLCONFIGDIR=/tmp/matplotlib_cache");
-   $weightCommand = escapeshellcmd("/usr/bin/python3 ../mc_basic_code/mc_weightGraph.py $year $month $user_id");
-   $stepCommand = escapeshellcmd("/usr/bin/python3 ../mc_basic_code/mc_stepGraph.py $year $month $user_id");
+
    $descriptor_spec = [
       0 => ["pipe", "r"],  // stdin
       1 => ["pipe", "w"],  // stdout

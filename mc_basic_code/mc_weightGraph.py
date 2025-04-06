@@ -88,8 +88,8 @@ plt.ylabel("Weight (lbs)")
 plt.title(f"Weight Log for {datetime(year, month, 1).strftime('%B %Y')}")
 plt.grid(True, linestyle="--", alpha=0.6)
 
-# Ensure output directory exists
-output_path = "./frontend/images/weightGraph_" + str(user_id) + "_" + str(year) + "_" + str(month) + ".png"
+
+output_path = "/home/students/adandrea/public_html/missionCritical/frontend/images/weightGraph_" + str(user_id) + "_" + str(year) + "_" + str(month) + ".png"
 os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
 # Save the graph
