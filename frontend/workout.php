@@ -98,7 +98,7 @@ try {
             <button type="submit">Submit Workout</button>
         </form>
 
-        <h3>Your Previous Workouts</h3>
+        <h3 style="text-align: center;">Your Previous Workouts</h3>
         <table>
             <thead>
                 <tr>
@@ -127,6 +127,40 @@ try {
                 <?php endif; ?>
             </tbody>
         </table>
+
+        <!-- Generate Workout Form -->
+        <h4 style="text-align: center;">Need Help Creating a Plan?</h4>
+        <form id="generate-form">
+            <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>" />
+            <label>Goal: <input type="text" name="goal" required /></label><br>
+            <label>Fitness Level: <input type="text" name="level" required /></label><br>
+            <label>Workout Type: <input type="text" name="workout_type" required /></label><br>
+            <label>Time per Session: <input type="text" name="time_per_session" required /></label><br>
+            <label>Days per Week: <input type="number" name="days_per_week" required /></label><br>
+            <button type="submit">Generate Workout Plan</button>
+        </form>
+
+        <!-- Display result -->
+        <pre id="generated-plan" style="white-space: pre-wrap; background: #f3f3f3; padding: 10px;"></pre>
+
+        <script>
+        document.getElementById("generate-form").addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const payload = Object.fromEntries(formData.entries());
+
+            const response = await fetch("generate_workout.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            const result = await response.json();
+            document.getElementById("generated-plan").textContent = result.plan || result.message;
+        });
+        </script>
+
     </div>
 
     <script src="assets/script.js"></script>
