@@ -135,6 +135,7 @@ footer {
    border-radius: 10px; /* Rounded corners for consistency */
    padding: 20px; /* Padding for content inside the box */
    box-sizing: border-box; /* Ensures padding is included in width calculation */
+   margin-bottom: 20px; /* Space below the box for separation */ 
 }
 
 .box.left{
