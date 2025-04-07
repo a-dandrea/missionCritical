@@ -4,6 +4,7 @@
   session_start();
   $isLoggedIn = isset($_SESSION['user_id']);
 
+
   $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
   $username = 'ejerrier';
   $password = '1788128';
@@ -22,7 +23,7 @@
 
   // Determine category (default: calories)
   $category = $_POST['category'] ?? 'calories';
-
+  
   switch ($category) {
     case 'steps':
       $sql = "
