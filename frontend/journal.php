@@ -137,46 +137,6 @@ $stmt->closeCursor();
          ?>
       </label>
    </div> <!-- End of box for steps -->
-
-   <p></p>
-
-   <div class="box full">
-   <label for="active-minute-progress">Weekly Active Minutes Progress:</label>
-   <progress 
-      id="active-minute-progress" 
-      value="<?php echo $daily_active_minutes['total_active_minutes']; ?>" 
-      max="<?php echo 7 * $goals['daily_active_goal']; ?>" 
-      style="width: 100%; height: 30px;">
-      <?php echo $daily_active_minutes['total_active_minutes']; ?> steps
-   </progress>
-   <label for="step-progress-value">
-      <?php 
-         $percentage = ($daily_active_minutes['total_active_minutes'] / (7 * $goals['daily_active_goal'])) * 100;
-         echo round($percentage, 2) . "% of your weekly step goal.";
-      ?>
-   </label>
-   </div> <!-- End of box for active minutes -->
-
-   <div class="box full">
-   <label for="water-progress">Weekly Water Intake Progress:</label>
-   <progress 
-      id="water-progress" 
-      value="<?php echo $daily_active_minutes['total_water_intake']; ?>" 
-      max="<?php echo 7 * $goals['daily_water_goal']; ?>" 
-      style="width: 100%; height: 30px;">
-      <?php echo $daily_active_minutes['total_water_intake']; ?> oz
-   </progress>
-   <label for="water-progress-value">
-      <?php 
-         if ($goals['daily_water_goal'] > 0) {
-            $percentage = ($daily_active_minutes['total_water_intake'] / (7 * $goals['daily_water_goal'])) * 100;
-            echo round($percentage, 2) . "% of your weekly water intake goal.";
-         } else {
-            echo "No water intake goal set.";
-         }
-      ?>
-   </label>
-   </div> <!-- End of box for water intake -->
 </div>
 
 <div class="container">
