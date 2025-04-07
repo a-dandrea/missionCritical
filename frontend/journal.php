@@ -139,6 +139,7 @@ $stmt->closeCursor();
    </div> <!-- End of box for steps -->
 </div>
 
+
 <div class="container">
       <h2>Log New Mission</h2>
       <form id="habit-form">
@@ -150,6 +151,67 @@ $stmt->closeCursor();
          <label>Time Outdoors (minutes): <input type="number" name="outdoor_time"></label><br>
          <button type="submit">Submit</button>
       </form>
+
+      <?php
+function getHabitLogs($db, $table, $column, $month, $year, $user_id) {
+    try {
+        $query = "SELECT DATE(date) as date, $column FROM $table
+                  WHERE MONTH(date) = :month AND YEAR(date) = :year AND user_id = :user_id";
+        $stmt = $db->prepare($query);
+        $stmt->execute([
+            ':month' => $month,
+            ':year' => $year,
+            ':user_id' => $user_id
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+    } catch (PDOException $e) {
+        echo "<p>Error fetching from $table: " . $e->getMessage() . "</p>";
+        return [];
+    }
+}
+
+$month = date('m');
+$year = date('Y');
+$daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+// Fetch habit data
+$step_data    = getHabitLogs($db, 'daily_steps', 'daily_step_count', $month, $year, $user_id);
+$active_data  = getHabitLogs($db, 'daily_active_minutes', 'daily_active_minutes', $month, $year, $user_id);
+$water_data   = getHabitLogs($db, 'daily_water_intake', 'daily_water_intake', $month, $year, $user_id);
+$sleep_data   = getHabitLogs($db, 'daily_sleep_log', 'daily_sleep_hours', $month, $year, $user_id);
+$outdoor_data = getHabitLogs($db, 'daily_time_outdoors', 'daily_time_outdoors', $month, $year, $user_id);
+
+function renderRow($label, $data, $goal, $daysInMonth, $year, $month) {
+    echo "<tr><td><strong>$label</strong></td>";
+    for ($day = 1; $day <= $daysInMonth; $day++) {
+        $date = sprintf('%04d-%02d-%02d', $year, $month, $day);
+        $value = isset($data[$date]) ? $data[$date] : 0;
+        $met = $value >= $goal;
+        $color = $met ? '#70d6ff' : '#e0e0e0';
+        echo "<td title='$value' style='width: 20px; height: 20px; background: $color; border: 1px solid #aaa;'></td>";
+    }
+    echo "</tr>";
+}
+?>
+
+<div style="margin-top: 40px;">
+    <h2>Monthly Habit Tracker (<?= date('F Y') ?>)</h2>
+    <table style="border-collapse: collapse; font-size: 12px;">
+        <tr><td></td>
+        <?php for ($i = 1; $i <= $daysInMonth; $i++): ?>
+            <td><?= $i ?></td>
+        <?php endfor; ?>
+        </tr>
+        <?php
+            renderRow('Steps', $step_data, $goals['daily_step_goal'], $daysInMonth, $year, $month);
+            renderRow('Active Min', $active_data, $goals['daily_active_goal'], $daysInMonth, $year, $month);
+            renderRow('Water (oz)', $water_data, $goals['daily_water_goal'], $daysInMonth, $year, $month);
+            renderRow('Sleep (hrs)', $sleep_data, $goals['daily_sleep_goal'], $daysInMonth, $year, $month);
+            renderRow('Outdoors (min)', $outdoor_data, $goals['daily_outside_goal'], $daysInMonth, $year, $month);
+        ?>
+    </table>
+</div>
+
 
       <script src="assets/journal.js"></script>
    </div>
