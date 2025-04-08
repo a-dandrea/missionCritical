@@ -55,7 +55,7 @@ try {
     $stmt->execute();
     $daily_active_minutes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Fetch weekly active minutes count for the current week
+    // Fetch weekly water intake for the current week
     $sql = "SELECT SUM(daily_water_intake) AS total_water_intake
          FROM daily_water_intake
          WHERE date >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
@@ -65,6 +65,29 @@ try {
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
     $daily_water_intake = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+   // Fetch weekly sleep hours for the current week
+   $sql = "SELECT SUM(daily_sleep_hours) AS total_sleep
+   FROM daily_sleep_log
+   WHERE date >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+   AND date < DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
+   AND user_id = :user_id";
+ $stmt = $db->prepare($sql);
+ $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+ $stmt->execute();
+ $daily_sleep = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+ // Fetch weekly time outdoors for the current week
+   $sql = "SELECT SUM(daily_time_outdoors) AS total_time_outside
+         FROM daily_time_outdoors
+         WHERE date >= DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)
+         AND date < DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 7 DAY)
+         AND user_id = :user_id";
+   $stmt = $db->prepare($sql);
+   $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
+   $stmt->execute();
+   $daily_time_outside = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
     if (!$user) {
         echo "User not found.";
@@ -76,10 +99,10 @@ try {
          exit();
     }
 
-      if (!$daily_steps || !$daily_active_minutes || !$daily_water_intake) {
-         echo "No data found for weekly progress.";
-         exit();
-      }
+    if (!$daily_steps || !$daily_active_minutes || !$daily_water_intake || !$daily_sleep || !$daily_time_outside) {
+      echo "No data found for weekly progress.";
+      exit();
+    }
 } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
     exit();
@@ -137,6 +160,86 @@ $stmt->closeCursor();
          ?>
       </label>
    </div> <!-- End of box for steps -->
+
+   <div class="box full">
+   <label for="active-minute-progress">Weekly Active Minutes Progress:</label>
+   <progress 
+      id="active-minute-progress" 
+      value="<?php echo $daily_active_minutes['total_active_minutes']; ?>" 
+      max="<?php echo 7 * $goals['daily_active_goal']; ?>" 
+      style="width: 100%; height: 30px;">
+      <?php echo $daily_active_minutes['total_active_minutes']; ?> steps
+   </progress>
+   <label for="active-progress-value">
+      <?php 
+         $percentage = ($daily_active_minutes['total_active_minutes'] / (7 * $goals['daily_active_goal'])) * 100;
+         echo round($percentage, 2) . "% of your weekly step goal.";
+      ?>
+   </label>
+   </div> <!-- End of box for active minutes -->
+
+   <div class="box full">
+   <label for="water-progress">Weekly Water Intake Progress:</label>
+   <progress 
+      id="water-progress" 
+      value="<?php echo $daily_active_minutes['total_water_intake']; ?>" 
+      max="<?php echo 7 * $goals['daily_water_goal']; ?>" 
+      style="width: 100%; height: 30px;">
+      <?php echo $daily_active_minutes['total_water_intake']; ?> oz
+   </progress>
+   <label for="water-progress-value">
+      <?php 
+         if ($goals['daily_water_goal'] > 0) {
+            $percentage = ($daily_active_minutes['total_water_intake'] / (7 * $goals['daily_water_goal'])) * 100;
+            echo round($percentage, 2) . "% of your weekly water intake goal.";
+         } else {
+            echo "No water intake goal set.";
+         }
+      ?>
+   </label>
+   </div> <!-- End of box for water intake -->
+
+   <div class="box full">
+      <label for="sleep-progress">Weekly Sleep Progress:</label>
+      <progress 
+         id="sleep-progress" 
+         value="<?php echo $daily_sleep['total_sleep']; ?>" 
+         max="<?php echo 7 * $goals['daily_sleep_goal']; ?>" 
+         style="width: 100%; height: 30px;">
+         <?php echo $daily_sleep['total_sleep']; ?> hours
+      </progress>
+      <label for="sleep-progress-value">
+         <?php 
+            if ($goals['daily_sleep_goal'] > 0) {
+               $percentage = ($daily_sleep['total_sleep'] / (7 * $goals['daily_sleep_goal'])) * 100;
+               echo round($percentage, 2) . "% of your weekly sleep goal.";
+            } else {
+               echo "No sleep goal set.";
+            }
+         ?>
+      </label>
+   </div> <!-- End of box for sleep -->
+
+   <div class="box full">
+      <label for="outdoor-time-progress">Weekly Time Outdoors Progress:</label>
+      <progress 
+         id="outdoor-time-progress" 
+         value="<?php echo $daily_time_outside['total_time_outside']; ?>" 
+         max="<?php echo 7 * $goals['daily_outside_goal']; ?>" 
+         style="width: 100%; height: 30px;">
+         <?php echo $daily_time_outside['total_time_outside']; ?> minutes
+      </progress>
+      <label for="outdoor-time-progress-value">
+         <?php 
+            if ($goals['daily_outside_goal'] > 0) {
+               $percentage = ($daily_time_outside['total_time_outside'] / (7 * $goals['daily_outside_goal'])) * 100;
+               echo round($percentage, 2) . "% of your weekly time outdoors goal.";
+            } else {
+               echo "No outdoor time goal set.";
+            }
+         ?>
+      </label>
+   </div> <!-- End of box for outdoor time -->
 </div>
 
 

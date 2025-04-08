@@ -196,10 +196,10 @@ $stmt->closeCursor();
          <button type="submit">Generate Graphs</button>
       </form>
 
-      <script src="assets/weightGraph.js"></script>  <!-- Link to weightGraph.js -->
-      <script src="assets/stepGraph.js"></script>  <!-- Link to stepGraph.js -->
+      <script src="assets/weightGraph.js"></script> <!-- Link to weightGraph.js -->
+      <script src="assets/stepGraph.js"></script> <!-- Link to stepGraph.js -->
 
-      <img id="weightGraphImage" alt="Weight Graph" style="width: 600px; height: auto;" class="center">
+      <img id="weightGraph" alt="Weight Graph" style="width: 600px; height: auto;" class="center">
       <p></p>
       <img id="stepGraphImage" alt="Step Graph" style="width: 600px; height: auto;" class="center">
    </div>
