@@ -112,6 +112,18 @@ try {
       <script src="assets/outside.js"></script>
    </div>
 
+   <div class="container">
+      <h2> Update Daily Goal for Water Intake </h2>
+      <form id="update-water-goal-form">
+        <label for="daily_water_goal">Please enter in ounces</label>
+        <input type="number" id="daily_water_goal" name="daily_water_goal" min="0">
+         
+        <button type="submit">Update</button>
+      </form>
+
+      <script src="assets/water.js"></script>
+   </div>
+
 </body>
 
 <footer style="background: #0f0a66; color:white; padding: 10px 20px;">

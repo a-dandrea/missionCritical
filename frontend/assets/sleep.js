@@ -2,7 +2,7 @@ document.getElementById("update-sleep-goal-form").addEventListener("submit", fun
     event.preventDefault();  // Prevent form from submitting normally
 
     // Grab the sleep goal value from the input field
-    let sleepGoal = document.getElementById("daily_outside_goal").value;
+    let sleepGoal = document.getElementById("daily_sleep_goal").value;
  
      // Check if the sleep goal is a valid number
      if (sleepGoal === "" || sleepGoal < 0) {
