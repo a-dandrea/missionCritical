@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Check if at least one field is provided
     if ($daily_water_goal === null) {
-        echo json_encode(["message" => "No step goal provided to update."]);
+        echo json_encode(["message" => "No water goal provided to update."]);
         exit();
     }
 
