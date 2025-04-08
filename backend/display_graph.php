@@ -31,10 +31,10 @@ if (isset($_GET['year']) && isset($_GET['month'])) {
    $weightCommand = "/usr/bin/python3 /home/students/adandrea/public_html/missionCritical/mc_basic_code/mc_weightGraph.py $year $month $user_id";
    $stepCommand = "/usr/bin/python3 /home/students/adandrea/public_html/missionCritical/mc_basic_code/mc_stepGraph.py $year $month $user_id";
 
+   exec($weightCommand . " 2>/tmp/weight_error.log", $output, $exitCode);
+
    echo "Weight Command: " . $weightCommand . "<br>";
    echo "Step Command: " . $stepCommand . "<br>";
-
-   putenv("MPLCONFIGDIR=/tmp/matplotlib_cache");
 
    $descriptor_spec = [
       0 => ["pipe", "r"],  // stdin
@@ -42,8 +42,16 @@ if (isset($_GET['year']) && isset($_GET['month'])) {
       2 => ["pipe", "w"]   // stderr
    ];
 
-   $weightProcess = proc_open($weightCommand, $descriptor_spec, $pipes);
-   $stepProcess = proc_open($stepCommand, $descriptor_spec, $pipes);
+   $env = [
+      'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
+      'HOME' => '/home/students/adandrea',
+      'USER' => 'adandrea',
+      'LANG' => 'en_US.UTF-8',
+      'MPLCONFIGDIR' => '/tmp'
+  ];
+
+   $weightProcess = proc_open($weightCommand, $descriptor_spec, $pipes, null, $env);
+   $stepProcess = proc_open($stepCommand, $descriptor_spec, $pipes, null, $env);
 
    if (is_resource($weightProcess)) {
       $output = stream_get_contents($pipes[1]);
