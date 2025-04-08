@@ -1,15 +1,14 @@
-import matplotlib
-matplotlib.use('Agg')
-import mysql.connector
-import sys
 import os
 os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib'
+import matplotlib
+matplotlib.use('svg')
+import mysql.connector
+import sys
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 
 import traceback
 
-sys.stderr = open('/tmp/python_error.log', 'w')
 def log_exception(exc_type, exc_value, exc_tb):
     traceback.print_exception(exc_type, exc_value, exc_tb, file=sys.stderr)
 
@@ -101,14 +100,13 @@ try:
    plt.grid(True, linestyle="--", alpha=0.6)
 
 
-   output_path = "/home/students/adandrea/public_html/missionCritical/frontend/images/weightGraph_" + str(user_id) + "_" + str(year) + "_" + str(month) + ".png"
+   output_path = "/home/students/adandrea/public_html/missionCritical/frontend/images/weightGraph_" + str(user_id) + "_" + str(year) + "_" + str(month) + ".svg"
    os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
    # Save the graph
-   #plt.savefig(output_path, bbox_inches='tight')
+   plt.savefig(output_path, bbox_inches='tight', format='svg')
    print(output_path)  # Print the file path for PHP
 except Exception as e:
-   with open("/tmp/python_error.log", "w") as log:
-      log.write(str(e))
-      log.write("\n")
-      traceback.print_exc(file=log)
+   print("Exception occurred:", file=sys.stderr)
+   traceback.print_exc(file=sys.stderr)
+   sys.exit(1)
