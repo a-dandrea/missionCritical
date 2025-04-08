@@ -31,10 +31,6 @@ if (isset($_GET['year']) && isset($_GET['month'])) {
    $weightCommand = "/usr/bin/python3 /home/students/adandrea/public_html/missionCritical/mc_basic_code/mc_weightGraph.py $year $month $user_id";
    $stepCommand = "/usr/bin/python3 /home/students/adandrea/public_html/missionCritical/mc_basic_code/mc_stepGraph.py $year $month $user_id";
 
-   exec($weightCommand . " 2>/tmp/weight_error.log", $output, $exitCode);
-
-   echo "Weight Command: " . $weightCommand . "<br>";
-   echo "Step Command: " . $stepCommand . "<br>";
 
    $descriptor_spec = [
       0 => ["pipe", "r"],  // stdin
@@ -73,8 +69,10 @@ if (isset($_GET['year']) && isset($_GET['month'])) {
 
       $image_path = trim($output);
 
+      $image_url = str_replace("/home/students/adandrea/public_html", "/~adandrea", $image_path);
+
       if (!empty($image_path) && file_exists($image_path)) {
-         echo json_encode(["status" => "success", "path" => $image_path]);
+         echo json_encode(["status" => "success", "path" => $image_url]);
       } else {
          error_log("Error: Image not found at " . $image_path);
          echo json_encode(["status" => "error", "message" => "Error generating graph."]);
