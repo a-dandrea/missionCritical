@@ -182,20 +182,46 @@ $sleep_data   = getHabitLogs($db, 'daily_sleep_log', 'daily_sleep_hours', $month
 $outdoor_data = getHabitLogs($db, 'daily_time_outdoors', 'daily_time_outdoors', $month, $year, $user_id);
 
 function renderRow($label, $data, $goal, $daysInMonth, $year, $month) {
-    echo "<tr><td><strong>$label</strong></td>";
-    for ($day = 1; $day <= $daysInMonth; $day++) {
-        $date = sprintf('%04d-%02d-%02d', $year, $month, $day);
-        $value = isset($data[$date]) ? $data[$date] : 0;
-        $met = $value >= $goal;
-        $color = $met ? '#70d6ff' : '#e0e0e0';
-        echo "<td title='$value' style='width: 20px; height: 20px; background: $color; border: 1px solid #aaa;'></td>";
-    }
-    echo "</tr>";
+   echo "<tr><td><strong>$label</strong></td>";
+   for ($day = 1; $day <= $daysInMonth; $day++) {
+       $date = sprintf('%04d-%02d-%02d', $year, $month, $day);
+       $value = isset($data[$date]) ? $data[$date] : 0;
+
+       // Calculate percentage completion
+       $percentage = ($value / $goal) * 100;
+       // Define gradient colors based on completion percentage
+       if ($percentage >= 100) {
+           $color = '#4CAF50';  // Green for 100%
+       } elseif ($percentage >= 75) {
+           $color = '#8BC34A';  // Light Green for 75%
+       } elseif ($percentage >= 50) {
+           $color = '#FFEB3B';  // Yellow for 50%
+       } elseif ($percentage >= 25) {
+           $color = '#FF9800';  // Orange for 25%
+       } else {
+           $color = '#F44336';  // Red for less than 25%
+       }
+       
+       echo "<td title='$value' style='width: 20px; height: 20px; background: $color; border: 1px solid #aaa;'></td>";
+   }
+   echo "</tr>";
 }
+
 ?>
 
 <div style="margin-top: 40px;">
     <h2>Monthly Habit Tracker (<?= date('F Y') ?>)</h2>
+    
+    <!-- Key for colors -->
+    <div style="margin-bottom: 10px; text-align: center;">
+        <strong>Progress Legend:</strong>
+        <span style="background-color: #4CAF50; padding: 5px; color: white;">100%</span> 
+        <span style="background-color: #8BC34A; padding: 5px; color: white;">75%</span> 
+        <span style="background-color: #FFEB3B; padding: 5px; color: black;">50%</span> 
+        <span style="background-color: #FF9800; padding: 5px; color: white;">25%</span>
+        <span style="background-color: #F44336; padding: 5px; color: white;">0%</span>
+    </div>
+
     <table style="border-collapse: collapse; font-size: 12px;">
         <tr><td></td>
         <?php for ($i = 1; $i <= $daysInMonth; $i++): ?>
@@ -211,6 +237,7 @@ function renderRow($label, $data, $goal, $daysInMonth, $year, $month) {
         ?>
     </table>
 </div>
+
 
 
       <script src="assets/journal.js"></script>
