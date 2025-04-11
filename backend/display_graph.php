@@ -3,9 +3,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-error_log("PHP is running.");
-
-
 session_start(); // Start session to get user ID
 
 if (!isset($_SESSION['user_id'])) {
@@ -24,30 +21,17 @@ if (isset($_GET['year']) && isset($_GET['month'])) {
       exit();
    }
 
-   $yearEscaped = escapeshellarg($year);
-   $monthEscaped = escapeshellarg($month);
-   $userIdEscaped = escapeshellarg($user_id);
-
-   $weightCommand = "/usr/bin/python3 /home/students/adandrea/public_html/missionCritical/mc_basic_code/mc_weightGraph.py $year $month $user_id";
-   $stepCommand = "/usr/bin/python3 /home/students/adandrea/public_html/missionCritical/mc_basic_code/mc_stepGraph.py $year $month $user_id";
-
-
+   putenv("MPLCONFIGDIR=/tmp/matplotlib_cache");
+   $weightCommand = escapeshellcmd("/usr/bin/python3 ../mc_basic_code/mc_weightGraph.py $year $month $user_id");
+   $stepCommand = escapeshellcmd("/usr/bin/python3 ../mc_basic_code/mc_stepGraph.py $year $month $user_id");
    $descriptor_spec = [
       0 => ["pipe", "r"],  // stdin
       1 => ["pipe", "w"],  // stdout
       2 => ["pipe", "w"]   // stderr
    ];
 
-   $env = [
-      'PATH' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin',
-      'HOME' => '/home/students/adandrea',
-      'USER' => 'adandrea',
-      'LANG' => 'en_US.UTF-8',
-      'MPLCONFIGDIR' => '/tmp'
-  ];
-
-   $weightProcess = proc_open($weightCommand, $descriptor_spec, $pipes, null, $env);
-   $stepProcess = proc_open($stepCommand, $descriptor_spec, $pipes, null, $env);
+   $weightProcess = proc_open($weightCommand, $descriptor_spec, $pipes);
+   $stepProcess = proc_open($stepCommand, $descriptor_spec, $pipes);
 
    if (is_resource($weightProcess)) {
       $output = stream_get_contents($pipes[1]);
@@ -69,10 +53,8 @@ if (isset($_GET['year']) && isset($_GET['month'])) {
 
       $image_path = trim($output);
 
-      $image_url = str_replace("/home/students/adandrea/public_html", "/~adandrea", $image_path);
-
       if (!empty($image_path) && file_exists($image_path)) {
-         echo json_encode(["status" => "success", "path" => $image_url]);
+         echo json_encode(["status" => "success", "path" => $image_path]);
       } else {
          error_log("Error: Image not found at " . $image_path);
          echo json_encode(["status" => "error", "message" => "Error generating graph."]);
