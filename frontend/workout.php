@@ -76,7 +76,7 @@ try {
 
 <body>
     <div class="container">
-        <h3 style="text-align: center;">Your Previous Workouts</h3>
+        <h1 style="text-align: center;">Your Previous Workouts</h1>
         <table>
             <thead>
                 <tr>
@@ -105,8 +105,9 @@ try {
                 <?php endif; ?>
             </tbody>
         </table>
+        </div>
 
-
+        <div class="container">
         <h2>Log Your Workout</h2>
         <form id="workout-form">
             <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
@@ -127,9 +128,11 @@ try {
             <div id="dynamic-fields"></div>
             <button type="submit">Submit Workout</button>
         </form>
+        </div>
 
+        <div class="container">
         <!-- Generate Workout Form -->
-        <h4 style="text-align: center;">Need Help Creating a Plan?</h4>
+        <h3 style="text-align: center;">Need Help Creating a Plan?</h3>
         <form id="generate-form">
             <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>" />
             <label>Goal: <input type="text" name="goal" required /></label><br>
@@ -160,7 +163,7 @@ try {
             document.getElementById("generated-plan").textContent = result.plan || result.message;
         });
         </script>
-
+        </div>
     </div>
 
     <script src="assets/script.js"></script>
