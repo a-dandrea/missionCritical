@@ -111,7 +111,7 @@ try {
         <h1>Log Your Workout</h1>
         <form id="workout-form">
             <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
-            <label for="workout-type" style="text-align: center;">>Workout Type:</label>
+            <label for="workout-type" style="text-align: center;">Workout Type:</label>
             <select id="workout-type" name="workout-type" required>
                 <option value="">Select a Workout Type</option>
                 <option value="Other Workout">Other Workout</option>
@@ -119,10 +119,10 @@ try {
                 <option value="Running">Running</option>
                 <option value="Cycling">Cycling</option>
             </select>
-            <label for="workout-date">Workout Date:</label>
+            <label for="workout-date" style="text-align: center;">Workout Date:</label>
             <input type="date" id="workout-date" name="workout-date" required>
 
-            <label for="step-count">Step Count:</label>
+            <label for="step-count" style="text-align: center;">Step Count:</label>
             <input type="number" id="step-count" name="step-count" min="0">
 
             <div id="dynamic-fields"></div>
