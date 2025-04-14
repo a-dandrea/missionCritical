@@ -51,13 +51,13 @@
 
     <form action="search.php" method="get">
         <!-- Recipe/Ingredient Search -->
-        <label for="query">Search for a recipe or ingredient:</label>
+        <label for="query" style="text-align: center;">Search for a recipe or ingredient:</label>
         <input type="text" id="query" name="query" required>
         
         <br>
 
         <!-- Diet -->
-        <label for="diet">Dietary Preferences:</label>
+        <label for="diet" style="text-align: center;">Dietary Preferences:</label>
         <select id="diet" name="diet">
             <option value="">None</option>
             <option value="vegetarian">Vegetarian</option>
@@ -69,7 +69,7 @@
         <br>
 
         <!-- Cuisine -->
-        <label for="cuisine">Cuisine:</label>
+        <label for="cuisine" style="text-align: center;">Cuisine:</label>
         <select id="cuisine" name="cuisine">
             <option value="">Any</option>
             <option value="Italian">Italian</option>
@@ -81,7 +81,7 @@
         <br>
 
         <!-- Intolerances -->
-        <label for="intolerances">Intolerances:</label>
+        <label for="intolerances" style="text-align: center;">Intolerances:</label>
         <input type="text" id="intolerances" name="intolerances" placeholder="e.g., dairy, peanut">
         
         <br>
