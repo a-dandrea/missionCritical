@@ -76,8 +76,6 @@ try {
 
 <body>
     <div class="container">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <h3 style="text-align: center;">Your Previous Workouts</h3>
         <table>
             <thead>
