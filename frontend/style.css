@@ -232,6 +232,19 @@ form {
   margin: 0 auto; /* Center the form horizontally */
 }
 
+form input[type="text"],
+form select,
+form button {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin: 10px auto;
+    display: block;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+
 h2 {
   text-align: center;
   font-size: 2.5em;
