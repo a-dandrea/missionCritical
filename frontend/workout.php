@@ -76,28 +76,6 @@ try {
 
 <body>
     <div class="container">
-        <h2>Log Your Workout</h2>
-
-        <form id="workout-form">
-            <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
-            <label for="workout-type">Workout Type:</label>
-            <select id="workout-type" name="workout-type" required>
-                <option value="">Select a Workout Type</option>
-                <option value="Other Workout">Other Workout</option>
-                <option value="Strength/ Weight Training">Strength/ Weight Training</option>
-                <option value="Running">Running</option>
-                <option value="Cycling">Cycling</option>
-            </select>
-            <label for="workout-date">Workout Date:</label>
-            <input type="date" id="workout-date" name="workout-date" required>
-
-            <label for="step-count">Step Count:</label>
-            <input type="number" id="step-count" name="step-count" min="0">
-
-            <div id="dynamic-fields"></div>
-            <button type="submit">Submit Workout</button>
-        </form>
-
         <h3 style="text-align: center;">Your Previous Workouts</h3>
         <table>
             <thead>
@@ -127,6 +105,29 @@ try {
                 <?php endif; ?>
             </tbody>
         </table>
+
+
+        <h2>Log Your Workout</h2>
+
+        <form id="workout-form">
+            <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
+            <label for="workout-type">Workout Type:</label>
+            <select id="workout-type" name="workout-type" required>
+                <option value="">Select a Workout Type</option>
+                <option value="Other Workout">Other Workout</option>
+                <option value="Strength/ Weight Training">Strength/ Weight Training</option>
+                <option value="Running">Running</option>
+                <option value="Cycling">Cycling</option>
+            </select>
+            <label for="workout-date">Workout Date:</label>
+            <input type="date" id="workout-date" name="workout-date" required>
+
+            <label for="step-count">Step Count:</label>
+            <input type="number" id="step-count" name="step-count" min="0">
+
+            <div id="dynamic-fields"></div>
+            <button type="submit">Submit Workout</button>
+        </form>
 
         <!-- Generate Workout Form -->
         <h4 style="text-align: center;">Need Help Creating a Plan?</h4>
