@@ -148,7 +148,7 @@
     <h2>Leaderboard</h2>
 
     <form method="POST" id="category-form">
-      <label for="category">Choose Category:</label>
+      <label for="category" style="text-align: center;">Choose Category:</label>
       <select name="category" id="category" onchange="this.form.submit()"> <!-- Added onchange -->
         <option value="calories" <?= ($category == 'calories') ? 'selected' : '' ?>>Calories</option>
         <option value="steps" <?= ($category == 'steps') ? 'selected' : '' ?>>Steps</option>
