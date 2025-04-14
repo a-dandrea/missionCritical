@@ -111,7 +111,7 @@ try {
         <h1>Log Your Workout</h1>
         <form id="workout-form">
             <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
-            <label for="workout-type">Workout Type:</label>
+            <label for="workout-type" style="text-align: center;">>Workout Type:</label>
             <select id="workout-type" name="workout-type" required>
                 <option value="">Select a Workout Type</option>
                 <option value="Other Workout">Other Workout</option>
