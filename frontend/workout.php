@@ -135,11 +135,11 @@ try {
         <h1 style="text-align: center;">Create a Plan</h1>
         <form id="generate-form">
             <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>" />
-            <label>Goal: <input type="text" name="goal" required /></label><br>
-            <label>Fitness Level: <input type="text" name="level" required /></label><br>
-            <label>Workout Type: <input type="text" name="workout_type" required /></label><br>
-            <label>Time per Session: <input type="text" name="time_per_session" required /></label><br>
-            <label>Days per Week: <input type="number" name="days_per_week" required /></label><br>
+            <label style="text-align: center;">Goal: <input type="text" name="goal" required /></label><br>
+            <label style="text-align: center;">Fitness Level: <input type="text" name="level" required /></label><br>
+            <label style="text-align: center;">Workout Type: <input type="text" name="workout_type" required /></label><br>
+            <label style="text-align: center;">Time per Session: <input type="text" name="time_per_session" required /></label><br>
+            <label style="text-align: center;">Days per Week: <input type="number" name="days_per_week" required /></label><br>
             <button type="submit">Generate Workout Plan</button>
         </form>
 
