@@ -76,6 +76,8 @@ try {
 
 <body>
     <div class="container">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <h3 style="text-align: center;">Your Previous Workouts</h3>
         <table>
             <thead>
@@ -106,8 +108,8 @@ try {
             </tbody>
         </table>
 
-        <h2>Log Your Workout</h2>
 
+        <h2>Log Your Workout</h2>
         <form id="workout-form">
             <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
             <label for="workout-type">Workout Type:</label>
