@@ -42,7 +42,8 @@ try {
     $stmt = $db->prepare($sql);
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
-    $daily_steps = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $daily_steps = $stmt->fetch(PDO::FETCH_ASSOC);
+
 
     // Fetch weekly active minutes count for the current week
     $sql = "SELECT SUM(daily_active_minutes) AS total_active_minutes
@@ -53,7 +54,7 @@ try {
     $stmt = $db->prepare($sql);
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
-    $daily_active_minutes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $daily_active_minutes = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // Fetch weekly water intake for the current week
     $sql = "SELECT SUM(daily_water_intake) AS total_water_intake
@@ -64,7 +65,7 @@ try {
     $stmt = $db->prepare($sql);
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();
-    $daily_water_intake = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $daily_water_intake = $stmt->fetch(PDO::FETCH_ASSOC);
 
    // Fetch weekly sleep hours for the current week
    $sql = "SELECT SUM(daily_sleep_hours) AS total_sleep
@@ -75,7 +76,7 @@ try {
  $stmt = $db->prepare($sql);
  $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
  $stmt->execute();
- $daily_sleep = $stmt->fetchAll(PDO::FETCH_ASSOC);
+ $daily_sleep = $stmt->fetch(PDO::FETCH_ASSOC);
 
  // Fetch weekly time outdoors for the current week
    $sql = "SELECT SUM(daily_time_outdoors) AS total_time_outside
@@ -86,7 +87,7 @@ try {
    $stmt = $db->prepare($sql);
    $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
    $stmt->execute();
-   $daily_time_outside = $stmt->fetchAll(PDO::FETCH_ASSOC);
+   $daily_time_outside = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
     if (!$user) {
@@ -144,102 +145,60 @@ $stmt->closeCursor();
 <body>
 <div class="container">
    <h2> Mission Logs </h2>
-   <div class="box full">
-      <label for="step-progress">Weekly Step Progress:</label>
-      <progress 
-         id="step-progress" 
-         value="<?php echo $daily_steps['total_steps']; ?>" 
-         max="<?php echo 7 * $goals['daily_step_goal']; ?>" 
-         style="width: 100%; height: 30px;">
-         <?php echo $daily_steps['total_steps']; ?> steps
-      </progress>
-      <label for="step-progress-value">
-         <?php 
-            $percentage = ($daily_steps['total_steps'] / (7 * $goals['daily_step_goal'])) * 100;
-            echo round($percentage, 2) . "% of your weekly step goal.";
-         ?>
-      </label>
-   </div> <!-- End of box for steps -->
+   <?php
+// Get the current date (or modify to use selected date)
+$today = new DateTime();
 
-   <div class="box full">
-   <label for="active-minute-progress">Weekly Active Minutes Progress:</label>
-   <progress 
-      id="active-minute-progress" 
-      value="<?php echo $daily_active_minutes['total_active_minutes']; ?>" 
-      max="<?php echo 7 * $goals['daily_active_goal']; ?>" 
-      style="width: 100%; height: 30px;">
-      <?php echo $daily_active_minutes['total_active_minutes']; ?> steps
-   </progress>
-   <label for="active-progress-value">
-      <?php 
-         $percentage = ($daily_active_minutes['total_active_minutes'] / (7 * $goals['daily_active_goal'])) * 100;
-         echo round($percentage, 2) . "% of your weekly step goal.";
-      ?>
-   </label>
-   </div> <!-- End of box for active minutes -->
+// Adjust to Monday as the start of the week
+$startOfWeek = clone $today;
+$startOfWeek->modify('monday this week');
 
-   <div class="box full">
-   <label for="water-progress">Weekly Water Intake Progress:</label>
-   <progress 
-      id="water-progress" 
-      value="<?php echo $daily_active_minutes['total_water_intake']; ?>" 
-      max="<?php echo 7 * $goals['daily_water_goal']; ?>" 
-      style="width: 100%; height: 30px;">
-      <?php echo $daily_active_minutes['total_water_intake']; ?> oz
-   </progress>
-   <label for="water-progress-value">
-      <?php 
-         if ($goals['daily_water_goal'] > 0) {
-            $percentage = ($daily_active_minutes['total_water_intake'] / (7 * $goals['daily_water_goal'])) * 100;
-            echo round($percentage, 2) . "% of your weekly water intake goal.";
-         } else {
-            echo "No water intake goal set.";
-         }
-      ?>
-   </label>
-   </div> <!-- End of box for water intake -->
+$endOfWeek = clone $startOfWeek;
+$endOfWeek->modify('+6 days');
 
-   <div class="box full">
-      <label for="sleep-progress">Weekly Sleep Progress:</label>
-      <progress 
-         id="sleep-progress" 
-         value="<?php echo $daily_sleep['total_sleep']; ?>" 
-         max="<?php echo 7 * $goals['daily_sleep_goal']; ?>" 
-         style="width: 100%; height: 30px;">
-         <?php echo $daily_sleep['total_sleep']; ?> hours
-      </progress>
-      <label for="sleep-progress-value">
-         <?php 
-            if ($goals['daily_sleep_goal'] > 0) {
-               $percentage = ($daily_sleep['total_sleep'] / (7 * $goals['daily_sleep_goal'])) * 100;
-               echo round($percentage, 2) . "% of your weekly sleep goal.";
-            } else {
-               echo "No sleep goal set.";
-            }
-         ?>
-      </label>
-   </div> <!-- End of box for sleep -->
+// Format the dates
+$startFormatted = $startOfWeek->format('F j');
+$endFormatted = $endOfWeek->format('F j, Y');
+?>
 
-   <div class="box full">
-      <label for="outdoor-time-progress">Weekly Time Outdoors Progress:</label>
-      <progress 
-         id="outdoor-time-progress" 
-         value="<?php echo $daily_time_outside['total_time_outside']; ?>" 
-         max="<?php echo 7 * $goals['daily_outside_goal']; ?>" 
-         style="width: 100%; height: 30px;">
-         <?php echo $daily_time_outside['total_time_outside']; ?> minutes
-      </progress>
-      <label for="outdoor-time-progress-value">
-         <?php 
-            if ($goals['daily_outside_goal'] > 0) {
-               $percentage = ($daily_time_outside['total_time_outside'] / (7 * $goals['daily_outside_goal'])) * 100;
-               echo round($percentage, 2) . "% of your weekly time outdoors goal.";
-            } else {
-               echo "No outdoor time goal set.";
-            }
-         ?>
-      </label>
-   </div> <!-- End of box for outdoor time -->
+   <!-- Goal Progress Viewer -->
+<div class="box full" style="margin-bottom: 2rem;">
+   <label for="goal-select"><strong>Choose a Goal to View Weekly Progress:</strong></label>
+   <p><strong>Week of:</strong> <?php echo $startFormatted; ?> – <?php echo $endFormatted; ?></p>
+
+   <select id="goal-select" onchange="showProgress(this.value)">
+      <option value="">-- Select a Goal --</option>
+      <option value="steps">Steps</option>
+      <option value="active">Active Minutes</option>
+      <option value="water">Water Intake</option>
+      <option value="sleep">Sleep</option>
+      <option value="outdoors">Time Outdoors</option>
+   </select>
+
+   <?php
+   // Progress sections grouped by goal type
+   $progressGoals = [
+      'steps' => ['label' => 'Weekly Step Progress', 'field' => 'total_steps', 'goal' => $goals['daily_step_goal'], 'unit' => 'steps'],
+      'active' => ['label' => 'Weekly Active Minutes Progress', 'field' => 'total_active_minutes', 'goal' => $goals['daily_active_goal'], 'unit' => 'minutes'],
+      'water' => ['label' => 'Weekly Water Intake Progress', 'field' => 'total_water_intake', 'goal' => $goals['daily_water_goal'], 'unit' => 'oz'],
+      'sleep' => ['label' => 'Weekly Sleep Progress', 'field' => 'total_sleep', 'goal' => $goals['daily_sleep_goal'], 'unit' => 'hours'],
+      'outdoors' => ['label' => 'Weekly Time Outdoors Progress', 'field' => 'total_time_outside', 'goal' => $goals['daily_outside_goal'], 'unit' => 'minutes'],
+   ];
+
+   foreach ($progressGoals as $key => $info):
+      $weekly_goal = 7 * $info['goal'];
+      $current = ${"daily_" . $key}[$info['field']];
+      $percentage = ($weekly_goal > 0) ? ($current / $weekly_goal) * 100 : 0;
+   ?>
+      <div id="<?php echo $key; ?>" class="goal-progress" style="display:none; margin-top: 1rem;">
+         <label for="<?php echo $key; ?>-progress"><?php echo $info['label']; ?></label>
+         <progress id="<?php echo $key; ?>-progress" value="<?php echo $current; ?>" max="<?php echo $weekly_goal; ?>" style="width:100%; height:30px;"></progress>
+         <label><?php echo round($percentage, 2); ?>% of your weekly <?php echo strtolower($key); ?> goal.</label><br>
+         <span><?php echo number_format($current, ($key === 'sleep' ? 1 : 0)); ?> / <?php echo number_format($weekly_goal, ($key === 'sleep' ? 1 : 0)); ?> <?php echo $info['unit']; ?></span>
+      </div>
+   <?php endforeach; ?>
+</div>
+
 </div>
 
 
@@ -345,6 +304,20 @@ function renderRow($label, $data, $goal, $daysInMonth, $year, $month) {
 
       <script src="assets/journal.js"></script>
    </div>
+   <script>
+function showProgress(goal) {
+   const sections = document.querySelectorAll('.goal-progress');
+   sections.forEach(section => section.style.display = 'none');
+
+   if (goal) {
+      const selected = document.getElementById(goal);
+      if (selected) {
+         selected.style.display = 'block';
+      }
+   }
+}
+</script>
+
 </body>
 
 <footer style="background: #0f0a66; color:white; padding: 10px 20px;">
