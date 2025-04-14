@@ -47,6 +47,9 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Your Workout</title>
+    <title>Your Previous Workouts</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 <header>
