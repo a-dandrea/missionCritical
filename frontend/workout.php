@@ -132,7 +132,7 @@ try {
 
         <div class="container">
         <!-- Generate Workout Form -->
-        <h3 style="text-align: center;">Need Help Creating a Plan?</h3>
+        <h3 style="text-align: center;">Create a Plan</h3>
         <form id="generate-form">
             <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>" />
             <label>Goal: <input type="text" name="goal" required /></label><br>
