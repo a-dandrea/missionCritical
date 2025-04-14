@@ -51,7 +51,11 @@
 
     <form action="search.php" method="get">
         <!-- Recipe/Ingredient Search -->
-        <label for="query" style="text-align: center;">Search for a recipe or ingredient:</label>
+        <div class="form-group">
+        <label for="search">Search for a recipe or ingredient:</label>
+        <input type="text" id="search" name="search">
+        </div>
+
         <input type="text" id="query" name="query" required>
         
         <br>
