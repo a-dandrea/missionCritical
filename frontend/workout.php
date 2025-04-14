@@ -108,7 +108,7 @@ try {
         </div>
 
         <div class="container">
-        <h2>Log Your Workout</h2>
+        <h1>Log Your Workout</h1>
         <form id="workout-form">
             <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
             <label for="workout-type">Workout Type:</label>
@@ -132,7 +132,7 @@ try {
 
         <div class="container">
         <!-- Generate Workout Form -->
-        <h3 style="text-align: center;">Create a Plan</h3>
+        <h1 style="text-align: center;">Create a Plan</h1>
         <form id="generate-form">
             <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>" />
             <label>Goal: <input type="text" name="goal" required /></label><br>
