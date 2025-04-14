@@ -106,7 +106,6 @@ try {
             </tbody>
         </table>
 
-        <div style="margin-top: 40px;">
         <h2>Log Your Workout</h2>
 
         <form id="workout-form">
