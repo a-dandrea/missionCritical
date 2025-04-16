@@ -69,6 +69,9 @@ try {
             <label for="height">Height (inches):</label>
             <input type="number" id="height" name="height">
 
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email">
+
             <button type="submit">Update</button>
         </form>
         
