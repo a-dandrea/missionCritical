@@ -116,7 +116,7 @@ try {
             <select id="workout-type" name="workout-type" required>
                 <option value="">Select a Workout Type</option>
                 <option value="Other Workout">Other Workout</option>
-                <option value="Strength/ Weight Training">Strength/ Weight Training</option>
+                <option value="Strength/ Weight Training">Strength/Weight Training</option>
                 <option value="Running">Running</option>
                 <option value="Cycling">Cycling</option>
             </select>
