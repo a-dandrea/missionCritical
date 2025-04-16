@@ -47,7 +47,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create or Join Group</title>
+    <title>Groups</title>
+    <link rel="icon" href="images/astronaut.png">
     <link rel="stylesheet" href="style.css">
     <script>
         function toggleParentalControl() {
