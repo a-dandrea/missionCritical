@@ -48,7 +48,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Log Your Workout</title>
-    <link rel="icon" href="missionCritical/frontend/images/astronaut.png" type="image/png">
+    <link rel="icon" href="/home/students/cblack/public_html/missionCritical/frontend/images/astronaut.png" type="image/png">
     <link rel="stylesheet" href="style.css">
 </head>
 <header>
