@@ -10,6 +10,7 @@ $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link rel="stylesheet" href="style.css">
    <title>Mission Critical</title>
+   <link rel="icon" href="images/astronaut.png">
 </head>
 <header>
    <nav class="navbar">   
