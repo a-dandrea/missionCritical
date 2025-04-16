@@ -122,9 +122,6 @@ try {
             <label for="workout-date" style="text-align: center;">Workout Date:</label>
             <input type="date" id="workout-date" name="workout-date" required>
 
-            <label for="step-count" style="text-align: center;">Step Count:</label>
-            <input type="number" id="step-count" name="step-count" min="0">
-
             <div id="dynamic-fields"></div>
             <button type="submit">Submit Workout</button>
         </form>
