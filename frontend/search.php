@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Recipe Results</title>
+    <link rel="icon" href="images/astronaut.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <header>
@@ -31,7 +32,7 @@
     </nav>
 </header>
 <body>
-
+<div class="container"></div>
 <h1 style="padding: 80px 10px 0px 10px;">Recipe Results</h1>
 
 <?php
@@ -98,7 +99,7 @@ if (isset($_GET['query'])) {
     echo "Please enter a search term.";
 }
 ?>
-
+</div>
 </body>
 
 <footer style="background: #0f0a66; color:white; padding: 10px 20px;">
