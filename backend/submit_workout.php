@@ -22,6 +22,7 @@ $duration = $_POST['duration'] ?? null;
 $calories = $_POST['calories'] ?? null;
 $startTime = date('Y-m-d H:i:s');  // Assume workout starts now
 $endTime = date('Y-m-d H:i:s', strtotime("+$duration minutes"));
+$notes = $_POST['notes'] ?? null;
 
 if (!$userID || !$workoutType || !$duration || !$calories) {
     echo json_encode(["message" => "Missing required fields"]);
@@ -30,8 +31,8 @@ if (!$userID || !$workoutType || !$duration || !$calories) {
 
 // Insert workout data
 try {
-    $sql = "INSERT INTO workouts (userID, workoutType, duration, caloriesBurned, startTime, endTime) 
-            VALUES (:userID, :workoutType, :duration, :caloriesBurned, :startTime, :endTime)";
+    $sql = "INSERT INTO workouts (userID, workoutType, duration, caloriesBurned, startTime, endTime, stepCount, notes) 
+            VALUES (:userID, :workoutType, :duration, :caloriesBurned, :startTime, :endTime, :stepCount, :notes)";
     
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':userID', $userID);
@@ -40,6 +41,8 @@ try {
     $stmt->bindParam(':caloriesBurned', $calories);
     $stmt->bindParam(':startTime', $startTime);
     $stmt->bindParam(':endTime', $endTime);
+    $stmt->bindParam(':stepCount', $_POST['stepCount'] ?? null);
+    $stmt->bindParam(':notes', $notes);
 
     if ($stmt->execute()) {
         $workoutID = $db->lastInsertId();  // Get the last inserted workout ID

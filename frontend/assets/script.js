@@ -17,7 +17,7 @@ document.getElementById('workout-type').addEventListener('change', function() {
             <input type="number" id="avgbpm" name="avgbpm" required>
 
             <label for="notes">Notes:</label>
-            <input type="text" id="notes" name="notes">
+            <textarea id="notes" name="notes" rows="4" cols="50" placeholder="Add any workout notes here..."></textarea>
         `;
 
     } else if (workoutType === 'Strength/ Weight Training') {
@@ -53,7 +53,7 @@ document.getElementById('workout-type').addEventListener('change', function() {
             <input type="number" id="avgbpm" name="avgbpm" required>
 
             <label for="notes">Notes:</label>
-            <input type="text" id="notes" name="notes">
+            <textarea id="notes" name="notes" rows="4" cols="50" placeholder="Add any workout notes here..."></textarea>
         `;
     } else if (workoutType === 'Running') {
         dynamicFields.innerHTML = `
@@ -73,7 +73,7 @@ document.getElementById('workout-type').addEventListener('change', function() {
             <input type="number" id="avgbpm" name="avgbpm" required>
 
             <label for="notes">Notes:</label>
-            <input type="text" id="notes" name="notes">
+            <textarea id="notes" name="notes" rows="4" cols="50" placeholder="Add any workout notes here..."></textarea>
         `;
     } else if (workoutType === 'Cycling') {
         dynamicFields.innerHTML = `
@@ -90,7 +90,7 @@ document.getElementById('workout-type').addEventListener('change', function() {
         <input type="number" id="avgbpm" name="avgbpm" required>
 
         <label for="notes">Notes:</label>
-        <input type="text" id="notes" name="notes">
+        <textarea id="notes" name="notes" rows="4" cols="50" placeholder="Add any workout notes here..."></textarea>
     `;
     }
 });
