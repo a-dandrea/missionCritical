@@ -115,10 +115,10 @@ try {
             <label for="workout-type" style="text-align: center;">Workout Type:</label>
             <select id="workout-type" name="workout-type" required>
                 <option value="">Select a Workout Type</option>
-                <option value="Other Workout">Other Workout</option>
                 <option value="Strength/ Weight Training">Strength/Weight Training</option>
                 <option value="Running">Running</option>
                 <option value="Cycling">Cycling</option>
+                <option value="Other Workout">Other Workout</option>
             </select>
             <label for="workout-date" style="text-align: center;">Workout Date:</label>
             <input type="date" id="workout-date" name="workout-date" required>
