@@ -100,7 +100,7 @@ try {
                <option value="Cycling" <?php if ($selectedType == 'Cycling') echo 'selected'; ?>>Cycling</option>
                <option value="Other Workout" <?php if ($selectedType == 'Other Workout') echo 'selected'; ?>>Other Workout</option>
             </select>
-        </form>
+         </form>
 
         <table>
             <thead>
@@ -110,6 +110,7 @@ try {
                     <th>Calories Burned</th>
                     <th>Workout Date</th>
                     <th>Step Count</th>
+                     <th>Notes</th>
                 </tr>
             </thead>
             <tbody>
@@ -119,8 +120,9 @@ try {
                             <td><?php echo htmlspecialchars($workout['workoutType']); ?></td>
                             <td><?php echo htmlspecialchars($workout['duration']); ?></td>
                             <td><?php echo htmlspecialchars($workout['caloriesBurned']); ?></td>
-                            <td><?php echo htmlspecialchars($workout['startTime']); ?></td>
+                            <td><?php echo date("F j, Y g:i A", strtotime($workout['startTime'])); ?></td>
                             <td><?php echo htmlspecialchars($workout['stepCount'] ?? 'N/A'); ?></td>
+                            <td><?php echo htmlspecialchars($workout['notes'] ?? ''); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
