@@ -31,15 +31,28 @@ try {
 }
 
 // Fetch workouts from the database to display on the page
-$query = "SELECT * FROM workouts WHERE userID = :userID ORDER BY workoutID DESC";
+// Handle workout type filter
+$selectedType = $_GET['filter'] ?? 'all';
+
+// Build query dynamically
+if ($selectedType !== 'all') {
+    $query = "SELECT * FROM workouts WHERE userID = :userID AND workoutType = :workoutType ORDER BY workoutID DESC";
+} else {
+    $query = "SELECT * FROM workouts WHERE userID = :userID ORDER BY workoutID DESC";
+}
+
 try {
     $stmt = $db->prepare($query);
     $stmt->bindParam(':userID', $_SESSION['user_id'], PDO::PARAM_INT);
+    if ($selectedType !== 'all') {
+        $stmt->bindParam(':workoutType', $selectedType, PDO::PARAM_STR);
+    }
     $stmt->execute();
     $workouts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     echo "Error fetching workouts: " . $e->getMessage();
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -78,6 +91,17 @@ try {
 <body>
     <div class="container">
         <h1 style="text-align: center;">Your Previous Workouts</h1>
+        <form method="get" style="text-align: center; margin-bottom: 20px;">
+            <label for="filter">Filter Workouts:</label>
+            <select name="filter" id="filter" onchange="this.form.submit()">
+               <option value="all" <?php if ($selectedType == 'all') echo 'selected'; ?>>Show All Workouts</option>
+               <option value="Strength/ Weight Training" <?php if ($selectedType == 'Strength/ Weight Training') echo 'selected'; ?>>Strength/Weight Training</option>
+               <option value="Running" <?php if ($selectedType == 'Running') echo 'selected'; ?>>Running</option>
+               <option value="Cycling" <?php if ($selectedType == 'Cycling') echo 'selected'; ?>>Cycling</option>
+               <option value="Other Workout" <?php if ($selectedType == 'Other Workout') echo 'selected'; ?>>Other Workout</option>
+            </select>
+        </form>
+
         <table>
             <thead>
                 <tr>
