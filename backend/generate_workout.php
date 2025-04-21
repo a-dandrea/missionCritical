@@ -11,8 +11,10 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$user_id = $_SESSION['user_id']; // Get user_id from session
-error_log("Updating user with ID: " . $user_id); // Debugging
+// Get user_id from session
+$user_id = $_SESSION['user_id']; 
+// Debugging
+error_log("Updating user with ID: " . $user_id); 
 
 // DB config
 $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
@@ -28,7 +30,7 @@ try {
     exit();
 }
 
-// Load POST data
+// Load POST input data
 $data = json_decode(file_get_contents("php://input"), true);
 $userID = $data['userID'] ?? null;
 $goal = $data['goal'] ?? null;
@@ -45,7 +47,7 @@ if (!$userID || !$goal || !$level || !$type || !$time || !$days) {
 
 // Construct OpenAI prompt
 $prompt = "Create a weekly workout plan for:\n";
-$prompt .= "Goal: $goal\nLevel: $level\nWorkout type: $workout_type\n";
+$prompt .= "Goal: $goal\nLevel: $level\nWorkout type: $type\n";
 $prompt .= "Time per session: $time\nDays per week: $days\n";
 
 // Call OpenAI API
@@ -69,16 +71,17 @@ $response = curl_exec($ch);
 curl_close($ch);
 
 $result = json_decode($response, true);
-$plan = $result['choices'][0]['message']['content'] ?? "No response from GPT.";
+$plan = $result['choices'][0]['message']['content'] ?? null;
 
 if (!$plan) {
-    echo json_encode(["message" => "Failed to generate workout plan."]);
+    echo json_encode(["message" => "OpenAI returned no plan", "raw" => $result]);
     exit();
 }
 
 // Save to DB
 $sql = "INSERT INTO workout_plans (user_id, goal, level, workoutType, time_per_session, days_per_week, plan) 
         VALUES (:userID, :goal, :level, :type, :time, :days, :plan)";
+
 $stmt = $db->prepare($sql);
 $stmt->bindParam(':userID', $user_id);
 $stmt->bindParam(':goal', $goal);
