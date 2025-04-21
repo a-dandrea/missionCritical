@@ -6,7 +6,7 @@ document.getElementById("graphForm").addEventListener("submit", function(event) 
    let user_id = document.getElementById("user_id").value;
 
    let baseURL = "./images/";
-   let imageName = "weightGraph_" + user_id + "_" + year + "_" + month;
+   let imageName = "weightGraph_" + year + "_" + month + "_for_" + user_id;
    let extension = ".png";
 
    // Call PHP script to generate the graph

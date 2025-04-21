@@ -52,6 +52,15 @@ try:
    for log_date, step_count in cursor.fetchall():
       data[str(log_date)] = step_count  # Fill actual values from database
 
+   cursor.execute("""
+      SELECT daily_step_goal
+      FROM users
+      WHERE user_id = %s
+   """, (user_id))
+
+   # Get daily step goal for the user
+   daily_step_goal = cursor.fetchone()[0] if cursor.fetchone() else 0
+
    cursor.close()
    conn.close()
 
@@ -89,13 +98,15 @@ try:
    plt.xticks(all_dates, rotation=90)
    plt.ylim(bottom=0)  # Ensure y-axis starts from 0 for better visualization
 
+   plt.axhline(y=daily_step_goal, color='navy', linestyle='--', label='Daily Step Goal')
+
    plt.xlabel("Date")
    plt.ylabel("Steps")
    plt.title(f"Step Log for {datetime(year, month, 1).strftime('%B %Y')}")
    plt.grid(True, linestyle="--", alpha=0.6)
 
    # Ensure output directory exists
-   output_path = f"./frontend/images/stepGraph_{user_id}_{year}_{month}.png"
+   output_path = f"./frontend/images/stepGraph_{year}_{month}_for_{user_id}.png"
    os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
    # Save the graph
