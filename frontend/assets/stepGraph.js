@@ -5,13 +5,13 @@ document.getElementById("graphForm").addEventListener("submit", function(event) 
    let month = document.getElementById("month").value;
    let user_id = document.getElementById("user_id").value;
 
-   let baseURL = "./images/";
+   let baseURL = "~/public_html/missionCritical/frontend/images/";
    let imageName = "stepGraph_" + year + "_" + month + "_for_" + user_id;
    let extension = ".png";
 
    // Call PHP script to generate the graph
    try {
-   fetch(`../backend/display_graph.php?year=${year}&month=${month}`)
+   fetch(`../backend/display_graph.php?year=${year}&month=${month}&type=step`)
    .then(response => response.json())  // Expect JSON
    .then(data => {
       console.log("Server response:", data);

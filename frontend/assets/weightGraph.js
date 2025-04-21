@@ -5,7 +5,7 @@ document.getElementById("graphForm").addEventListener("submit", function(event) 
    let month = document.getElementById("month").value;
    let user_id = document.getElementById("user_id").value;
 
-   let baseURL = "./images/";
+   let baseURL = "~/public_html/missionCritical/frontend/images/";
    let imageName = "weightGraph_" + year + "_" + month + "_for_" + user_id;
    let extension = ".png";
 
