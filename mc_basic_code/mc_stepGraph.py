@@ -56,10 +56,11 @@ try:
       SELECT daily_step_goal
       FROM users
       WHERE user_id = %s
-   """, (user_id))
+   """, (user_id,))
 
    # Get daily step goal for the user
-   daily_step_goal = cursor.fetchone()[0] if cursor.fetchone() else 0
+   goal_result = cursor.fetchone()
+   daily_step_goal = goal_result[0] if goal_result else 0
 
    cursor.close()
    conn.close()
@@ -67,8 +68,6 @@ try:
    # Prepare data for graph
    dates = [datetime.strptime(date, "%Y-%m-%d") for date in data.keys()]
    steps = list(data.values())
-
-
 
    # Set graph appearance
    plt.rcParams['text.color'] = LABEL_COLOR
