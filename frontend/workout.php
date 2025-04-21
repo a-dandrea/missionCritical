@@ -120,7 +120,7 @@ try {
                             <td><?php echo htmlspecialchars($workout['workoutType']); ?></td>
                             <td><?php echo htmlspecialchars($workout['duration']); ?></td>
                             <td><?php echo htmlspecialchars($workout['caloriesBurned']); ?></td>
-                            <td><?php echo date("F j, Y g:i A", strtotime($workout['startTime'])); ?></td>
+                            <td><?php echo date("F j, Y | g:i A", strtotime($workout['startTime'])); ?></td>
                             <td><?php echo htmlspecialchars($workout['stepCount'] ?? 'N/A'); ?></td>
                             <td><?php echo htmlspecialchars($workout['notes'] ?? ''); ?></td>
                         </tr>
