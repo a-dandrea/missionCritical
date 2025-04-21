@@ -153,14 +153,14 @@ try {
             <button type="submit">Submit Workout</button>
         </form>
         </div>
-
         <div class="container">
+
         <!-- Generate Workout Form -->
         <h1 style="text-align: center;">Create a Plan</h1>
         <form id="generate-form">
             <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>" />
             <label style="text-align: center;">Goal: <input type="text" name="goal" required /></label><br>
-            <label style="text-align: center;">Fitness Level: <input type="text" name="level" required /></label><br>
+            <label style="text-align: center;">Fitness Level: <input type="text" name="fitness_level" required /></label><br>
             <label style="text-align: center;">Workout Type: <input type="text" name="workout_type" required /></label><br>
             <label style="text-align: center;">Time per Session: <input type="text" name="time_per_session" required /></label><br>
             <label style="text-align: center;">Days per Week: <input type="number" name="days_per_week" required /></label><br>
@@ -168,23 +168,45 @@ try {
         </form>
 
         <!-- Display result -->
+        <h2 style="text-align:center;">Your AI-Generated Workout Plan</h2>
         <pre id="generated-plan" style="white-space: pre-wrap; background: #f3f3f3; padding: 10px;"></pre>
 
+
         <script>
-        document.getElementById("generate-form").addEventListener("submit", async function(e) {
-            e.preventDefault();
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("Generate form script loaded.");
 
-            const formData = new FormData(e.target);
-            const payload = Object.fromEntries(formData.entries());
+            const form = document.getElementById("generate-form");
+            const output = document.getElementById("generated-plan");
 
-            const response = await fetch("generate_workout.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
+            if (!form) {
+                console.error("Form not found!");
+                return;
+            }
+
+            form.addEventListener("submit", async function(e) {
+                e.preventDefault();
+
+                const formData = new FormData(form);
+                const payload = Object.fromEntries(formData.entries());
+
+                console.log("Sending payload to backend:", payload);
+                try {  
+                    const response = await fetch("../backend/generate_workout.php", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const result = await response.json();
+                    console.log("Response from backend:", result);
+                    output.textContent = result.plan || result.message;
+                } catch (err) {
+                    console.error("Fetch failed:", err);
+                    output.textContent = "Something went wrong. Check your network or API.";
+                }
+                
             });
-
-            const result = await response.json();
-            document.getElementById("generated-plan").textContent = result.plan || result.message;
         });
         </script>
         </div>
