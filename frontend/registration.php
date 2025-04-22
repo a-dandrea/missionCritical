@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Insert new user into the database
     $query = "INSERT INTO users (email, passwordHash, firstName, lastName, gender, dateOfBirth, privelige) 
-              VALUES (:email, :passwordHash, :firstname, :lastname, :gender, :dateOfBirth, :privilge)";
+              VALUES (:email, :passwordHash, :firstname, :lastname, :gender, :dateOfBirth, :privilige)";
     $statement = $db->prepare($query);
     $statement->bindValue(':email', $email);
     $statement->bindValue(':passwordHash', $passwordHash);
