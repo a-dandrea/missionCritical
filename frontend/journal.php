@@ -232,6 +232,10 @@ function renderRow($label, $data, $goal, $daysInMonth, $year, $month) {
 }
 
 ?>
+</div>
+
+
+<div class="container">
 
 <div style="margin-top: 40px;">
     <h2>Monthly Habit Tracker (<?= date('F Y') ?>)</h2>
