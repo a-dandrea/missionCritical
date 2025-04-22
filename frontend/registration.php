@@ -25,13 +25,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $lastname = $_POST['lastname'];
     $gender = $_POST['gender'];  // Keep only the necessary fields
     $dateOfBirth = $_POST['dateOfBirth'];
+    $privilege = $_POST['privilege'];
 
     // Hash the password before storing it
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
     // Insert new user into the database
-    $query = "INSERT INTO users (email, passwordHash, firstName, lastName, gender, dateOfBirth) 
-              VALUES (:email, :passwordHash, :firstname, :lastname, :gender, :dateOfBirth)";
+    $query = "INSERT INTO users (email, passwordHash, firstName, lastName, gender, dateOfBirth, privelige) 
+              VALUES (:email, :passwordHash, :firstname, :lastname, :gender, :dateOfBirth, :privilge)";
     $statement = $db->prepare($query);
     $statement->bindValue(':email', $email);
     $statement->bindValue(':passwordHash', $passwordHash);
@@ -39,6 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $statement->bindValue(':lastname', $lastname);
     $statement->bindValue(':gender', $gender);
     $statement->bindValue(':dateOfBirth', $dateOfBirth);
+    $statement->bindValue(':privilege', $privilege);
     
     $statement->execute();
     $statement->closeCursor();
@@ -200,8 +202,8 @@ footer {
                         <i class="bx bx-user"></i>
                     </div>
                     <div class="input-box">
-                        <select class="input-field" name="privelge" required>
-                            <option value = "">Account Type</option>
+                        <select class="input-field" name="privilege" required>
+                            <option value="">Account Type</option>
                             <option value="1">Parent</option>
                             <option value="2">Child</option>
                         </select>
