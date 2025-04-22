@@ -21,8 +21,8 @@ try {
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // Fetch user data
-    $sql = "SELECT firstName, lastName, email, age, gender, weight, height, 
-               daily_step_goal, daily_calorie_goal, daily_active_goal, 
+    $sql = "SELECT firstName, lastName, email, age, gender, height, 
+               daily_step_goal, daily_active_goal, 
                daily_sleep_goal, daily_outside_goal, daily_water_goal, 
                goal1, goal2, goal3, goal4, activity_level, privilege 
             FROM users 
@@ -59,10 +59,6 @@ $stmt->closeCursor();
       <a href="index.php" class="dropbtn">
          <img src="images/rocket-icon.png" alt="Rocket Menu" class="rocket">
       </a>
-      <div class="dropdown-content">
-            <a href="subscriptions.php">Subscriptions</a>
-            <a href="payment.php">Payment</a>
-      </div>
    </div>
    <div class="nav-links">
       <a href="dashboard.php">Dashboard</a>
@@ -88,7 +84,6 @@ $stmt->closeCursor();
             <p><strong>Email:</strong> <?php echo htmlspecialchars($user['email']); ?></p>
             <p><strong>Age:</strong> <?php echo htmlspecialchars($user['age']); ?></p>
             <p><strong>Gender:</strong> <?php echo htmlspecialchars($user['gender']); ?></p>
-            <p><strong>Weight:</strong> <?php echo htmlspecialchars($user['weight']); ?> lbs</p>
             <p><strong>Height:</strong> <?php echo htmlspecialchars($user['height']); ?> in</p>
       
             <p><strong>Activity Level:</strong> 
@@ -115,21 +110,7 @@ $stmt->closeCursor();
                }
                ?>
             </p>
-            <p><strong>Privilege:</strong> 
-            
-            <?php $privilege = htmlspecialchars($user['privilege']); 
-            switch($privilege) {
-               case 1:
-                  echo "Adult";
-                  break;
-               case 2:
-                  echo "Child";
-                  break;
-               default:
-                  echo "No privilege set."; // In case of an unexpected value, just display it
-                  break;
-            }
-            ?></p>
+            <p><strong>Privilege:</strong> <?php echo htmlspecialchars($user['privilege']); ?></p>
          </div>
 
          <!-- Goal & Activity Box -->
@@ -139,8 +120,6 @@ $stmt->closeCursor();
                <strong>Goals:</strong> 
                <?php 
                   $goalLabels = [
-                     0 => "Maintain Weight",
-                     1 => "Lose Weight",
                      2 => "Increase Muscle Mass",
                      3 => "Increase Stamina"
                   ];
@@ -156,7 +135,6 @@ $stmt->closeCursor();
                ?>
             </p>
             <p><strong>Daily Step Goal:</strong> <?php echo htmlspecialchars($user['daily_step_goal']); ?> steps</p>
-            <p><strong> Daily Calorie Goal:</strong> <?php echo htmlspecialchars($user['daily_calorie_goal']); ?> calories</p>
             <p><strong> Daily Time Spent Outdoors Goal:</strong> <?php echo htmlspecialchars($user['daily_outside_goal']); ?> hours</p>
             <p><strong> Daily Sleep Goal:</strong> <?php echo htmlspecialchars($user['daily_sleep_goal']); ?> hours</p>
             <p><strong> Daily Active Minutes Goal:</strong> <?php echo htmlspecialchars($user['daily_active_goal']); ?> minutes</p>
@@ -210,10 +188,8 @@ $stmt->closeCursor();
          <button type="submit">Generate Graphs</button>
       </form>
 
-      <script src="assets/weightGraph.js"></script> <!-- Link to weightGraph.js -->
       <script src="assets/stepGraph.js"></script> <!-- Link to stepGraph.js -->
 
-      <img id="weightGraphImage" alt="Weight Graph" style="width: 600px; height: auto;" class="center">
       <p></p>
       <img id="stepGraphImage" alt="Step Graph" style="width: 600px; height: auto;" class="center">
    </div>
