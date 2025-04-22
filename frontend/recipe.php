@@ -16,6 +16,14 @@
    $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
    $stmt->execute();
    $user_privilege = $stmt->fetchColumn();
+
+   try {
+      $db = new PDO($dsn, $username, $password);
+      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  } catch (PDOException $e) {
+      $error_message = $e->getMessage();
+      exit("Database connection failed: " . $error_message);
+  }
 ?>
 
 <!DOCTYPE html>
