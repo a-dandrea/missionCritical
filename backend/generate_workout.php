@@ -44,21 +44,67 @@ if (!$goal || !$level || !$type || !$time || !$days) {
     exit();
 }
 
+// Insert into database
+try {
+    $sql = "INSERT INTO ai_workout_plans(userID, goal, fitnessLevel, workoutType, timePerSession, daysPerWeek)
+              VALUES (:userID, :goal, :level, :type, :time, :days)";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':userID', $user_id);
+    $stmt->bindParam(':goal', $goal);
+    $stmt->bindParam(':level', $level);
+    $stmt->bindParam(':type', $type);
+    $stmt->bindParam(':time', $time);
+    $stmt->bindParam(':days', $days);
+
+    $stmt->execute();
+    echo json_encode(["message" => "Workout plan saved successfully."]);
+} catch (PDOException $e) {
+    echo json_encode(["message" => "Failed to save workout: " . $e->getMessage()]);
+}
+
+// Getting latest workout input data from DB 
+try {
+    $sql = "SELECT goal, fitnessLevel, workoutType, timePerSession, daysPerWeek 
+              FROM ai_workout_plans 
+              WHERE userID = :userID 
+              ORDER BY aiWorkoutID DESC 
+              LIMIT 1";
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':userID', $user_id);
+    $stmt->execute();
+    $workout = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$workout) {
+        echo json_encode(["message" => "No previous workout data found for user."]);
+        exit();
+    }
+
+    $goal = $workout['goal'];
+    $level = $workout['fitnessLevel'];
+    $type = $workout['workoutType'];
+    $time = $workout['timePerSession'];
+    $days = $workout['daysPerWeek'];
+
+} catch (PDOException $e) {
+    echo json_encode(["message" => "Failed to retrieve workout data: " . $e->getMessage()]);
+    exit();
+}
+
 // Construct OpenAI prompt
 $prompt = "Create a weekly workout plan for:\n";
 $prompt .= "Goal: $goal\nLevel: $level\nWorkout type: $type\n";
 $prompt .= "Time per session: $time\nDays per week: $days\n";
 
-// Call OpenAI API
+// Send to OpenAI API
 $openai_key = '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';
 $headers = [
-  "Content-Type: application/json",
-  "Authorization: Bearer $openai_key"
+    "Content-Type: application/json",
+    "Authorization: Bearer $openai_key"
 ];
 
 $body = json_encode([
-  "model" => "gpt-3.5-turbo",
-  "messages" => [["role" => "user", "content" => $prompt]]
+    "model" => "gpt-3.5-turbo",
+    "messages" => [["role" => "user", "content" => $prompt]]
 ]);
 
 $ch = curl_init("https://api.openai.com/v1/chat/completions");
@@ -71,17 +117,17 @@ curl_close($ch);
 
 $result = json_decode($response, true);
 
+// Debug: Save raw OpenAI response
 file_put_contents("openai_raw_response.json", json_encode($result, JSON_PRETTY_PRINT));
 
 $plan = $result['choices'][0]['message']['content'] ?? null;
 
 if (!$plan) {
     echo json_encode([
-        "message" => "OpenAI returned no plan", 
+        "message" => "OpenAI returned no plan",
         "raw_response" => $result,
         "prompt" => $prompt
     ]);
-    
     exit();
 }
 
@@ -90,13 +136,13 @@ $sql = "INSERT INTO ai_workout_plans (userID, goal, fitnessLevel, workoutType, t
         VALUES (:userID, :goal, :fitnessLevel, :workoutType, :timePerSession, :daysPerWeek, :aiPlan)";
 
 $stmt = $db->prepare($sql);
-$stmt->bindParam(':userID', $user_id);
+$stmt->bindParam(':user_id', $user_id);
 $stmt->bindParam(':goal', $goal);
 $stmt->bindParam(':fitnessLevel', $level);
 $stmt->bindParam(':workoutType', $type);
 $stmt->bindParam(':timePerSession', $time);
 $stmt->bindParam(':daysPerWeek', $days);
-$stmt->bindParam(':aiplan', $plan);
+$stmt->bindParam(':aiPlan', $plan);
 $stmt->execute();
 
 echo json_encode(["message" => "Workout plan generated successfully!", "plan" => $plan]);
