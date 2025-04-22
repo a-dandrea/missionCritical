@@ -31,8 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
     // Insert new user into the database
-    $query = "INSERT INTO users (email, passwordHash, firstName, lastName, gender, dateOfBirth, privelige) 
-              VALUES (:email, :passwordHash, :firstname, :lastname, :gender, :dateOfBirth, :privilige)";
+    $query = "INSERT INTO users (email, passwordHash, firstName, lastName, gender, dateOfBirth, privelege) 
+              VALUES (:email, :passwordHash, :firstname, :lastname, :gender, :dateOfBirth, :privilege)";
     $statement = $db->prepare($query);
     $statement->bindValue(':email', $email);
     $statement->bindValue(':passwordHash', $passwordHash);
