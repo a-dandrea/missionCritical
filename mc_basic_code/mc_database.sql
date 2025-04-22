@@ -37,6 +37,7 @@ CREATE TABLE workouts (
    workoutType VARCHAR(100) NOT NULL,
    duration INT NOT NULL, -- in minutes
    caloriesBurned INT NOT NULL,
+   heartRate INT NOT NULL,
    startTime DATETIME NOT NULL,
    endTime DATETIME NOT NULL,
    stepCount INT NULL,
