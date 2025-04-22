@@ -1,3 +1,10 @@
+<?php
+session_start();
+$isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
+$user_privilege = $_SESSION['privilege'] ?? null; // Get user privilege from session
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +26,11 @@
         </div>
         <div class="nav-links">
 
-            <a href="dashboard.php">Dashboard</a>
+        <?php if ($user_privilege == '2'): ?>
+               <a href="childDashboard.php">Dashboard</a>
+            <?php else: ?>
+               <a href="dashboard.php">Dashboard</a>
+            <?php endif; ?>
             <a href="journal.php">Mission Logs</a>
             <a href="leaderboard.php">Leaderboard</a>
             <a href="workout.php">Workouts</a>
