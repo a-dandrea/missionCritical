@@ -32,7 +32,7 @@
     </nav>
 </header>
 <body>
-<div class="container"></div>
+<div class="container">
 <h1 style="padding: 80px 10px 0px 10px;">Recipe Results</h1>
 
 <?php
