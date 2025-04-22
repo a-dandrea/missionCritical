@@ -25,13 +25,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $lastname = $_POST['lastname'];
     $gender = $_POST['gender'];  // Keep only the necessary fields
     $dateOfBirth = $_POST['dateOfBirth'];
+    $privilege = $_POST['privilege'];
 
     // Hash the password before storing it
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
     // Insert new user into the database
-    $query = "INSERT INTO users (email, passwordHash, firstName, lastName, gender, dateOfBirth) 
-              VALUES (:email, :passwordHash, :firstname, :lastname, :gender, :dateOfBirth)";
+    $query = "INSERT INTO users (email, passwordHash, firstName, lastName, gender, dateOfBirth, privilege) 
+              VALUES (:email, :passwordHash, :firstname, :lastname, :gender, :dateOfBirth, :privilege)";
     $statement = $db->prepare($query);
     $statement->bindValue(':email', $email);
     $statement->bindValue(':passwordHash', $passwordHash);
@@ -39,6 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $statement->bindValue(':lastname', $lastname);
     $statement->bindValue(':gender', $gender);
     $statement->bindValue(':dateOfBirth', $dateOfBirth);
+    $statement->bindValue(':privilege', $privilege);
     
     $statement->execute();
     $statement->closeCursor();
@@ -132,6 +134,7 @@ a:hover { color: #7e57c2; } /* Darker Purple */
 }
 
 .submit {
+    display: block;
     font-size: 15px;
     font-weight: 500;
     color: white;
@@ -188,6 +191,7 @@ footer {
                     </div>
                     <div class="input-box">
                         <select class="input-field" name="gender" required>
+                            <option value="">Gender</option>
                             <option value="M">Male</option>
                             <option value="F">Female</option>
                             <option value="Other">Other</option>
@@ -196,6 +200,14 @@ footer {
                     </div>
                     <div class="input-box">
                         <input type="date" class="input-field" name="dateOfBirth" placeholder="Birthday" required>
+                        <i class="bx bx-user"></i>
+                    </div>
+                    <div class="input-box">
+                        <select class="input-field" name="privilege" required>
+                            <option value="">Account Type</option>
+                            <option value="1">Parent</option>
+                            <option value="2">Child</option>
+                        </select>
                         <i class="bx bx-user"></i>
                     </div>
                     <div class="input-box">

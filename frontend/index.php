@@ -1,6 +1,28 @@
 <?php
 session_start();
+
+$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  // Use the correct database name
+$username = 'ejerrier';  // Use the correct MySQL username
+$password = '1788128';  // Use the correct MySQL password
+
+try {
+    // Establishing the PDO connection
+    $db = new PDO($dsn, $username, $password);
+    // Setting the PDO error mode to exception for better error handling
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    // Handling connection error
+    echo "Connection failed: " . $e->getMessage();
+    die();
+}
+
 $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
+
+$sql = "SELECT privilege FROM users WHERE user_id = :user_id";
+$stmt = $db->prepare($sql);
+$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+$stmt->execute();
+$user_privilege = $stmt->fetchColumn();
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +46,11 @@ $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
          </div>
       </div>
       <div class="nav-links">
-         <a href="dashboard.php">Dashboard</a>
+         <?php if ($user_privilege == '2'): ?>
+               <a href="childDashboard.php">Dashboard</a>
+            <?php else: ?>
+               <a href="dashboard.php">Dashboard</a>
+            <?php endif; ?>
          <a href="journal.php">Mission Logs</a>
          <a href="leaderboard.php">Leaderboard</a>
          <a href="workout.php">Workouts</a>

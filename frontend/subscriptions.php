@@ -1,3 +1,20 @@
+<?php
+session_start();
+$isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
+
+// connect to database
+$dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  // Use the correct database name
+$username = 'ejerrier';  // Use the correct MySQL username
+$password = '1788128';  // Use the correct MySQL password
+
+$sql = "SELECT privilege FROM users WHERE user_id = :user_id";
+$stmt = $db->prepare($sql);
+$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+$stmt->execute();
+$user_privilege = $stmt->fetchColumn();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

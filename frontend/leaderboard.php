@@ -20,6 +20,11 @@
   } catch (PDOException $e) {
     exit("Database connection failed: " . $e->getMessage());
   }
+  $sql = "SELECT privilege FROM users WHERE user_id = :user_id";
+  $stmt = $db->prepare($sql);
+  $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+  $stmt->execute();
+  $user_privilege = $stmt->fetchColumn();
 
   // Determine category (default: calories)
   $category = $_POST['category'] ?? 'calories';
@@ -133,7 +138,11 @@
         </div>
       </div>
       <div class="nav-links">
-        <a href="dashboard.php">Dashboard</a>
+            <?php if ($user_privilege == '2'): ?>
+               <a href="childDashboard.php">Dashboard</a>
+            <?php else: ?>
+               <a href="dashboard.php">Dashboard</a>
+            <?php endif; ?>
         <a href="journal.php">Mission Logs</a>
         <a href="leaderboard.php">Leaderboard</a>
         <a href="workout.php">Workouts</a>

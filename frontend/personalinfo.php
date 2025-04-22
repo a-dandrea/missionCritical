@@ -17,6 +17,12 @@ try {
     echo "Database connection failed: " . $e->getMessage();
     exit();
 }
+
+$sql = "SELECT privilege FROM users WHERE user_id = :user_id";
+$stmt = $db->prepare($sql);
+$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+$stmt->execute();
+$user_privilege = $stmt->fetchColumn();
 ?> 
 
 <!DOCTYPE html>
@@ -41,7 +47,11 @@ try {
         </div>
         <div class="nav-links">
 
-            <a href="dashboard.php">Dashboard</a>
+        <?php if ($user_privilege == '2'): ?>
+               <a href="childDashboard.php">Dashboard</a>
+            <?php else: ?>
+               <a href="dashboard.php">Dashboard</a>
+            <?php endif; ?>
             <a href="journal.php">Mission Logs</a>
             <a href="leaderboard.php">Leaderboard</a>
             <a href="workout.php">Workouts</a>
@@ -64,14 +74,18 @@ try {
             <label for="age">Age:</label>
             <input type="number" id="age" name="age">
 
-            <label for="weight">Weight (lbs):</label>
-            <input type="number" id="weight" name="weight">
+            <?php if ($user_privilege == '1'): ?>
+               <label for="weight">Weight (lbs):</label>
+               <input type="number" id="weight" name="weight">
+            <?php endif; ?>
 
             <label for="height">Height (inches):</label>
             <input type="number" id="height" name="height">
-
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email">
+            
+            <?php if ($user_privilege == '1'): ?>
+               <label for="email">Email:</label>
+               <input type="text" id="email" name="email">
+            <?php endif; ?>
 
             <button type="submit">Update</button>
         </form>
