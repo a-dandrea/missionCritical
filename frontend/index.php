@@ -5,6 +5,17 @@ $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  /
 $username = 'ejerrier';  // Use the correct MySQL username
 $password = '1788128';  // Use the correct MySQL password
 
+try {
+    // Establishing the PDO connection
+    $db = new PDO($dsn, $username, $password);
+    // Setting the PDO error mode to exception for better error handling
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    // Handling connection error
+    echo "Connection failed: " . $e->getMessage();
+    die();
+}
+
 $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
 
 $sql = "SELECT privilege FROM users WHERE user_id = :user_id";
