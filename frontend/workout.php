@@ -109,8 +109,7 @@ try {
                     <th>Duration</th>
                     <th>Calories Burned</th>
                     <th>Workout Date</th>
-                    <th>Step Count</th>
-                     <th>Notes</th>
+                    <th>Notes</th>
                 </tr>
             </thead>
             <tbody>
