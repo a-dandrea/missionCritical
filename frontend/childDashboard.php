@@ -20,6 +20,12 @@ try {
     $db = new PDO($dsn, $username, $password);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    $sql = "SELECT privilege FROM users WHERE user_id = :user_id";
+    $stmt = $db->prepare($sql);
+    $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+    $stmt->execute();
+    $user_privilege = $stmt->fetchColumn();
+
     // Fetch user data
     $sql = "SELECT firstName, lastName, email, age, gender, height, 
                daily_step_goal, daily_active_goal, 
@@ -61,7 +67,11 @@ $stmt->closeCursor();
       </a>
    </div>
    <div class="nav-links">
-      <a href="dashboard.php">Dashboard</a>
+         <?php if ($user_privilege == '2'): ?>
+               <a href="childDashboard.php">Dashboard</a>
+            <?php else: ?>
+               <a href="dashboard.php">Dashboard</a>
+            <?php endif; ?>
       <a href="journal.php">Mission Logs</a>
       <a href="leaderboard.php">Leaderboard</a>
       <a href="workout.php">Workouts</a>
@@ -110,7 +120,20 @@ $stmt->closeCursor();
                }
                ?>
             </p>
-            <p><strong>Privilege:</strong> <?php echo htmlspecialchars($user['privilege']); ?></p>
+            <p><strong>Privilege:</strong>
+            <?php $privilege = htmlspecialchars($user['privilege']); 
+            switch($privilege) {
+               case 1:
+                  echo "Adult";
+                  break;
+               case 2:
+                  echo "Child";
+                  break;
+               default:
+                  echo "No privilege set."; // In case of an unexpected value, just display it
+                  break;
+            }
+            ?></p>
          </div>
 
          <!-- Goal & Activity Box -->
