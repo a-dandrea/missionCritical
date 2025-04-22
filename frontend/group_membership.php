@@ -26,10 +26,13 @@
               $db->beginTransaction();
 
               // Insert new group
-              $$insertGroupSql = "INSERT INTO groups (username, group_type) VALUES (:username, :group_type)"; stmt->bindParam(':username', $username);
-              $stmt->bindParam(':group_type', $group_type);
+              $insertGroupSql = "INSERT INTO groups (username, type, parental_control) VALUES (:username, :type, :parental_control)";
+              $stmt = $db->prepare($insertGroupSql);
+              $stmt->bindParam(':username', $username);
+              $stmt->bindParam(':type', $group_type);
               $stmt->bindParam(':parental_control', $parental_control, PDO::PARAM_INT);
               $stmt->execute();
+
 
               $group_id = $db->lastInsertId();
               $db->commit();
@@ -42,6 +45,30 @@
           $message = "Please enter a valid username and select a group type.";
       }
   }
+  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['join_group'])) {
+   $group_id = trim($_POST['group_id']);
+
+   if (!empty($group_id) && $isLoggedIn) {
+       try {
+           $user_id = $_SESSION['user_id'];
+           $checkMembership = $db->prepare("SELECT * FROM user_groups WHERE user_id = :user_id AND group_id = :group_id");
+           $checkMembership->execute([':user_id' => $user_id, ':group_id' => $group_id]);
+
+           if ($checkMembership->rowCount() == 0) {
+               $joinGroup = $db->prepare("INSERT INTO user_groups (user_id, group_id) VALUES (:user_id, :group_id)");
+               $joinGroup->execute([':user_id' => $user_id, ':group_id' => $group_id]);
+               $popupMessage = "Successfully joined group ID $group_id!";
+           } else {
+               $message = "You are already a member of this group.";
+           }
+       } catch (Exception $e) {
+           $message = "Error joining group: " . $e->getMessage();
+       }
+   } else {
+       $message = "You must be logged in and provide a valid Group ID.";
+   }
+}
+
 ?>
 
 <!DOCTYPE html>
