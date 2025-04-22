@@ -188,6 +188,7 @@ footer {
                     </div>
                     <div class="input-box">
                         <select class="input-field" name="gender" required>
+                            <option value="">Gender</option>
                             <option value="M">Male</option>
                             <option value="F">Female</option>
                             <option value="Other">Other</option>
@@ -196,6 +197,14 @@ footer {
                     </div>
                     <div class="input-box">
                         <input type="date" class="input-field" name="dateOfBirth" placeholder="Birthday" required>
+                        <i class="bx bx-user"></i>
+                    </div>
+                    <div class="input-box">
+                        <select class="input-field" name="privelge" required>
+                            <option value = "">Account Type</option>
+                            <option value="1">Parent</option>
+                            <option value="2">Child</option>
+                        </select>
                         <i class="bx bx-user"></i>
                     </div>
                     <div class="input-box">
