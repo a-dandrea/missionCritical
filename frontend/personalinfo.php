@@ -74,14 +74,18 @@ $user_privilege = $stmt->fetchColumn();
             <label for="age">Age:</label>
             <input type="number" id="age" name="age">
 
-            <label for="weight">Weight (lbs):</label>
-            <input type="number" id="weight" name="weight">
+            <?php if ($user_privilege == '1'): ?>
+               <label for="weight">Weight (lbs):</label>
+               <input type="number" id="weight" name="weight">
+            <?php endif; ?>
 
             <label for="height">Height (inches):</label>
             <input type="number" id="height" name="height">
-
-            <label for="email">Email:</label>
-            <input type="text" id="email" name="email">
+            
+            <?php if ($user_privilege == '1'): ?>
+               <label for="email">Email:</label>
+               <input type="text" id="email" name="email">
+            <?php endif; ?>
 
             <button type="submit">Update</button>
         </form>
