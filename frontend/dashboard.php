@@ -115,7 +115,21 @@ $stmt->closeCursor();
                }
                ?>
             </p>
-            <p><strong>Privilege:</strong> <?php echo htmlspecialchars($user['privilege']); ?></p>
+            <p><strong>Privilege:</strong> 
+            
+            <?php $privilege = htmlspecialchars($user['privilege']); 
+            switch($privilege) {
+               case 1:
+                  echo "Adult";
+                  break;
+               case 2:
+                  echo "Child";
+                  break;
+               default:
+                  echo $privilege; // In case of an unexpected value, just display it
+                  break;
+            }
+            ?></p>
          </div>
 
          <!-- Goal & Activity Box -->
