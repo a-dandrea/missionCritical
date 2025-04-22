@@ -95,11 +95,7 @@ try {
       </div>
    </div>
    <div class="nav-links">
-         <?php if ($user_privilege == '2'): ?>
-               <a href="childDashboard.php">Dashboard</a>
-            <?php else: ?>
-               <a href="dashboard.php">Dashboard</a>
-            <?php endif; ?>
+      <a href="dashboard.php">Dashboard</a>
       <a href="journal.php">Mission Logs</a>
       <a href="leaderboard.php">Leaderboard</a>
       <a href="workout.php">Workouts</a>
