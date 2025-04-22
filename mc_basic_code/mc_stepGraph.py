@@ -52,6 +52,16 @@ try:
    for log_date, step_count in cursor.fetchall():
       data[str(log_date)] = step_count  # Fill actual values from database
 
+   cursor.execute("""
+      SELECT daily_step_goal
+      FROM users
+      WHERE user_id = %s
+   """, (user_id,))
+
+   # Get daily step goal for the user
+   goal_result = cursor.fetchone()
+   daily_step_goal = goal_result[0] if goal_result else 0
+
    cursor.close()
    conn.close()
 
@@ -88,6 +98,8 @@ try:
    # Set all dates as x-ticks in the correct order
    plt.xticks(all_dates, rotation=90)
    plt.ylim(bottom=0)  # Ensure y-axis starts from 0 for better visualization
+
+   plt.axhline(y=daily_step_goal, color='navy', linestyle='--', label='Daily Step Goal')
 
    plt.xlabel("Date")
    plt.ylabel("Steps")
