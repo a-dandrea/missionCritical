@@ -4,7 +4,6 @@ ini_set('display_errors', 1);
 
 session_start();
 $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
-$user_privilege = $_SESSION['privilege'] ?? null; // Get user privilege from session
 
 // Adjust the database connection parameters to match your setup.
 $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  // Use the correct database name
@@ -18,6 +17,12 @@ try {
     echo "Database connection failed: " . $e->getMessage();
     exit();
 }
+
+$sql = "SELECT privilege FROM users WHERE user_id = :user_id";
+$stmt = $db->prepare($sql);
+$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+$stmt->execute();
+$user_privilege = $stmt->fetchColumn();
 ?> 
 
 <!DOCTYPE html>

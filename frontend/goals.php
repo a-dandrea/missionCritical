@@ -4,7 +4,6 @@ ini_set('display_errors', 1);
 
 session_start();
 $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
-$user_privilege = $_SESSION['privilege'] ?? null; // Get user privilege from session
 
 // Database connection
 $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
@@ -18,6 +17,12 @@ try {
     echo "Database connection failed: " . $e->getMessage();
     exit();
 }
+$sql = "SELECT privilege FROM users WHERE user_id = :user_id";
+$stmt = $db->prepare($sql);
+$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+$stmt->execute();
+$user_privilege = $stmt->fetchColumn();
+
 ?>
 
 <!DOCTYPE html>
@@ -41,7 +46,7 @@ try {
       </div>
    </div>
    <div class="nav-links">
-            <?php if ($user_privilege == '2'): ?>
+            <?php if ($user_privilege == 2): ?>
                <a href="childDashboard.php">Dashboard</a>
             <?php else: ?>
                <a href="dashboard.php">Dashboard</a>
