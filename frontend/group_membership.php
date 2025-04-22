@@ -12,6 +12,11 @@
   } catch (PDOException $e) {
       exit("Database connection failed: " . $e->getMessage());
   }
+  $sql = "SELECT privilege FROM users WHERE user_id = :user_id";
+  $stmt = $db->prepare($sql);
+  $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+  $stmt->execute();
+  $user_privilege = $stmt->fetchColumn();
 
   $popupMessage = ''; // Message for JavaScript pop-up
 

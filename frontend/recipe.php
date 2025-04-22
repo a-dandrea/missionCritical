@@ -1,16 +1,29 @@
 <?php
    session_start();     
-     $isLoggedIn = isset($_SESSION['user_id']);
-     $user_privilege = $_SESSION['privilege'] ?? null; // Get user privilege from session
+   $isLoggedIn = isset($_SESSION['user_id']);
 
-     $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
-     $username = 'ejerrier';
-     $password = '1788128';
+   $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';
+   $username = 'ejerrier';
+   $password = '1788128';
    
-     if (!$isLoggedIn) {
-       header("Location: login.php");
-       exit();
-     }
+   if (!$isLoggedIn) {
+      header("Location: login.php");
+      exit();
+   }
+
+   try {
+      $db = new PDO($dsn, $username, $password);
+      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  } catch (PDOException $e) {
+      $error_message = $e->getMessage();
+      exit("Database connection failed: " . $error_message);
+  }
+
+  $sql = "SELECT privilege FROM users WHERE user_id = :user_id";
+  $stmt = $db->prepare($sql);
+  $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+  $stmt->execute();
+  $user_privilege = $stmt->fetchColumn();
 ?>
 
 <!DOCTYPE html>

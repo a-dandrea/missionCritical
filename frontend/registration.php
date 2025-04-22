@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
     // Insert new user into the database
-    $query = "INSERT INTO users (email, passwordHash, firstName, lastName, gender, dateOfBirth, privelege) 
+    $query = "INSERT INTO users (email, passwordHash, firstName, lastName, gender, dateOfBirth, privilege) 
               VALUES (:email, :passwordHash, :firstname, :lastname, :gender, :dateOfBirth, :privilege)";
     $statement = $db->prepare($query);
     $statement->bindValue(':email', $email);
@@ -134,6 +134,7 @@ a:hover { color: #7e57c2; } /* Darker Purple */
 }
 
 .submit {
+    display: block;
     font-size: 15px;
     font-weight: 500;
     color: white;
