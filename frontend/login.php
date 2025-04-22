@@ -42,9 +42,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['user_id'] = $user['user_id'];  // Assuming you want to store user_id
                 $_SESSION['email'] = $user['email'];  // Assuming you want to store email as well
 
-                // Redirect to user profile page
-                header("Location: dashboard.php");
+                // Redirect based on user privilege
+                if (isset($user['privilege']) && $user['privilege'] == 2) {
+                    header("Location: childDashboard.php");
+                } else {
+                    header("Location: dashboard.php");
+                }
                 exit();
+
             } else {
                 $login_error = "Invalid username or password.";
             }
