@@ -126,7 +126,7 @@ $stmt->closeCursor();
                   echo "Child";
                   break;
                default:
-                  echo $privilege; // In case of an unexpected value, just display it
+                  echo "No privilege set."; // In case of an unexpected value, just display it
                   break;
             }
             ?></p>
