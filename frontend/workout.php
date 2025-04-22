@@ -155,15 +155,46 @@ try {
         </div>
         <div class="container">
 
-        <!-- Generate Workout Form -->
-        <h1 style="text-align: center;">Create a Plan</h1>
+        <!-- Creating a Workout Plan using AI -->
+        <h2 style="text-align: center;">Need Workout Suggestions?</h2>
+	<h4 style="text-align: center;">Fill out the options below to help AI create a plan for you!</h4>
         <form id="generate-form">
             <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['user_id']); ?>" />
-            <label style="text-align: center;">Goal: <input type="text" name="goal" required /></label><br>
-            <label style="text-align: center;">Fitness Level: <input type="text" name="fitness_level" required /></label><br>
-            <label style="text-align: center;">Workout Type: <input type="text" name="workout_type" required /></label><br>
-            <label style="text-align: center;">Time per Session: <input type="text" name="time_per_session" required /></label><br>
-            <label style="text-align: center;">Days per Week: <input type="number" name="days_per_week" required /></label><br>
+            <div style="text-align: center; margin-bottom: 10px;">
+               <label for="goal" style="display: block; width: 300px; margin: 0 auto; text-align: center;">
+                   What is your goal?
+               </label>
+               <input type="text" name="goal" required style="width: 300px;" />
+            </div>
+
+            <div style="text-align: center; margin-bottom: 10px;">
+                <label for="fitness_level" style="display: block; width: 300px; margin: 0 auto; text-align: center;">
+                    What is your fitness level?
+                </label>
+                <input type="text" name="fitness_level" required style="width: 300px;" />
+            </div>
+
+            <div style="text-align: center; margin-bottom: 10px;">
+                <label for="workout_type" style="display: block; width: 300px; margin: 0 auto; text-align: center;">
+                    What types of workout would you prefer?
+                </label>
+                <input type="text" name="workout_type" required style="width: 300px;" />
+            </div>
+
+            <div style="text-align: center; margin-bottom: 10px;">
+                <label for="time_per_session" style="display: block; width: 300px; margin: 0 auto; text-align: center;">
+                    How long do you want each workout session to be?
+                </label>
+                <input type="text" name="time_per_session" required style="width: 300px;" />
+            </div>
+
+            <div style="text-align: center; margin-bottom: 10px;">
+                <label for="days_per_week" style="display: block; width: 300px; margin: 0 auto; text-align: center;">
+                    How many days per week do you want to workout?
+                </label>
+                <input type="number" min=0 max=7 name="days_per_week" required style="width: 300px;" />
+            </div>
+
             <button type="submit">Generate Workout Plan</button>
         </form>
 

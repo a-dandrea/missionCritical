@@ -32,15 +32,14 @@ try {
 
 // Load POST input data
 $data = json_decode(file_get_contents("php://input"), true);
-$userID = $data['userID'] ?? null;
 $goal = $data['goal'] ?? null;
-$level = $data['level'] ?? null;
+$level = $data['fitness_level'] ?? null;
 $type = $data['workout_type'] ?? null;
 $time = $data['time_per_session'] ?? null;
 $days = $data['days_per_week'] ?? null;
 
 // Validate input
-if (!$userID || !$goal || !$level || !$type || !$time || !$days) {
+if (!$goal || !$level || !$type || !$time || !$days) {
     echo json_encode(["message" => "Missing required fields."]);
     exit();
 }
@@ -51,14 +50,14 @@ $prompt .= "Goal: $goal\nLevel: $level\nWorkout type: $type\n";
 $prompt .= "Time per session: $time\nDays per week: $days\n";
 
 // Call OpenAI API
-$openai_key = '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';
+$openai_key = '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';
 $headers = [
   "Content-Type: application/json",
   "Authorization: Bearer $openai_key"
 ];
 
 $body = json_encode([
-  "model" => "gpt-4",
+  "model" => "gpt-3.5-turbo",
   "messages" => [["role" => "user", "content" => $prompt]]
 ]);
 
@@ -71,25 +70,33 @@ $response = curl_exec($ch);
 curl_close($ch);
 
 $result = json_decode($response, true);
+
+file_put_contents("openai_raw_response.json", json_encode($result, JSON_PRETTY_PRINT));
+
 $plan = $result['choices'][0]['message']['content'] ?? null;
 
 if (!$plan) {
-    echo json_encode(["message" => "OpenAI returned no plan", "raw" => $result]);
+    echo json_encode([
+        "message" => "OpenAI returned no plan", 
+        "raw_response" => $result,
+        "prompt" => $prompt
+    ]);
+    
     exit();
 }
 
 // Save to DB
-$sql = "INSERT INTO workout_plans (user_id, goal, level, workoutType, time_per_session, days_per_week, plan) 
-        VALUES (:userID, :goal, :level, :type, :time, :days, :plan)";
+$sql = "INSERT INTO ai_workout_plans (userID, goal, fitnessLevel, workoutType, timePerSession, daysPerWeek, aiPlan) 
+        VALUES (:userID, :goal, :fitnessLevel, :workoutType, :timePerSession, :daysPerWeek, :aiPlan)";
 
 $stmt = $db->prepare($sql);
 $stmt->bindParam(':userID', $user_id);
 $stmt->bindParam(':goal', $goal);
-$stmt->bindParam(':level', $level);
-$stmt->bindParam(':type', $type);
-$stmt->bindParam(':time', $time);
-$stmt->bindParam(':days', $days);
-$stmt->bindParam(':plan', $plan);
+$stmt->bindParam(':fitnessLevel', $level);
+$stmt->bindParam(':workoutType', $type);
+$stmt->bindParam(':timePerSession', $time);
+$stmt->bindParam(':daysPerWeek', $days);
+$stmt->bindParam(':aiplan', $plan);
 $stmt->execute();
 
 echo json_encode(["message" => "Workout plan generated successfully!", "plan" => $plan]);
