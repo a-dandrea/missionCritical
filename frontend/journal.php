@@ -31,16 +31,6 @@ try {
     $db = new PDO($dsn, $username, $password);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-<<<<<<< HEAD
-=======
-    $sql = "SELECT privilege FROM users WHERE user_id = :user_id";
-    $stmt = $db->prepare($sql);
-    $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
-    $stmt->execute();
-    $user_privilege = $stmt->fetchColumn();
-
-    // Fetch user data
->>>>>>> d570fec81dc3e7dd249c5e0d19dad12ed03cfb66
     $sql = "SELECT firstName, lastName, email, age, gender, weight, height, goal1, goal2, goal3, goal4, activity_level, privilege FROM users WHERE user_id = :user_id";
     $stmt = $db->prepare($sql);
     $stmt->bindValue(':user_id', $user_id, PDO::PARAM_INT);
