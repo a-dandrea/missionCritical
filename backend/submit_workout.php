@@ -19,6 +19,7 @@ try {
 $userID = $_POST['userID'] ?? null;
 $workoutType = $_POST['workout-type'] ?? null;
 $duration = $_POST['duration'] ?? null;
+$heartRate = $_POST['heartRate'] ?? null;
 $calories = $_POST['calories'] ?? null;
 //$startTime = date('Y-m-d H:i:s');  // Assume workout starts now
 //$endTime = date('Y-m-d H:i:s', strtotime("+$duration minutes"));
