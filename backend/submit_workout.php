@@ -51,8 +51,9 @@ try {
     $stmt->bindParam(':workoutType', $workoutType);
     $stmt->bindParam(':duration', $duration);
     $stmt->bindParam(':caloriesBurned', $calories);
-    $stmt->bindParam(':startTime', $startTime);
-    $stmt->bindParam(':endTime', $endTime);
+    $stmt->bindParam(':heartRate', $heartRate);
+    //$stmt->bindParam(':startTime', $startTime);
+    //$stmt->bindParam(':endTime', $endTime);
     $stmt->bindParam(':notes', $notes);
 
     if ($stmt->execute()) {
