@@ -98,7 +98,7 @@ $prompt .= "Goal: $goal\nLevel: $level\nWorkout type: $type\n";
 $prompt .= "Time per session: $time\nDays per week: $days\n";
 
 // Send to OpenAI API
-$openai_key = "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";
+$openai_key = "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";
 $headers = [
     "Content-Type: application/json",
     "Authorization: Bearer $openai_key"
