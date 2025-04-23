@@ -36,7 +36,7 @@ $endTime = date('Y-m-d H:i:s', strtotime("$chosenStart +$duration minutes"));
 
 $notes = $_POST['notes'] ?? null;
 
-if (!$userID || !$workoutType || !$duration || !$calories) {
+if (!$userID || !$workoutType || !$duration || !$heartRate || !$calories) {
     echo json_encode(["message" => "Missing required fields"]);
     exit();
 }
