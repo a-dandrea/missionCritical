@@ -21,8 +21,8 @@ $workoutType = $_POST['workout-type'] ?? null;
 $duration = $_POST['duration'] ?? null;
 $heartRate = $_POST['heartRate'] ?? null;
 $calories = $_POST['calories'] ?? null;
-$startTime = date('Y-m-d H:i:s');  // Assume workout starts now
-$endTime = date('Y-m-d H:i:s', strtotime("+$duration minutes"));
+//$startTime = date('Y-m-d H:i:s');  // Assume workout starts now
+//$endTime = date('Y-m-d H:i:s', strtotime("+$duration minutes"));
 $chosenStart = $_POST['workout-date'] ?? null;
 
 if (!$chosenStart) {
@@ -31,8 +31,8 @@ if (!$chosenStart) {
 }
 
 // Convert to datetime format (strip 'T' and ensure correct format)
-$startTime = date('Y-m-d H:i:s', strtotime($chosenStart));
-$endTime = date('Y-m-d H:i:s', strtotime("$chosenStart +$duration minutes"));
+//$startTime = date('Y-m-d H:i:s', strtotime($chosenStart));
+//$endTime = date('Y-m-d H:i:s', strtotime("$chosenStart +$duration minutes"));
 
 $notes = $_POST['notes'] ?? null;
 
@@ -43,8 +43,8 @@ if (!$userID || !$workoutType || !$duration || !$heartRate || !$calories) {
 
 // Insert workout data
 try {
-    $sql = "INSERT INTO workouts (userID, workoutType, duration, caloriesBurned, heartRate, startTime, endTime, notes) 
-            VALUES (:userID, :workoutType, :duration, :caloriesBurned, :heartRate, :startTime, :endTime, :notes)";
+    $sql = "INSERT INTO workouts (userID, workoutType, duration, caloriesBurned, heartRate, notes) 
+            VALUES (:userID, :workoutType, :duration, :caloriesBurned, :heartRate, :notes)";
     
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':userID', $userID);
@@ -52,8 +52,8 @@ try {
     $stmt->bindParam(':duration', $duration);
     $stmt->bindParam(':caloriesBurned', $calories);
     $stmt->bindParam(':heartRate', $heartRate);
-    $stmt->bindParam(':startTime', $startTime);
-    $stmt->bindParam(':endTime', $endTime);
+    //$stmt->bindParam(':startTime', $startTime);
+    //$stmt->bindParam(':endTime', $endTime);
     $stmt->bindParam(':notes', $notes);
 
     if ($stmt->execute()) {
