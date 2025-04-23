@@ -33,12 +33,13 @@
           $sql = "
             SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, 
                    SUM(ds.daily_step_count) AS value, 
-                   u.daily_step_goal * 7 AS goal
+                   u.daily_step_goal * 7 AS goal,
+                   SUM(ds.daily_step_count) DIV u.daily_step_goal AS complete
             FROM users u
             JOIN daily_steps ds ON u.user_id = ds.user_id
             WHERE WEEK(ds.date, 1) = :week AND YEAR(ds.date) = :year
             GROUP BY u.user_id
-            ORDER BY value DESC
+            ORDER BY complete DESC
           ";
           $unit = "steps";
           break;
@@ -47,12 +48,13 @@
           $sql = "
             SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, 
                    SUM(dam.daily_active_minutes) AS value, 
-                   u.daily_active_goal * 7 AS goal
+                   u.daily_active_goal * 7 AS goal,
+                   SUM(dam.daily_active_minutes) DIV u.daily_active_goal AS complete
             FROM users u
             JOIN daily_active_minutes dam ON u.user_id = dam.user_id
             WHERE WEEK(dam.date, 1) = :week AND YEAR(dam.date) = :year
             GROUP BY u.user_id
-            ORDER BY value DESC
+            ORDER BY complete DESC
           ";
           $unit = "minutes";
           break;
@@ -61,12 +63,13 @@
           $sql = "
             SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, 
                    SUM(dwi.daily_water_intake) AS value, 
-                   u.daily_water_goal * 7 AS goal
+                   u.daily_water_goal * 7 AS goal,
+                   SUM(dwi.daily_water_intake) DIV u.daily_water_goal AS complete
             FROM users u
             JOIN daily_water_intake dwi ON u.user_id = dwi.user_id
             WHERE WEEK(dwi.date, 1) = :week AND YEAR(dwi.date) = :year
             GROUP BY u.user_id
-            ORDER BY value DESC
+            ORDER BY complete DESC
           ";
           $unit = "ml";
           break;
@@ -75,12 +78,13 @@
           $sql = "
             SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, 
                    SUM(dto.daily_time_outdoors) AS value, 
-                   u.daily_outside_goal * 7 AS goal
+                   u.daily_outside_goal * 7 AS goal,
+                   SUM(dto.daily_time_outdoors) DIV u.daily_outside_goal AS complete
             FROM users u
             JOIN daily_time_outdoors dto ON u.user_id = dto.user_id
             WHERE WEEK(dto.date, 1) = :week AND YEAR(dto.date) = :year
             GROUP BY u.user_id
-            ORDER BY value DESC
+            ORDER BY complete DESC
           ";
           $unit = "minutes";
           break;
@@ -89,12 +93,13 @@
           $sql = "
             SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, 
                    SUM(dsl.daily_sleep_hours) AS value, 
-                   u.daily_sleep_goal * 7 AS goal
+                   u.daily_sleep_goal * 7 AS goal,
+                   SUM(dsl.daily_sleep_hours) DIV (u.daily_sleep_goal) AS complete
             FROM users u
             JOIN daily_sleep_log dsl ON u.user_id = dsl.user_id
             WHERE WEEK(dsl.date, 1) = :week AND YEAR(dsl.date) = :year
             GROUP BY u.user_id
-            ORDER BY value DESC
+            ORDER BY complete DESC
           ";
           $unit = "hours";
           break;
@@ -104,12 +109,13 @@
           $sql = "
             SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, 
                    SUM(w.caloriesBurned) AS value, 
-                   u.daily_calorie_goal * 7 AS goal
+                   u.daily_calorie_goal * 7 AS goal,
+                   SUM(w.caloriesBurned) DIV (u.daily_calorie_goal) AS complete
             FROM users u
             JOIN workouts w ON u.user_id = w.userID
             WHERE WEEK(w.startTime, 1) = :week AND YEAR(w.startTime) = :year
             GROUP BY u.user_id
-            ORDER BY value DESC
+            ORDER BY complete DESC
           ";
           $unit = "kcal";
           break;
