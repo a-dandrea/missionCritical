@@ -149,6 +149,17 @@ try {
             <label for="workout-date" style="text-align: center;">Workout Date:</label>
             <input type="date" id="workout-date" name="workout-date" required>
 
+
+            <label for="duration">Duration (minutes):</label>
+            <input type="number" id="duration" name="duration" required min="1">
+
+            <label for="heartRate">Average Heart Rate:</label>
+            <input type="number" id="heartRate" name="heartRate" required min="0">
+
+            <label for="calories">Calories Burned:</label>
+            <input type="number" id="calories" name="calories" required min="0">
+
+
             <div id="dynamic-fields"></div>
             <button type="submit">Submit Workout</button>
         </form>
