@@ -43,8 +43,8 @@ if (!$userID || !$workoutType || !$duration || !$calories) {
 
 // Insert workout data
 try {
-    $sql = "INSERT INTO workouts (userID, workoutType, duration, caloriesBurned, heartRate, notes) 
-            VALUES (:userID, :workoutType, :duration, :caloriesBurned, :heartRate, :notes)";
+    $sql = "INSERT INTO workouts (userID, workoutType, duration, caloriesBurned, heartRate, startTime, endTime, notes) 
+            VALUES (:userID, :workoutType, :duration, :caloriesBurned, :heartRate, :startTime, :endTime :notes)";
     
     $stmt = $db->prepare($sql);
     $stmt->bindParam(':userID', $userID);
@@ -52,8 +52,8 @@ try {
     $stmt->bindParam(':duration', $duration);
     $stmt->bindParam(':caloriesBurned', $calories);
     $stmt->bindParam(':heartRate', $heartRate);
-    //$stmt->bindParam(':startTime', $startTime);
-    //$stmt->bindParam(':endTime', $endTime);
+    $stmt->bindParam(':startTime', $startTime);
+    $stmt->bindParam(':endTime', $endTime);
     $stmt->bindParam(':notes', $notes);
 
     if ($stmt->execute()) {
