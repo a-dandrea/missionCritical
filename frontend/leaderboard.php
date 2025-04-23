@@ -33,7 +33,7 @@
           $sql = "
             SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, 
                    SUM(ds.daily_step_count) AS value, 
-                   10000 * 7 AS goal
+                   u.daily_step_goal * 7 AS goal
             FROM users u
             JOIN daily_steps ds ON u.user_id = ds.user_id
             WHERE WEEK(ds.date, 1) = :week AND YEAR(ds.date) = :year
@@ -47,7 +47,7 @@
           $sql = "
             SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, 
                    SUM(dam.daily_active_minutes) AS value, 
-                   120 * 7 AS goal
+                   u.daily_active_goal * 7 AS goal
             FROM users u
             JOIN daily_active_minutes dam ON u.user_id = dam.user_id
             WHERE WEEK(dam.date, 1) = :week AND YEAR(dam.date) = :year
@@ -61,7 +61,7 @@
           $sql = "
             SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, 
                    SUM(dwi.daily_water_intake) AS value, 
-                   3000 * 7 AS goal
+                   u.daily_water_goal * 7 AS goal
             FROM users u
             JOIN daily_water_intake dwi ON u.user_id = dwi.user_id
             WHERE WEEK(dwi.date, 1) = :week AND YEAR(dwi.date) = :year
@@ -75,7 +75,7 @@
           $sql = "
             SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, 
                    SUM(dto.daily_time_outdoors) AS value, 
-                   120 * 7 AS goal
+                   u.daily_outside_goal * 7 AS goal
             FROM users u
             JOIN daily_time_outdoors dto ON u.user_id = dto.user_id
             WHERE WEEK(dto.date, 1) = :week AND YEAR(dto.date) = :year
@@ -89,7 +89,7 @@
           $sql = "
             SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, 
                    SUM(dsl.daily_sleep_hours) AS value, 
-                   8 * 7 AS goal
+                   u.daily_sleep_goal * 7 AS goal
             FROM users u
             JOIN daily_sleep_log dsl ON u.user_id = dsl.user_id
             WHERE WEEK(dsl.date, 1) = :week AND YEAR(dsl.date) = :year
@@ -104,7 +104,7 @@
           $sql = "
             SELECT CONCAT(u.firstName, ' ', u.lastName) AS fullName, 
                    SUM(w.caloriesBurned) AS value, 
-                   2000 * 7 AS goal
+                   u.daily_calorie_goal * 7 AS goal
             FROM users u
             JOIN workouts w ON u.user_id = w.userID
             WHERE WEEK(w.startTime, 1) = :week AND YEAR(w.startTime) = :year
@@ -188,7 +188,7 @@
     <h2>Leaderboard</h2>
 
     <form method="GET" style="text-align: center; margin-bottom: 1rem;">
-      <label for="week" style="text-align: center;">Select Week:</label>
+      <label for="week"><strong>Select Week:</strong></label>
       <select name="week" id="week" onchange="this.form.submit()">
   <?php
     $currentWeek = date('W');
