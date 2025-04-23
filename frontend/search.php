@@ -6,6 +6,14 @@ $dsn = 'mysql:host=joecool.highpoint.edu;dbname=csc4710_S25_missioncritical';  /
 $username = 'ejerrier';  // Use the correct MySQL username
 $password = '1788128';  // Use the correct MySQL password
 
+try {
+   $db = new PDO($dsn, $username, $password);
+   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+   $error_message = $e->getMessage();
+   exit("Database connection failed: " . $error_message);
+}
+
 $sql = "SELECT privilege FROM users WHERE user_id = :user_id";
 $stmt = $db->prepare($sql);
 $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
