@@ -19,24 +19,12 @@ try {
 $userID = $_POST['userID'] ?? null;
 $workoutType = $_POST['workout-type'] ?? null;
 $duration = $_POST['duration'] ?? null;
-$heartRate = $_POST['heartRate'] ?? null;
 $calories = $_POST['calories'] ?? null;
 $startTime = date('Y-m-d H:i:s');  // Assume workout starts now
 $endTime = date('Y-m-d H:i:s', strtotime("+$duration minutes"));
-$chosenStart = $_POST['workout-date'] ?? null;
-
-if (!$chosenStart) {
-    echo json_encode(["message" => "Workout date is required"]);
-    exit();
-}
-
-// Convert to datetime format (strip 'T' and ensure correct format)
-$startTime = date('Y-m-d H:i:s', strtotime($chosenStart));
-$endTime = date('Y-m-d H:i:s', strtotime("$chosenStart +$duration minutes"));
-
 $notes = $_POST['notes'] ?? null;
 
-if (!$userID || !$workoutType || !$duration || !$heartRate || !$calories) {
+if (!$userID || !$workoutType || !$duration || !$calories) {
     echo json_encode(["message" => "Missing required fields"]);
     exit();
 }
@@ -51,7 +39,6 @@ try {
     $stmt->bindParam(':workoutType', $workoutType);
     $stmt->bindParam(':duration', $duration);
     $stmt->bindParam(':caloriesBurned', $calories);
-    $stmt->bindParam(':heartRate', $heartRate);
     $stmt->bindParam(':startTime', $startTime);
     $stmt->bindParam(':endTime', $endTime);
     $stmt->bindParam(':notes', $notes);
