@@ -108,7 +108,7 @@ try {
                     <th>Workout Type</th>
                     <th>Duration</th>
                     <th>Calories Burned</th>
-                    <th>Average Heart Rate</th>
+                    <!-- <th>Average Heart Rate</th> -->
                     <th>Workout Date</th>
                     <th>Notes</th>
                 </tr>
