@@ -8,9 +8,9 @@ session_start();
 $isLoggedIn = isset($_SESSION['user_id']); // Check if user is logged in
 
 // Debugging session data
-echo "<pre>";
-print_r($_SESSION);
-echo "</pre>";
+//echo "<pre>";
+//print_r($_SESSION);
+//echo "</pre>";
 
 if (!isset($_SESSION['user_id'])) {
     echo "Error: User not logged in.";
@@ -221,16 +221,27 @@ try {
                 const payload = Object.fromEntries(formData.entries());
 
                 console.log("Sending payload to backend:", payload);
+
                 try {  
                     const response = await fetch("../backend/generate_workout.php", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(payload)
                     });
+                    
+                    const raw = await response.text();
+                    console.log("RAW response:", raw);
 
-                    const result = await response.json();
-                    console.log("Response from backend:", result);
-                    output.textContent = result.plan || result.message;
+                    //const result = await response.json();
+                    //console.log("Response from backend:", result);
+                    //output.textContent = result.plan || result.message;
+                    try {
+                        const result = JSON.parse(raw);
+                        output.textContent = result.plan || result.message;
+                    } catch (err) {
+                        console.error("JSON Parse Error:", err);
+                        output.textContent = "Server returned malformed JSON.";
+                    }
                 } catch (err) {
                     console.error("Fetch failed:", err);
                     output.textContent = "Something went wrong. Check your network or API.";

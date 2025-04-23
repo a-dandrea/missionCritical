@@ -2,6 +2,8 @@
 header("Content-Type: application/json");
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/php_error.log'); 
 
 session_start();
 
@@ -57,7 +59,7 @@ try {
     $stmt->bindParam(':days', $days);
 
     $stmt->execute();
-    echo json_encode(["message" => "Workout plan saved successfully."]);
+    //echo json_encode(["message" => "Workout plan saved successfully."]);
 } catch (PDOException $e) {
     echo json_encode(["message" => "Failed to save workout: " . $e->getMessage()]);
 }
@@ -96,7 +98,7 @@ $prompt .= "Goal: $goal\nLevel: $level\nWorkout type: $type\n";
 $prompt .= "Time per session: $time\nDays per week: $days\n";
 
 // Send to OpenAI API
-$openai_key = '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';
+$openai_key = "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";
 $headers = [
     "Content-Type: application/json",
     "Authorization: Bearer $openai_key"
@@ -113,12 +115,22 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 
 $response = curl_exec($ch);
+
+// checking if curl_exec failed
+if ($response === false) {
+    $error = curl_error($ch);
+    error_log("cURL Error: $error");
+    echo json_encode(["message" => "OpenAI API request failed", "error" => $error]);
+    exit();
+}
+
 curl_close($ch);
 
 $result = json_decode($response, true);
 
 // Debug: Save raw OpenAI response
-file_put_contents("openai_raw_response.json", json_encode($result, JSON_PRETTY_PRINT));
+//file_put_contents("openai_raw_response.json", json_encode($result, JSON_PRETTY_PRINT));
+error_log("OpenAI raw response:" . print_r($result, true));
 
 $plan = $result['choices'][0]['message']['content'] ?? null;
 
@@ -136,7 +148,7 @@ $sql = "INSERT INTO ai_workout_plans (userID, goal, fitnessLevel, workoutType, t
         VALUES (:userID, :goal, :fitnessLevel, :workoutType, :timePerSession, :daysPerWeek, :aiPlan)";
 
 $stmt = $db->prepare($sql);
-$stmt->bindParam(':user_id', $user_id);
+$stmt->bindParam(':userID', $user_id);
 $stmt->bindParam(':goal', $goal);
 $stmt->bindParam(':fitnessLevel', $level);
 $stmt->bindParam(':workoutType', $type);
@@ -145,7 +157,13 @@ $stmt->bindParam(':daysPerWeek', $days);
 $stmt->bindParam(':aiPlan', $plan);
 $stmt->execute();
 
-echo json_encode(["message" => "Workout plan generated successfully!", "plan" => $plan]);
+//header("Content-Type: application/json");
+//header("Content-Type: application/json");
 
-?>
+
+echo json_encode([
+    "message" => "Workout plan generated successfully!", 
+    "plan" => $plan]);
+
+
 
