@@ -22,6 +22,14 @@ $duration = $_POST['duration'] ?? null;
 $calories = $_POST['calories'] ?? null;
 $startTime = date('Y-m-d H:i:s');  // Assume workout starts now
 $endTime = date('Y-m-d H:i:s', strtotime("+$duration minutes"));
+
+$startDateInput = $_POST['workout-date'] ?? null;
+if ($startDateInput) {
+    $startTime = $startDateInput . ' 00:00:00';  // or a specific time if desired
+} else {
+    $startTime = date('Y-m-d H:i:s');  // fallback to now
+}
+
 $notes = $_POST['notes'] ?? null;
 
 if (!$userID || !$workoutType || !$duration || !$calories) {
