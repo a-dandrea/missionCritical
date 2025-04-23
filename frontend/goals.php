@@ -92,6 +92,16 @@ $user_privilege = $stmt->fetchColumn();
    </div>
 
    <div class="container">
+      <h2> Update Daily Calorie Goal </h2>
+      <form id="update-calorie-goal-form">
+         <input type="number" id="daily_calorie_goal" name="daily_calorie_goal" min="0">
+         
+         <button type="submit">Update</button>
+      </form>
+      <script src="assets/calories.js"></script>
+   </div>
+
+   <div class="container">
       <h2> Update Daily "Active" Minutes Goal </h2>
       <form id="update-active-goal-form">
          <input type="number" id="daily_active_goal" name="daily_active_goal" min="0">
