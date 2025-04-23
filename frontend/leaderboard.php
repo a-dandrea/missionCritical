@@ -188,7 +188,7 @@
     <h2>Leaderboard</h2>
 
     <form method="GET" style="text-align: center; margin-bottom: 1rem;">
-      <label for="week" style="text-align: center;"><strong>Select Week:</strong></label>
+      <label for="week" style="text-align: center;">Select Week:</label>
       <select name="week" id="week" onchange="this.form.submit()">
   <?php
     $currentWeek = date('W');
